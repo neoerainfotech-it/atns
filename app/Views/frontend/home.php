@@ -12,7 +12,8 @@ $transparentHeader = true;
        PREMIUM RENTO ENTERPRISE PLATFORM SYSTEM PALETTE CONFIGURATION
        ========================================================================== */
     :root {
-        --rento-red: #B81D24;
+        --rento-blue: #38bdf8;
+        --rento-blue-hover: #2563eb;
         --rento-red-hover: #901318;
         --rento-dark: #0F172A;
         --rento-navy: #1E293B;
@@ -100,7 +101,7 @@ $transparentHeader = true;
         text-transform: uppercase;
         border-radius: 4px;
         margin-bottom: 20px;
-        border-left: 3px solid var(--rento-red);
+        border-left: 3px solid var(--rento-blue);
     }
 
     .hero-title {
@@ -113,7 +114,7 @@ $transparentHeader = true;
     }
 
     .hero-title span { 
-        color: var(--rento-red); 
+        color: var(--rento-blue); 
     } 
 
     .hero-desc {
@@ -125,7 +126,7 @@ $transparentHeader = true;
     }
 
     .btn-hero-primary {
-        background-color: var(--rento-red);
+        background-color: var(--rento-blue);
         color: white !important;
         padding: 14px 36px;
         font-size: 0.95rem;
@@ -136,13 +137,13 @@ $transparentHeader = true;
         align-items: center;
         gap: 12px;
         transition: all 0.25s ease;
-        border: 1px solid var(--rento-red);
+        border: 1px solid var(--rento-blue);
         box-shadow: 0 10px 20px rgba(184, 29, 36, 0.15);
     }
 
     .btn-hero-primary:hover {
-        background-color: var(--rento-red-hover);
-        border-color: var(--rento-red-hover);
+        background-color: var(--rento-blue-hover);
+        border-color: var(--rento-blue-hover);
         transform: translateY(-2px);
     }
 
@@ -163,7 +164,7 @@ $transparentHeader = true;
     }
     
     .swiper-pagination-bullet-active { 
-        background: var(--rento-red); 
+        background: var(--rento-blue); 
         width: 45px; 
     }
 
@@ -237,7 +238,7 @@ $transparentHeader = true;
     }
 
     .input-field-block label i {
-        color: var(--rento-red);
+        color: var(--rento-blue);
         font-size: 0.9rem;
     }
 
@@ -253,7 +254,7 @@ $transparentHeader = true;
     }
 
     .btn-booking-search {
-        background-color: var(--rento-red);
+        background-color: var(--rento-blue);
         color: #FFFFFF;
         width: 100%;
         height: 52px;
@@ -267,7 +268,7 @@ $transparentHeader = true;
     }
 
     .btn-booking-search:hover {
-        background-color: var(--rento-red-hover);
+        background-color: var(--rento-blue-hover);
     }
 
     /* ==========================================================================
@@ -343,7 +344,7 @@ $transparentHeader = true;
 
     .premium-pillar-card {
         background: #ffffff;
-        border: 1px solid rgba(226, 232, 240, 0.7);
+        border: 1px solid rgba(56, 189, 248, 0.12); /* FIXED: Blue professional slate boundary */
         border-radius: 16px;
         padding: 45px 35px;
         height: 100%;
@@ -352,14 +353,14 @@ $transparentHeader = true;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        box-shadow: 0 4px 10px rgba(15, 23, 42, 0.015);
+        box-shadow: 0 4px 15px rgba(56, 189, 248, 0.015);
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .pillar-icon-box {
         width: 54px; height: 54px;
-        background-color: #fff1f2;
-        color: var(--rento-red);
+        background-color: rgba(56, 189, 248, 0.06); /* Soft blue backdrop anchor */
+        color: var(--rento-blue);
         border-radius: 12px;
         display: flex; align-items: center; justify-content: center;
         margin-bottom: 28px;
@@ -375,12 +376,16 @@ $transparentHeader = true;
     
     .pillar-hover-indicator {
         position: absolute; bottom: 0; left: 0; width: 100%; height: 4px;
-        background-color: var(--rento-red); transform: scaleX(0); transform-origin: left;
+        background-color: var(--rento-blue); transform: scaleX(0); transform-origin: left;
         transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .premium-pillar-card:hover { transform: translateY(-8px); box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06); }
-    .premium-pillar-card:hover .pillar-icon-box { background-color: var(--rento-red); color: #ffffff; box-shadow: 0 8px 20px rgba(184, 29, 36, 0.25); }
+    .premium-pillar-card:hover { 
+        transform: translateY(-8px); 
+        border-color: rgba(56, 189, 248, 0.3) !important; /* FIXED: Active blue glow */
+        box-shadow: 0 20px 45px rgba(56, 189, 248, 0.06); 
+    }
+    .premium-pillar-card:hover .pillar-icon-box { background-color: var(--rento-blue); color: #ffffff; box-shadow: 0 8px 20px rgba(56, 189, 248, 0.25); }
     .premium-pillar-card:hover .pillar-icon-box svg { transform: rotate(5deg) scale(1.05); }
     .premium-pillar-card:hover .pillar-hover-indicator { transform: scaleX(1); }
 
@@ -397,7 +402,7 @@ $transparentHeader = true;
         font-size: 0.8rem; 
         font-weight: 800; 
         letter-spacing: 0.15em; 
-        color: var(--rento-red); 
+        color: var(--rento-blue); 
         display: block; 
         margin-bottom: 16px; 
     }
@@ -461,10 +466,11 @@ $transparentHeader = true;
         width: 100%; 
         max-width: 240px; 
         height: 160px; 
-        border-radius: 4px; 
+        border-radius: 12px; 
         overflow: hidden; 
         margin: 0 auto; 
         background-color: var(--rento-light); 
+        border: 1px solid rgba(56, 189, 248, 0.12); /* FIXED: Blue border framework mapping */
         box-shadow: 0 10px 30px rgba(0,0,0,0.03); 
         opacity: 0.3; 
         transform: scale(0.95); 
@@ -530,8 +536,8 @@ $transparentHeader = true;
     }
 
     .minds-service-row-item:hover, .minds-service-row-item.active { background-color: rgba(248, 250, 252, 0.6); padding-left: 20px; padding-right: 20px; }
-    .minds-service-row-item:hover .minds-service-title, .minds-service-row-item.active .minds-service-title { color: var(--rento-red); }
-    .minds-service-row-item:hover .minds-image-frame-box, .minds-service-row-item.active .minds-image-frame-box { opacity: 1; transform: scale(1); box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08); }
+    .minds-service-row-item:hover .minds-service-title, .minds-service-row-item.active .minds-service-title { color: var(--rento-blue); }
+    .minds-service-row-item:hover .minds-image-frame-box, .minds-service-row-item.active .minds-image-frame-box { opacity: 1; transform: scale(1); border-color: rgba(56, 189, 248, 0.3) !important; box-shadow: 0 15px 35px rgba(56, 189, 248, 0.08); }
     .minds-service-row-item:hover .btn-minds-action, .minds-service-row-item.active .btn-minds-action { background-color: var(--rento-dark); color: #ffffff !important; }
 
     /* ==========================================================================
@@ -548,7 +554,7 @@ $transparentHeader = true;
         font-size: 0.8rem; 
         font-weight: 800; 
         letter-spacing: 0.15em; 
-        color: var(--rento-red); 
+        color: var(--rento-blue); 
         display: block; 
         margin-bottom: 18px; 
     }
@@ -568,12 +574,12 @@ $transparentHeader = true;
         align-items: flex-start; 
         gap: 24px; 
         padding-left: 15px; 
-        border-left: 1px solid rgba(255, 255, 255, 0.05); 
+        border-left: 1px solid rgba(56, 189, 248, 0.1); /* FIXED: Slate blue menu guideline */
     }
     
     .detail-nav-tab-link { border: none; background: transparent; color: #ffffff; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; text-align: left; line-height: 1.4; padding: 4px 0; opacity: 0.35; position: relative; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     .detail-nav-tab-link.active { opacity: 1; color: #ffffff; }
-    .detail-nav-tab-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--rento-red); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+    .detail-nav-tab-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--rento-blue); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
     .detail-nav-tab-link.active::after { transform: scaleX(1); }
     
     .detail-display-stage-container { position: relative; width: 100%; padding-left: 20px; }
@@ -581,16 +587,16 @@ $transparentHeader = true;
     .detail-case-content-card.active { display: block; }
     @keyframes detailFadeIn { to { opacity: 1; } }
     
-    .detail-image-showcase-frame { width: 100%; height: 480px; border-radius: 8px; overflow: hidden; background-color: var(--rento-navy); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35); }
+    .detail-image-showcase-frame { width: 100%; height: 480px; border-radius: 8px; overflow: hidden; background-color: var(--rento-navy); border: 1px solid rgba(56, 189, 248, 0.12); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35); }
     .detail-showcase-img { width: 100%; height: 100%; object-fit: cover; }
     
     .detail-meta-split-row { display: flex; flex-wrap: wrap; width: 100%; gap: 40px; margin-top: 40px; padding-top: 10px; }
-    .split-left-heading { flex: 0 0 45%; max-width: 45%; border-bottom: 2px solid var(--rento-red); padding-bottom: 15px; }
+    .split-left-heading { flex: 0 0 45%; max-width: 45%; border-bottom: 2px solid var(--rento-blue); padding-bottom: 15px; }
     .split-right-description { flex: 1; }
     .detail-active-sub-title { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; color: #ffffff; letter-spacing: -0.02em; line-height: 1.3; margin: 0; }
     .detail-body-paragraph { font-size: 0.95rem; line-height: 1.7; color: #94a3b8 !important; }
     
-    .btn-detail-action-link { font-size: 0.85rem; font-weight: 700; color: var(--rento-red) !important; text-transform: uppercase; letter-spacing: 0.05em; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: color 0.2s ease; }
+    .btn-detail-action-link { font-size: 0.85rem; font-weight: 700; color: var(--rento-blue) !important; text-transform: uppercase; letter-spacing: 0.05em; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: color 0.2s ease; }
     .btn-detail-action-link:hover { color: #ff5c62 !important; }
     .btn-detail-action-link:hover i { transform: translateX(5px); }
 
@@ -625,14 +631,14 @@ $transparentHeader = true;
         flex-direction: column; 
         justify-content: space-between; 
         background-color: #ffffff; 
-        border: 1px solid rgba(226, 232, 240, 0.8); 
+        border: 1px solid rgba(56, 189, 248, 0.12); /* FIXED: Dynamic blueprint border styling */
         border-radius: 16px; 
         padding: 45px 30px 35px 30px; 
         height: 100%; 
         text-decoration: none !important; 
         position: relative; 
         overflow: hidden; 
-        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.02); 
+        box-shadow: 0 4px 15px rgba(56, 189, 248, 0.02); 
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
     }
     
@@ -675,15 +681,15 @@ $transparentHeader = true;
         left: 0; 
         width: 0%; 
         height: 3px; 
-        background-color: var(--rento-red); 
+        background-color: var(--rento-blue); 
         transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
     }
 
-    .industry-milk-card:hover { transform: translateY(-6px); border-color: rgba(184, 29, 36, 0.2); box-shadow: 0 20px 45px rgba(15, 23, 42, 0.05); }
-    .industry-milk-card:hover .industry-milk-card-title { color: var(--rento-red); }
-    .industry-milk-card:hover .industry-milk-img { filter: brightness(0) sepia(1) saturate(100) hue-rotate(345deg); transform: scale(1.06); }
-    .industry-milk-card:hover .industry-milk-btn-lbl { color: var(--rento-red); }
-    .industry-milk-card:hover .industry-milk-btn-arrow { color: var(--rento-red); transform: translateX(5px); }
+    .industry-milk-card:hover { transform: translateY(-6px); border-color: rgba(56, 189, 248, 0.3) !important; box-shadow: 0 20px 45px rgba(56, 189, 248, 0.05); }
+    .industry-milk-card:hover .industry-milk-card-title { color: var(--rento-blue); }
+    .industry-milk-card:hover .industry-milk-img { filter: brightness(0) sepia(1) saturate(100) hue-rotate(200deg); transform: scale(1.06); }
+    .industry-milk-card:hover .industry-milk-btn-lbl { color: var(--rento-blue); }
+    .industry-milk-card:hover .industry-milk-btn-arrow { color: var(--rento-blue); transform: translateX(5px); }
     .industry-milk-card:hover .industry-milk-card-line-indicator { width: 100%; }
 
     /* ==========================================================================
@@ -695,7 +701,7 @@ $transparentHeader = true;
         position: relative; 
     }
     
-    .bento-vision-badge { font-size: 0.8rem; font-weight: 800; color: var(--rento-red); background-color: rgba(184, 29, 36, 0.06); padding: 6px 16px; border-radius: 4px; letter-spacing: 0.1em; display: inline-block; margin-bottom: 20px; text-transform: uppercase; }
+    .bento-vision-badge { font-size: 0.8rem; font-weight: 800; color: var(--rento-blue); background-color: rgba(56, 189, 248, 0.06); padding: 6px 16px; border-radius: 4px; letter-spacing: 0.1em; display: inline-block; margin-bottom: 20px; text-transform: uppercase; }
     .bento-vision-headline { font-size: 3.5rem; font-weight: 800; letter-spacing: -0.02em; text-transform: uppercase; color: var(--rento-dark); margin: 0; }
     .bento-vision-statement { font-size: 1.35rem; font-weight: 700; color: var(--rento-navy); line-height: 1.45; margin-bottom: 20px; max-width: 820px; margin-left: auto; margin-right: auto; }
     .bento-vision-desc { font-size: 1.02rem; line-height: 1.65; color: var(--rento-slate); max-width: 860px; margin-left: auto; margin-right: auto; }
@@ -704,28 +710,28 @@ $transparentHeader = true;
     .item-size-large { grid-column: span 2; }
     .item-size-medium { grid-column: span 1; }
     
-    .bento-milk-card { background-color: #ffffff; border: 1px solid rgba(226, 232, 240, 0.8); border-radius: 16px; padding: 40px 30px; height: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(15, 23, 42, 0.02); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .bento-milk-card { background-color: #ffffff; border: 1px solid rgba(56, 189, 248, 0.12); border-radius: 16px; padding: 40px 30px; height: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.02); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     .bento-icon-marker { font-size: 1.4rem; color: var(--rento-slate); opacity: 0.5; margin-bottom: 36px; transition: all 0.3s ease; }
     .bento-metric-value { font-size: 3.25rem; font-weight: 800; color: var(--rento-dark); line-height: 1; letter-spacing: -0.03em; margin-bottom: 12px; transition: color 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
     .bento-metric-value .value-plus { font-size: 2rem; font-weight: 600; color: var(--rento-slate); opacity: 0.5; display: inline-block; margin-left: 2px; }
     .bento-metric-label { font-size: 0.95rem; font-weight: 700; color: var(--rento-slate); line-height: 1.4; margin: 0; }
-    .bento-card-hover-border { position: absolute; bottom: 0; left: 0; width: 0%; height: 3px; background-color: var(--rento-red); transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .bento-card-hover-border { position: absolute; bottom: 0; left: 0; width: 0%; height: 3px; background-color: var(--rento-blue); transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     
     .btn-bento-vision-action { display: inline-flex; align-items: center; justify-content: center; gap: 10px; color: var(--rento-dark) !important; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; text-decoration: none !important; padding: 8px 0; border-bottom: 1px solid var(--rento-border); transition: all 0.3s ease; }
     .btn-bento-vision-action svg { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
 
-    .bento-milk-card:hover { transform: translateY(-6px); border-color: rgba(184, 29, 36, 0.2); box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06); }
-    .bento-milk-card:hover .bento-metric-value { color: var(--rento-red); }
-    .bento-milk-card:hover .bento-icon-marker { color: var(--rento-red); opacity: 1; }
+    .bento-milk-card:hover { transform: translateY(-6px); border-color: rgba(56, 189, 248, 0.3) !important; box-shadow: 0 20px 45px rgba(56, 189, 248, 0.06); }
+    .bento-milk-card:hover .bento-metric-value { color: var(--rento-blue); }
+    .bento-milk-card:hover .bento-icon-marker { color: var(--rento-blue); opacity: 1; }
     .bento-milk-card:hover .bento-card-hover-border { width: 100%; }
-    .btn-bento-vision-action:hover { color: var(--rento-red) !important; border-color: var(--rento-red); }
+    .btn-bento-vision-action:hover { color: var(--rento-blue) !important; border-color: var(--rento-blue); }
     .btn-bento-vision-action:hover svg { transform: translateX(6px); }
 
     /* ==========================================================================
        SECTION MODULE 9: PREMIUM HIGH-CONTRAST CAREERS CTA
        ========================================================================== */
     .premium-cta-careers-section {
-        background: linear-gradient(135deg, #B81D24 0%, #8A1116 100%); 
+        background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); /* FIXED: Professional dark tech gradient */
         padding: 90px 0;
         position: relative;
         overflow: hidden;
@@ -734,13 +740,13 @@ $transparentHeader = true;
 
     .cta-geometric-grid-overlay {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23ffffff' stroke-width='1.2' stroke-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%2338bdf8' stroke-width='1.2' stroke-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         z-index: 1; pointer-events: none;
     }
 
     .cta-mini-badge {
         font-size: 0.78rem; font-weight: 800; color: #ffffff;
-        background-color: rgba(255, 255, 255, 0.15); padding: 6px 14px;
+        background-color: rgba(56, 189, 248, 0.15); padding: 6px 14px;
         border-radius: 4px; letter-spacing: 0.15em; display: inline-block;
         margin-bottom: 20px; text-transform: uppercase;
     }
@@ -750,14 +756,14 @@ $transparentHeader = true;
 
     .btn-premium-cta-action {
         display: inline-flex; align-items: center; justify-content: center; gap: 12px;
-        background-color: #ffffff; color: var(--rento-red) !important; padding: 18px 42px;
+        background-color: var(--rento-blue); color: #ffffff !important; padding: 18px 42px;
         font-size: 0.95rem; font-weight: 700; border-radius: 8px; text-transform: uppercase;
-        letter-spacing: 0.05em; text-decoration: none !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        letter-spacing: 0.05em; text-decoration: none !important; box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative;
     }
 
     .cta-arrow-icon { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-    .btn-premium-cta-action:hover { background-color: var(--rento-dark); color: #ffffff !important; transform: translateY(-3px); box-shadow: 0 15px 35px rgba(15, 23, 42, 0.25); }
+    .btn-premium-cta-action:hover { background-color: #ffffff; color: var(--rento-blue) !important; transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25); }
     .btn-premium-cta-action:hover .cta-arrow-icon { transform: translateX(6px); }
     .z-index-2 { position: relative; z-index: 2; }
 
@@ -836,6 +842,7 @@ $transparentHeader = true;
         .cta-display-headline { font-size: 2.25rem; }
         .btn-premium-cta-action { width: 100%; max-width: 100%; padding: 16px 24px; }
     }
+    
     /* --- TRENDY ASYMMETRICAL HORIZON INTEL BUZZ --- */
     .trendy-buzz-horizon-section {
         background-color: #F8FAFC; 
@@ -847,7 +854,7 @@ $transparentHeader = true;
         font-size: 0.8rem;
         font-weight: 800;
         letter-spacing: 0.15em;
-        color: var(--rento-red);
+        color: var(--rento-blue);
         display: block;
         margin-bottom: 14px;
     }
@@ -881,7 +888,7 @@ $transparentHeader = true;
         display: flex;
         flex-direction: column;
         background-color: #ffffff;
-        border: 1px solid rgba(226, 232, 240, 0.8);
+        border: 1px solid rgba(56, 189, 248, 0.12);
         border-radius: 20px; 
         overflow: hidden;
         width: 100%;
@@ -893,9 +900,9 @@ $transparentHeader = true;
     .spotlight-media-canvas {
         position: relative;
         width: 100%;
-        height: 340px; /* Fixed explicit canvas height matrix */
+        height: 340px; 
         overflow: hidden;
-        background-color: #F1F5F9; /* Professional milk base layer backdrop tint */
+        background-color: #F1F5F9; 
         display: flex;
         align-items: center;
         justify-content: center;
@@ -905,21 +912,21 @@ $transparentHeader = true;
     .spotlight-img {
         max-width: 100%;
         max-height: 100%;
-        object-fit: contain; /* PERFECT LOOK FIX: Absolutely zero text clipping */
+        object-fit: contain; 
         transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .horizon-pill-badge {
         position: absolute;
         top: 24px; left: 24px;
-        background-color: var(--rento-red);
+        background-color: var(--rento-blue);
         color: #ffffff;
         font-size: 10px; font-weight: 800;
         text-transform: uppercase;
         padding: 6px 14px;
         border-radius: 6px;
         letter-spacing: 0.05em;
-        box-shadow: 0 6px 15px rgba(184, 29, 36, 0.25);
+        box-shadow: 0 6px 15px rgba(56, 189, 248, 0.25);
         z-index: 5;
     }
 
@@ -940,7 +947,7 @@ $transparentHeader = true;
         color: var(--rento-slate);
     }
 
-    .meta-category-tag { color: var(--rento-red); text-transform: uppercase; }
+    .meta-category-tag { color: var(--rento-blue); text-transform: uppercase; }
     .meta-divider { width: 4px; height: 4px; background-color: var(--rento-border); border-radius: 50%; }
 
     .spotlight-card-title {
@@ -969,7 +976,7 @@ $transparentHeader = true;
 
     .horizon-stream-row-item {
         background-color: #ffffff;
-        border: 1px solid rgba(226, 232, 240, 0.7);
+        border: 1px solid rgba(56, 189, 248, 0.12);
         border-radius: 16px;
         padding: 20px;
         text-decoration: none !important;
@@ -992,7 +999,7 @@ $transparentHeader = true;
         height: 95px;
         border-radius: 10px;
         overflow: hidden;
-        background-color: #F1F5F9; /* Muted base contrast layout layer */
+        background-color: #F1F5F9; 
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1002,7 +1009,7 @@ $transparentHeader = true;
     .stream-img {
         max-width: 100%;
         max-height: 100%;
-        object-fit: contain; /* Guarantees small thumbnails stay text-legible */
+        object-fit: contain; 
         transition: transform 0.5s ease;
     }
 
@@ -1037,25 +1044,22 @@ $transparentHeader = true;
     }
     
     .stream-action-link i { font-size: 0.75rem; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-    .horizon-row-border-indicator { position: absolute; bottom: 0; left: 0; width: 0%; height: 3px; background-color: var(--rento-red); transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .horizon-row-border-indicator { position: absolute; bottom: 0; left: 0; width: 0%; height: 3px; background-color: var(--rento-blue); transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 
     /* ==========================================================================
        HOVER EFFECT CONTROLLERS INTERACTION MATRIX
        ========================================================================== */
-    .horizon-featured-spotlight-card:hover { transform: translateY(-6px); box-shadow: 0 30px 60px rgba(15, 23, 42, 0.06); }
+    .horizon-featured-spotlight-card:hover { transform: translateY(-6px); box-shadow: 0 30px 60px rgba(56, 189, 248, 0.06); border-color: rgba(56, 189, 248, 0.3) !important; }
     .horizon-featured-spotlight-card:hover .spotlight-img { transform: scale(1.03); }
-    .horizon-featured-spotlight-card:hover .spotlight-card-title { color: var(--rento-red); }
-    .horizon-featured-spotlight-card:hover .trigger-arrow { color: var(--rento-red); transform: translateX(6px); }
+    .horizon-featured-spotlight-card:hover .spotlight-card-title { color: var(--rento-blue); }
+    .horizon-featured-spotlight-card:hover .trigger-arrow { color: var(--rento-blue); transform: translateX(6px); }
 
-    .horizon-stream-row-item:hover { transform: translateX(6px); border-color: rgba(184, 29, 36, 0.15); box-shadow: 0 15px 35px rgba(15, 23, 42, 0.04); }
+    .horizon-stream-row-item:hover { transform: translateX(6px); border-color: rgba(56, 189, 248, 0.3) !important; box-shadow: 0 15px 35px rgba(56, 189, 248, 0.04); }
     .horizon-stream-row-item:hover .stream-img { transform: scale(1.04); }
-    .horizon-stream-row-item:hover .stream-card-title { color: var(--rento-red); }
+    .horizon-stream-row-item:hover .stream-card-title { color: var(--rento-blue); }
     .horizon-stream-row-item:hover .stream-action-link i { transform: translateX(4px); }
     .horizon-stream-row-item:hover .horizon-row-border-indicator { width: 100%; }
 
-    /* ==========================================================================
-       RESPONSIVE MATRIX BREAKPOINTS VIEWPORTS
-       ========================================================================== */
     @media (max-width: 1200px) {
         .spotlight-card-title { font-size: 1.4rem; }
         .spotlight-media-canvas { height: 280px; }
@@ -1332,7 +1336,7 @@ $transparentHeader = true;
                                 <p style="color: var(--rento-slate); font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">
                                     <?php echo helper('text') ? character_limiter(strip_tags($value->shortDescription), 100) : substr(strip_tags($value->shortDescription), 0, 100) . '...'; ?>
                                 </p>
-                                <a href="<?php echo base_url('product/'.esc($value->slug)); ?>" style="color: var(--rento-red); font-weight: 700; text-decoration: none;">View Details &rarr;</a>
+                                <a href="<?php echo base_url('product/'.esc($value->slug)); ?>" style="color: var(--rento-blue); font-weight: 700; text-decoration: none;">View Details &rarr;</a>
                             </div>
                         </div>
                     </div>
@@ -1528,13 +1532,8 @@ $transparentHeader = true;
     </div>
 </section>
 
-<!-- ==========================================================================
-     ULTRA-MODERN ASYMMETRICAL INTEL HIGHLIGHTS (DYNAMIC SLIDER EDITION)
-     ========================================================================= -->
 <section class="trendy-buzz-horizon-section">
     <div class="container">
-        
-        <!-- Header Section Line -->
         <div class="row mb-5 align-items-end">
             <div class="col-lg-6">
                 <div class="horizon-header-block">
@@ -1551,20 +1550,14 @@ $transparentHeader = true;
 
         <?php if (!empty($blogList)): ?>
             <div class="row g-5">
-                
-                <!-- LEFT COLUMN: Dual-Card Master Slider Stage -->
                 <div class="col-xl-6 col-lg-5">
                     <div class="swiper horizon-left-deck-swiper">
                         <div class="swiper-wrapper">
-                            
                             <?php 
-                            // Chunk array into pairs to keep exactly two cards visible per slide turn
                             $blogChunks = array_chunk($blogList, 2);
                             foreach ($blogChunks as $chunk): 
                             ?>
                                 <div class="swiper-slide layout-bento-double-slide">
-                                    
-                                    <!-- Card 1: The Grand Featured Spotlight Panel -->
                                     <?php if (isset($chunk[0])): $b1 = $chunk[0]; ?>
                                         <a href="<?php echo base_url('blog/' . esc($b1->slug)); ?>" class="horizon-featured-spotlight-card">
                                             <div class="spotlight-media-canvas">
@@ -1588,7 +1581,6 @@ $transparentHeader = true;
                                         </a>
                                     <?php endif; ?>
 
-                                    <!-- Card 2: Secondary Normal Styled Panel Below -->
                                     <?php if (isset($chunk[1])): $b2 = $chunk[1]; ?>
                                         <a href="<?php echo base_url('blog/' . esc($b2->slug)); ?>" class="horizon-stream-row-item normal-size-modifier mt-4">
                                             <div class="stream-item-inner-layout">
@@ -1612,23 +1604,18 @@ $transparentHeader = true;
                                             <div class="horizon-row-border-indicator"></div>
                                         </a>
                                     <?php endif; ?>
-
                                 </div>
                             <?php endforeach; ?>
-
                         </div>
                     </div>
                 </div>
 
-                <!-- RIGHT COLUMN: Sleek Dynamic Stream Stack (Autoplays concurrently) -->
                 <div class="col-xl-6 col-lg-7">
                     <div class="swiper horizon-right-stack-swiper">
                         <div class="swiper-wrapper">
-                            
                             <div class="swiper-slide vertical-stack-slide">
                                 <div class="horizon-stream-vertical-stack">
                                     <?php 
-                                    // Populate rest of loop entries into the right panel registry cleanly
                                     foreach ($blogList as $key => $value): 
                                         if($key < 2) continue; 
                                     ?>
@@ -1656,14 +1643,11 @@ $transparentHeader = true;
                                     <?php endforeach; ?>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
             </div>
         <?php endif; ?>
-
     </div>
 </section>
 
@@ -1673,7 +1657,6 @@ $transparentHeader = true;
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Core Fade Slider Initialization
         var heroSwiper = new Swiper('.premium-hero-slider', {
             effect: 'fade',
             fadeEffect: { crossFade: true },
@@ -1682,7 +1665,6 @@ $transparentHeader = true;
             pagination: { el: '.hero-pagination', clickable: true },
         });
 
-        // Services Feature Hover Row Interactions Tracker
         const serviceRows = document.querySelectorAll('.minds-service-row-item');
         if (serviceRows.length > 0) {
             serviceRows.forEach(row => {
@@ -1692,39 +1674,33 @@ $transparentHeader = true;
                 });
             });
         }
-        // Initialize Sync Moving Carousel Elements across the Buzz Deck blocks
-var rightStackSwiper = new Swiper('.horizon-right-stack-swiper', {
-    effect: 'fade',
-    fadeEffect: { crossFade: true },
-    allowTouchMove: false,
-    speed: 800
-});
 
-var leftDeckSwiper = new Swiper('.horizon-left-deck-swiper', {
-    speed: 800,
-    loop: true,
-    autoplay: {
-        delay: 5000,
-        disableOnInteraction: false,
-    },
-    controller: {
-        control: rightStackSwiper // Dynamically syncs the left card changes with the right stack entries 
-    }
-});
+        var rightStackSwiper = new Swiper('.horizon-right-stack-swiper', {
+            effect: 'fade',
+            fadeEffect: { crossFade: true },
+            allowTouchMove: false,
+            speed: 800
+        });
+
+        var leftDeckSwiper = new Swiper('.horizon-left-deck-swiper', {
+            speed: 800,
+            loop: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            controller: {
+                control: rightStackSwiper 
+            }
+        });
     });
 
-    /**
-     * Toggles Active States Across Booking Nav Tabs
-     */
     function switchBookingTab(buttonElement, chosenMode) {
         const structuralButtons = buttonElement.parentElement.querySelectorAll('.booking-tab-btn');
         structuralButtons.forEach(btn => btn.classList.remove('active'));
         buttonElement.classList.add('active');
     }
 
-    /**
-     * Toggles Cards Inside Case Studies Sidebar Interface Component
-     */
     function switchCaseStudy(buttonElement, targetIndex) {
         const tabLinks = buttonElement.parentElement.querySelectorAll('.detail-nav-tab-link');
         tabLinks.forEach(link => link.classList.remove('active'));
@@ -1737,39 +1713,36 @@ var leftDeckSwiper = new Swiper('.horizon-left-deck-swiper', {
         const targetCard = stageContainer.querySelector(`#case-card-${targetIndex}`);
         if (targetCard) { targetCard.classList.add('active'); }
     }
+</script>
 
-    // Dynamic AJAX Service Requests Multi-Loader Offset Mechanics
-    $(document).ready(function() {
-        $('body').on("click", "#spt", function(e) {
-            e.preventDefault();
-            var offset = $('#offset').val();
-            $.ajax({
-                url: "<?php echo base_url('get_service_ajax'); ?>",
-                type: "POST",
-                data: { offset: offset },
-                beforeSend: function() {
-                    $('#spt').html('<i class="fa-solid fa-spinner fa-spin"></i> Loading Options...');
-                },
-                success: function(res) { 
-                    try {
-                        var obj = JSON.parse(res);
-                        if (obj.status == 1) {
-                            $('#spt').html('Load More');
-                            $('.ajaxdata').append(obj.data);
-                            $('#offset').val(obj.offset);
-                        } else {
-                            $('#spt').html(obj.msg);
-                        }
-                    } catch(err) {
-                        $('#spt').html('Payload Error');
-                    }
-                },
-                error: function() {
-                    $('#spt').html('Connection Timed Out');
-                }
-            });
-        });
-    });
+<!-- ==========================================================================
+     ZOHO SALESIQ HIGH-CONVERSION CONVERSATIONAL CHATBOT ENGINE
+     ========================================================================== -->
+<script type="text/javascript" id="zsiqchat">
+    var $zoho = $zoho || {};
+    $zoho.salesiq = $zoho.salesiq || {
+        widgetcode: "YOUR_UNIQUE_ZOHO_SALESIQ_WIDGET_CODE_HERE", 
+        values: {},
+        ready: function() {
+            // Optional: Programmatic custom initial behavior configurations
+            // Automatically minimizes or hides chat on extra small viewports if necessary
+            if(window.innerWidth < 576) {
+                //$zoho.salesiq.widget.floatwindow.visible("hide");
+            }
+        }
+    };
+    
+    // Asynchronous injection layer to guarantee absolute zero degradation of your core page load speed
+    (function() {
+        var d = document;
+        var s = d.createElement("script");
+        s.type = "text/javascript";
+        s.id = "zsiqscript";
+        s.defer = true;
+        s.src = "https://salesiq.zohopublic.com/widget";
+        var t = d.getElementsByTagName("script")[0];
+        t.parentNode.insertBefore(s, t);
+    })();
 </script>
 
 <?php $this->endSection(); ?>
