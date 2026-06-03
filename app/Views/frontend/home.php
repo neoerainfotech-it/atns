@@ -466,22 +466,37 @@ $transparentHeader = true;
         width: 100%; 
         max-width: 240px; 
         height: 160px; 
-        border-radius: 12px; 
+        border-radius: 12px; /* Premium smooth modern rounding radius */
         overflow: hidden; 
         margin: 0 auto; 
-        background-color: var(--rento-light); 
-        border: 1px solid rgba(56, 189, 248, 0.12); /* FIXED: Blue border framework mapping */
-        box-shadow: 0 10px 30px rgba(0,0,0,0.03); 
-        opacity: 0.3; 
-        transform: scale(0.95); 
+        
+        /* THE FIX: Swaps plain grey for a premium high-end light tech blue backdrop */
+        background-color: #F0F7FF !important; 
+        border: 1px solid rgba(56, 189, 248, 0.2) !important;
+        
+        box-shadow: 0 8px 25px rgba(56, 189, 248, 0.04); 
+        opacity: 0.5; /* Muted base opacity until hovered/active */
+        transform: scale(0.96); 
+        
+        /* Flexbox Centering Layer (forces shapes to stay scale balanced) */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px; /* Generous padding keeps vector asset shapes beautifully framed */
+        
+        will-change: transform, opacity, background-color;
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
     }
     
     .minds-showcase-img { 
-        width: 100%; 
-        height: 100%; 
-        object-fit: cover; 
-        transition: transform 0.6s ease; 
+        max-width: 100%; 
+        max-height: 100%; 
+        object-fit: contain; /* Guarantees your custom graphics are never clipped or stretched */
+        
+        /* THE FIX: Converts pure white transparent icons into your theme dark navy for crisp contrast */
+        filter: brightness(0) saturate(100) invert(11%) sepia(21%) saturate(2203%) hue-rotate(185deg) brightness(95%) contrast(97%);
+        
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
     }
     
     .minds-editor-desc { 
@@ -537,7 +552,23 @@ $transparentHeader = true;
 
     .minds-service-row-item:hover, .minds-service-row-item.active { background-color: rgba(248, 250, 252, 0.6); padding-left: 20px; padding-right: 20px; }
     .minds-service-row-item:hover .minds-service-title, .minds-service-row-item.active .minds-service-title { color: var(--rento-blue); }
-    .minds-service-row-item:hover .minds-image-frame-box, .minds-service-row-item.active .minds-image-frame-box { opacity: 1; transform: scale(1); border-color: rgba(56, 189, 248, 0.3) !important; box-shadow: 0 15px 35px rgba(56, 189, 248, 0.08); }
+    .minds-service-row-item:hover .minds-image-frame-box, 
+    .minds-service-row-item.active .minds-image-frame-box { 
+        opacity: 1; 
+        transform: scale(1.02); 
+        
+        /* Deepens tint and border focus illumination upon row mouse hover */
+        background-color: #E0F0FF !important;
+        border-color: rgba(56, 189, 248, 0.4) !important;
+        box-shadow: 0 15px 35px rgba(56, 189, 248, 0.12); 
+    }
+    .minds-service-row-item:hover .minds-showcase-img, 
+    .minds-service-row-item.active .minds-showcase-img {
+        /* Pop scale effect on active slide asset */
+        transform: scale(1.05);
+        /* FIXED: Shifts icon to pure corporate blue on active row hover state */
+        filter: brightness(0) saturate(100) invert(63%) sepia(81%) saturate(1518%) hue-rotate(173deg) brightness(101%) contrast(97%);
+    }
     .minds-service-row-item:hover .btn-minds-action, .minds-service-row-item.active .btn-minds-action { background-color: var(--rento-dark); color: #ffffff !important; }
 
     /* ==========================================================================
