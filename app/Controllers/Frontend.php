@@ -2050,7 +2050,48 @@ public function registration(){
 
    }
 }
+public function webinar_registration()
+{
+    if ($this->request->getMethod() !== 'post') {
+        return redirect()->to(base_url());
+    }
 
+    date_default_timezone_set('Asia/Kolkata');
+    
+    // Capture our hidden tracking destination URL (fallback to home if empty)
+    $redirectUrl = $this->request->getPost('redirect_url') ?? base_url();
+
+    try {
+        $save = [
+            'name'         => $this->request->getPost('name'),
+            'company_name' => $this->request->getPost('lastName'), 
+            'title'        => $this->request->getPost('title'),
+            'email'        => $this->request->getPost('email'),
+            'phone'        => $this->request->getPost('phone'),
+            'expectation'  => $this->request->getPost('expectation'),
+            'erp_system'   => $this->request->getPost('erp_system'),
+            'create_date'  => date('Y-m-d H:i:s')
+        ];
+
+        if (empty($save['name']) || empty($save['email']) || empty($save['phone'])) {
+            return redirect()->to($redirectUrl)->withInput()->with('webinar_error', 'Please fill out all mandatory registration fields.');
+        }
+
+        // Write to your dedicated webinar table database log
+        $result = $this->AdminModel->insertData('webinar_registration', $save);
+
+        if ($result) {
+            // CRUCIAL: Forces the browser to route straight back to the event detail page layout
+            return redirect()->to($redirectUrl)->with('webinar_success', 'Thanks for submitting!');
+        } else {
+            return redirect()->to($redirectUrl)->withInput()->with('webinar_error', 'Database write error. Please try again.');
+        }
+
+    } catch (\Throwable $e) {
+        log_message('critical', 'Webinar Absolute Redirection Failure Exception: ' . $e->getMessage());
+        return redirect()->to($redirectUrl)->withInput()->with('webinar_error', 'An internal processing error occurred. Please retry.');
+    }
+}
 
 
     

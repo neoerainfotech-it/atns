@@ -146,7 +146,8 @@ $routes->get('news/(:any)', 'Frontend::news_detail/$1');
 
 
 
-
+// Route to handle the Webinar Form submission and save data to DB
+$routes->post('webinar-registration', 'Frontend::webinar_registration');
 
 // NEWS
 
@@ -276,13 +277,13 @@ $routes->post('admin/delete_menu', 'admin\Backend::delete_menu');
 $routes->get('admin/front_menu', 'admin\Backend::front_menu');
 $routes->match(['get', 'post'], 'admin/add_front_menu', 'admin\Backend::add_front_menu');
 $routes->match(['get', 'post'], 'admin/add_front_menu/(:num)', 'admin\Backend::add_front_menu/$1');
-$routes->post('admin/delete_front_menu', 'admin\Backend::delete_front_menu');
+$routes->post('admin/delete_setting', 'admin\Backend::delete_setting');
 
 
 $routes->get('admin/setting', 'admin\Backend::setting');
 $routes->match(['get', 'post'], 'admin/edit_setting', 'admin\Backend::edit_setting');
 $routes->match(['get', 'post'], 'admin/edit_setting/(:num)', 'admin\Backend::edit_setting/$1');
-$routes->post('admin/delete_front_menu', 'admin\Backend::delete_front_menu');
+$routes->post('admin/delete_setting', 'admin\Backend::delete_setting');
 
 $routes->post('admin/chartData', 'admin\Backend::chartData');
 
@@ -585,6 +586,12 @@ $routes->get('admin/events', 'admin\Cms::events');
 $routes->match(['get', 'post'], 'admin/add_event', 'admin\Cms::add_event');
 $routes->match(['get', 'post'], 'admin/add_event/(:num)', 'admin\Cms::add_event/$1');
 $routes->post('admin/delete_events', 'admin\Cms::delete_events');
+$routes->get('admin/webinar_registrations', 'admin\WebinarController::registrations');
+// Edit page-ah load panna (GET request with Webinar ID)
+$routes->get('admin/edit_webinar/(:num)', 'admin\WebinarController::edit_webinar/$1');
+
+// Form-ah submit panni data-vah save panna (POST request with Webinar ID)
+$routes->post('admin/update_webinar/(:num)', 'admin\WebinarController::update_webinar/$1');
 
 $routes->get('admin/projects', 'admin\Project::projects');
 $routes->match(['get', 'post'], 'admin/add_project', 'admin\Project::add_project');
@@ -657,7 +664,15 @@ $routes->post('admin/delete_services', 'admin\Product::delete_services');
 
 
 
+// 1. FRONTEND: Update this line to point to your new standalone Events controller
+$routes->get('event/(:any)', 'Events::detail/$1');
 
+$routes->get('admin/webinar_registrations', 'admin\WebinarController::registrations');
+$routes->get('admin/edit_webinar/(:num)', 'admin\WebinarController::edit_webinar/$1');
+$routes->post('admin/update_webinar/(:num)', 'admin\WebinarController::update_webinar/$1');
+
+// ADD THIS EXACT LINE TO FIX THE 404 ERROR:
+$routes->post('admin/export_webinar_registration', 'admin\WebinarController::export');
 
 
 if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
