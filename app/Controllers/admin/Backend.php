@@ -1143,4 +1143,180 @@ public function chartData(): void {
 	}
 
 
+  public function add_home_heading($id = null)
+    {
+        $headingModel = new \App\Models\module\HomeHeadingModel();
+        $visionModel  = new \App\Models\module\VisionsModel();
+        $db           = \Config\Database::connect();
+
+        if ($this->request->getMethod() === 'post') {
+            
+            // 1. Map all form strings fields data inputs seamlessly including the expanded SEO properties entries parameters
+            $save = [
+                'title'               => $this->request->getPost('title'),
+                'description'         => $this->request->getPost('description'),
+                'link'                => $this->request->getPost('link'),
+                'solutionTitle'       => $this->request->getPost('solutionTitle'),
+                'solutionDescription' => $this->request->getPost('solutionDescription'),
+                'customerTitle'       => $this->request->getPost('customerTitle'),
+                'cultureDescription'  => $this->request->getPost('cultureDescription'),
+                'successTitle'        => $this->request->getPost('successTitle'),
+                'successDescription'  => $this->request->getPost('successDescription'),
+                'whyTitle'            => $this->request->getPost('whyTitle'),
+                'partnerTitle'        => $this->request->getPost('partnerTitle'),
+                'blogTitle'           => $this->request->getPost('blogTitle'),
+                'visionDescription'   => $this->request->getPost('visionDescription'),
+                'keyTitle'            => $this->request->getPost('keyTitle'),
+                'workTitle'           => $this->request->getPost('workTitle'),
+                'workDescription'     => $this->request->getPost('workDescription'),
+                'newsTitle'           => $this->request->getPost('newsTitle'),
+                'newsDescription'     => $this->request->getPost('newsDescription'),
+                
+                // ADDED: Connected new properties maps into Core data object matrix array elements
+                'meta_title'          => $this->request->getPost('meta_title'),
+                'meta_description'    => $this->request->getPost('meta_description'),
+                'meta_keyword'        => $this->request->getPost('meta_keyword'),
+            ];
+
+            // Safely verify and extract information relative to structural target replacements records metrics properties fields
+            $oldData = !empty($id) ? $headingModel->find($id) : null;
+            $uploadPath = ROOTPATH . 'public/uploads/images/';
+
+            // 2. Loop upload image asset engine validation sequence parameters sets handler operations maps properties variables
+            $imagesToProcess = [
+                'image'        => 'image',
+                'image1'       => 'image1',
+                'successImage' => 'successImage',
+                'workImage'    => 'workImage'
+            ];
+
+            foreach ($imagesToProcess as $formInputName => $dbColumnName) {
+                $fileObject = $this->request->getFile($formInputName);
+                
+                if ($fileObject && $fileObject->isValid() && !$fileObject->hasMoved()) {
+                    $generatedName = $fileObject->getRandomName();
+                    
+                    if ($fileObject->move($uploadPath, $generatedName)) {
+                        // View templates paths map uses absolute framework wrapper base_url reference structure criteria parameters entries fields loops maps
+                        $save[$dbColumnName] = 'uploads/images/' . $generatedName;
+
+                        // Delete previous matching asset entries parameters files from target tracking locations directory layers
+                        if (!empty($oldData)) {
+                            $targetProperty = (is_object($oldData)) ? $oldData->$dbColumnName : ($oldData[$dbColumnName] ?? '');
+                            if (!empty($targetProperty)) {
+                                $absoluteOldPath = ROOTPATH . 'public/' . $targetProperty;
+                                if (file_exists($absoluteOldPath) && is_file($absoluteOldPath)) {
+                                    @unlink($absoluteOldPath);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Begin execution transaction block
+            $db->transStart();
+
+            if (!empty($id)) {
+                $headingModel->update($id, $save);
+            } else {
+                $headingModel->insert($save);
+            }
+
+            // 3. Process dynamic matrix rows lists criteria sets details loops arrays
+            $featureTitles      = $this->request->getPost('featureTitle');
+            $featureValues      = $this->request->getPost('featureValue');
+            $featureSymbols     = $this->request->getPost('featureSymbol');
+            $featureSortOrders  = $this->request->getPost('feature_sort_order');
+
+            // Delete old child row items context values properties models records entries sets fields
+            $db->table('cyb_visions')->truncate();
+
+            if (!empty($featureTitles) && is_array($featureTitles)) {
+                for ($i = 0; $i < count($featureTitles); $i++) {
+                    if (!empty($featureTitles[$i])) {
+                        $visionModel->insert([
+                            'title'       => $featureTitles[$i],
+                            'description' => isset($featureValues[$i]) ? $featureValues[$i] : '',
+                            'symbol'      => isset($featureSymbols[$i]) ? $featureSymbols[$i] : '',
+                            'sort_order'  => isset($featureSortOrders[$i]) ? (int)$featureSortOrders[$i] : 0,
+                            'status'      => 1
+                        ]);
+                    }
+                }
+            }
+
+            $db->transComplete();
+
+            if ($db->transStatus() === FALSE) {
+                session()->setFlashdata('error', 'Critical operational failure matching database engine operations boundaries while writing properties fields entries mappings settings values properties.');
+                return redirect()->to(base_url('admin/home_heading'));
+            }
+
+            // Flush dynamic content application rendering storage logs directory framework matrix mapping layer completely context values details parameters
+            $cacheEngine = \Config\Services::cache();
+            $cacheEngine->clean();
+
+            session()->setFlashdata('success', 'Homepage content, assets files replacements parameters, and SEO optimization settings records maps updated successfully!');
+            return redirect()->to(base_url('admin/home_heading'));
+        }
+
+        // --------------------------------------------------------------------
+        // GET ROUTE DATA COLLECTION INTERFACE ASSIGNMENTS ENGINE
+        // --------------------------------------------------------------------
+        $data = [];
+        $data['page_title']  = !empty($id) ? "Modify Content Block Parameters" : "Create Configuration Parameters";
+        $data['form_action'] = !empty($id) ? base_url('admin/add_home_heading/' . $id) : base_url('admin/add_home_heading');
+
+        if (!empty($id)) {
+            $recordInfo = $headingModel->asObject()->find($id);
+            if (!empty($recordInfo)) {
+                $data['title']               = $recordInfo->title;
+                $data['description']         = $recordInfo->description;
+                $data['image']               = $recordInfo->image;
+                $data['image1']              = $recordInfo->image1;
+                $data['link']                = $recordInfo->link;
+                $data['solutionTitle']       = $recordInfo->solutionTitle;
+                $data['solutionDescription'] = $recordInfo->solutionDescription;
+                $data['customerTitle']       = $recordInfo->customerTitle;
+                $data['cultureDescription']  = $recordInfo->cultureDescription;
+                $data['successTitle']        = $recordInfo->successTitle;
+                $data['successDescription']  = $recordInfo->successDescription;
+                $data['successImage']        = $recordInfo->successImage;
+                $data['whyTitle']            = $recordInfo->whyTitle;
+                $data['partnerTitle']        = $recordInfo->partnerTitle;
+                $data['blogTitle']           = $recordInfo->blogTitle;
+                $data['visionDescription']   = $recordInfo->visionDescription;
+                $data['keyTitle']            = $recordInfo->keyTitle;
+                $data['workTitle']           = $recordInfo->workTitle;
+                $data['workDescription']     = $recordInfo->workDescription;
+                $data['workImage']           = $recordInfo->workImage;
+                $data['newsTitle']           = $recordInfo->newsTitle;
+                $data['newsDescription']     = $recordInfo->newsDescription;
+                
+                // ADDED: Pull values properties configuration data properties into View bindings scope variables interface
+                $data['meta_title']          = $recordInfo->meta_title;
+                $data['meta_description']    = $recordInfo->meta_description;
+                $data['meta_keyword']        = $recordInfo->meta_keyword;
+            }
+        } else {
+            // Default structure initialization setup
+            $allFields = [
+                'title', 'description', 'image', 'image1', 'link', 'solutionTitle', 'solutionDescription',
+                'customerTitle', 'cultureDescription', 'successTitle', 'successDescription', 'successImage',
+                'whyTitle', 'partnerTitle', 'blogTitle', 'visionDescription', 'keyTitle', 'workTitle',
+                'workDescription', 'workImage', 'newsTitle', 'newsDescription',
+                'meta_title', 'meta_description', 'meta_keyword' // ADDED DEFAULT FALLBACK ASSIGNMENTS TARGET ARRAYS PROPERTIES DEFINITIONS KEYS
+            ];
+            foreach ($allFields as $fieldProperty) {
+                $data[$fieldProperty] = '';
+            }
+        }
+
+        $data['featureList'] = $visionModel->asObject()->orderBy('sort_order', 'ASC')->findAll();
+
+        return view('admin/add_home_heading', $data);
+    }
+
 }
+
