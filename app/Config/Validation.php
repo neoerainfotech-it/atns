@@ -7,7 +7,6 @@ use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
 use CodeIgniter\Validation\StrictRules\FormatRules;
 use CodeIgniter\Validation\StrictRules\Rules;
-use CodeIgniter\Validation\MyRules;
 
 class Validation extends BaseConfig
 {
@@ -26,7 +25,7 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
-         MyRules::class,
+        // FIXED: Removed the non-existent MyRules class entry that was breaking the upgrade boot loop
     ];
 
     /**
@@ -36,10 +35,10 @@ class Validation extends BaseConfig
      * @var array<string, string>
      */
     public array $templates = [
-        'list'   => 'CodeIgniter\Validation\Views\list',
-        'single' => 'CodeIgniter\Validation\Views\single',
-        'my_list' =>'CodeIgniter\Validation\Views\_list_error',
-        'my_single'=>'CodeIgniter\Validation\Views\_single_error',
+        'list'      => 'CodeIgniter\Validation\Views\list',
+        'single'    => 'CodeIgniter\Validation\Views\single',
+        'my_list'   => 'CodeIgniter\Validation\Views\_list_error',
+        'my_single' => 'CodeIgniter\Validation\Views\_single_error',
     ];
 
     // --------------------------------------------------------------------
