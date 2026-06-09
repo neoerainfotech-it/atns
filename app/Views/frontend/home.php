@@ -1,12 +1,12 @@
 <?php 
 $this->extend('layouts/master');
 $this->section('page');
-$transparentHeader = true
+$transparentHeader = true;
 ?>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 <style>
-    .ddd{
-        display:none;
+    .ddd {
+        display: none;
     }
     
     /* ==========================================================================
@@ -123,7 +123,7 @@ $transparentHeader = true
     .home-case-study {
         position: relative;
         width: 100%;
-        height: 620px; /* Uniform height constraint boundary */
+        height: 620px; 
         background-color: #0F172A;
         display: flex;
         align-items: center;
@@ -165,7 +165,6 @@ $transparentHeader = true
         z-index: 5;
     }
 
-    /* Contained Content Card Box Frame */
     .home-case-study .slider-container {
         background: rgba(255, 255, 255, 0.96);
         backdrop-filter: blur(12px);
@@ -175,7 +174,7 @@ $transparentHeader = true
         border: 1px solid rgba(255, 255, 255, 0.6);
         box-shadow: 0 30px 60px rgba(15, 23, 42, 0.25);
         width: 100%;
-        max-width: 520px; /* Restricts the title text from breaking out */
+        max-width: 520px; 
     }
 
     .home-case-study .case-study-box {
@@ -217,7 +216,6 @@ $transparentHeader = true
         text-decoration: none !important;
     }
 
-    /* Up Next Right Side Container Frame */
     .next-slide-card-wrapper {
         background: rgba(30, 41, 59, 0.9);
         backdrop-filter: blur(8px);
@@ -274,74 +272,50 @@ $transparentHeader = true
     <div class="swiper premium-banner-swiper">
         <div class="swiper-wrapper">
             
-            <div class="swiper-slide">
-                <img src="<?php echo $heading->image ? base_url($heading->image) : base_url($config_logo); ?>" class="banner-bg-image-layer" loading="eager" alt="Main Banner Background">
-                <div class="banner-overlay-tint"></div>
-                <div class="cstm-container">
-                    <div class="row w-100 m-0">
-                        <div class="col-lg-12 p-0">
-                            <div class="text-wrap" data-cues="slideInUp" data-group="banner-content-1">
-                                <div class="title-wrap mb-2">
-                                    <h1 class="lg-title mb-0"><?php echo $heading->title; ?></h1>
+            <?php if (!empty($sliders)): ?>
+                <?php foreach ($sliders as $index => $slide): ?>
+                    <div class="swiper-slide">
+                        <img src="<?php echo !empty($slide->image) ? base_url($slide->image) : base_url($config_logo); ?>" class="banner-bg-image-layer" loading="<?php echo $index === 0 ? 'eager' : 'lazy'; ?>" alt="<?php echo esc($slide->title); ?>">
+                        <div class="banner-overlay-tint"></div>
+                        <div class="cstm-container">
+                            <div class="row w-100 m-0">
+                                <div class="col-lg-12 p-0">
+                                    <div class="text-wrap" data-cues="slideInUp" data-group="banner-content-<?php echo $index; ?>">
+                                        <div class="title-wrap mb-2">
+                                            <h1 class="lg-title mb-0"><?php echo $slide->title; ?></h1>
+                                        </div>
+                                        <div class="editor fs-20">
+                                            <p><?php echo $slide->description; ?></p>
+                                        </div>
+                                        <div class="banner-integrated-badge-row">
+                                            <a href="<?php echo !empty($slide->link) ? base_url($slide->link) : base_url($heading->link ?? ''); ?>" class="btn btn-theme btn-icon m-0">Explore More <span class="icon"><svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="#fff"/></svg></span></a>
+                                            
+                                            <?php if (!empty($heading->image1)): ?>
+                                                <img src="<?php echo base_url($heading->image1); ?>" class="hero-partner-embedded-logo" alt="Partner Badge" />
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="editor fs-20">
-                                    <p><?php echo $heading->description; ?></p>
-                                </div>
-                                <div class="banner-integrated-badge-row">
-                                    <a href="<?php echo base_url($heading->link); ?>" class="btn btn-theme btn-icon m-0">Explore More <span class="icon"><svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="#fff"/></svg></span></a>
-                                    <?php if (!empty($heading->image1)): ?>
-                                        <img src="<?php echo base_url($heading->image1); ?>" class="hero-partner-embedded-logo" alt="Partner Badge" />
-                                    <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="swiper-slide">
+                    <img src="<?php echo !empty($heading->image) ? base_url($heading->image) : base_url($config_logo); ?>" class="banner-bg-image-layer" loading="eager" alt="Fallback Backdrop">
+                    <div class="banner-overlay-tint"></div>
+                    <div class="cstm-container">
+                        <div class="row w-100 m-0">
+                            <div class="col-lg-12 p-0">
+                                <div class="text-wrap">
+                                    <h1 class="lg-title mb-0"><?php echo $heading->title ?? 'Welcome To Our Portal'; ?></h1>
+                                    <div class="editor fs-20"><p><?php echo $heading->description ?? ''; ?></p></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="swiper-slide">
-                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80" class="banner-bg-image-layer" loading="lazy" alt="Cloud Infrastructure Synergy">
-                <div class="banner-overlay-tint"></div>
-                <div class="cstm-container">
-                    <div class="row w-100 m-0">
-                        <div class="col-lg-12 p-0">
-                            <div class="text-wrap">
-                                <div class="title-wrap mb-2">
-                                    <h1 class="lg-title mb-0">Accelerate Your <span>Digital Growth.</span></h1>
-                                </div>
-                                <div class="editor fs-20">
-                                    <p>Secure, cloud-first application architecture strategies tailored to unlock scalable automated enterprise pipelines cleanly.</p>
-                                </div>
-                                <div class="banner-integrated-badge-row">
-                                    <a href="<?php echo base_url($heading->link); ?>" class="btn btn-theme btn-icon m-0">Explore Solutions <span class="icon"><svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="#fff"/></svg></span></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="swiper-slide">
-                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1920&q=80" class="banner-bg-image-layer" loading="lazy" alt="Data Science Processing Infrastructure">
-                <div class="banner-overlay-tint"></div>
-                <div class="cstm-container">
-                    <div class="row w-100 m-0">
-                        <div class="col-lg-12 p-0">
-                            <div class="text-wrap">
-                                <div class="title-wrap mb-2">
-                                    <h1 class="lg-title mb-0">Unlock Actionable <span>Business Insights.</span></h1>
-                                </div>
-                                <div class="editor fs-20">
-                                    <p>Integrate Power BI custom visualization suites seamlessly alongside intelligent predictive reporting engines directly at database level.</p>
-                                </div>
-                                <div class="banner-integrated-badge-row">
-                                    <a href="<?php echo base_url($heading->link); ?>" class="btn btn-theme btn-icon m-0">See Analytics Platforms <span class="icon"><svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="#fff"/></svg></span></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php endif; ?>
 
         </div>
         <div class="swiper-pagination hero-pagination"></div>
@@ -453,7 +427,6 @@ $transparentHeader = true
 
     <div class="container">
         <div class="row align-items-center position-relative w-100 m-0">
-            
             <div class="col-lg-6 position-relative p-0" style="z-index: 10;">
                 <div class="slider-container">
                     <div class="swiper case-study-box">
@@ -504,7 +477,6 @@ $transparentHeader = true
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
@@ -736,7 +708,7 @@ $transparentHeader = true
     </div>
 </section>
 
-<?php echo  $this->include('frontend/includes/bottom_section'); ?>
+<?php echo $this->include('frontend/includes/bottom_section'); ?>
 <?php echo $this->include('frontend/includes/download'); ?>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
@@ -814,4 +786,4 @@ $transparentHeader = true
     });
 </script>
 
-<?php $this->endSection(); ?>   
+<?php $this->endSection(); ?>
