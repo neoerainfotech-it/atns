@@ -1,67 +1,36 @@
 <?php
 
-// Check PHP version.
-$minPhpVersion = '7.4'; // If you update this, don't forget to update `spark`.
-if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
-    $message = sprintf(
-        'Your PHP version must be %s or higher to run CodeIgniter. Current version: %s',
-        $minPhpVersion,
-        PHP_VERSION
-    );
-
-    exit($message);
+// Check PHP version requirement.
+if (version_compare(PHP_VERSION, '8.1', '<')) {
+    exit(sprintf('Your PHP version must be 8.1 or higher to run CodeIgniter. Current version: %s', PHP_VERSION));
 }
 
-// Path to the front controller (this file)
+// 1. Path to the front controller directory (this directory)
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
 
-// Ensure the current directory is pointing to the front controller's directory
-chdir(FCPATH);
+// 2. Ensure the current directory is pointed to the front controller's directory
+if (getcwd() !== __DIR__) {
+    chdir(__DIR__);
+}
 
 /*
  *---------------------------------------------------------------
- * BOOTSTRAP THE APPLICATION
+ * BOOTSTRAP THE FRAMEWORK
  *---------------------------------------------------------------
- * This process sets up the path constants, loads and registers
- * our autoloader, along with Composer's, loads our constants
- * and fires up an environment-specific bootstrapping.
+ * The boot file initializes the framework core components and
+ * schedules the request execution lifecycles cleanly.
  */
 
-// Load our paths config file
-// This is the line that might need to be changed, depending on your folder structure.
-require FCPATH . '../app/Config/Paths.php';
-// ^^^ Change this line if you move your application folder
+// 3. Load our paths config file
+// Move up one directory out of 'public' to find the 'app' directory config
+$pathsConfig = realpath(FCPATH . '../app/Config/Paths.php') ?: FCPATH . '../app/Config/Paths.php';
+require_once $pathsConfig;
 
 $paths = new Config\Paths();
 
-// Location of the framework bootstrap file.
-require rtrim($paths->systemDirectory, '\\/ ') . DIRECTORY_SEPARATOR . 'bootstrap.php';
+// 4. LOAD THE FRAMEWORK BOOTSTRAP KERNEL FILE
+// 🌟 FIXED: Replaced legacy bootstrap.php lookup with the modern 4.5+ Boot.php handler
+require $paths->systemDirectory . '/Boot.php';
 
-// Load environment settings from .env files into $_SERVER and $_ENV
-require_once SYSTEMPATH . 'Config/DotEnv.php';
-(new CodeIgniter\Config\DotEnv(ROOTPATH))->load();
-
-/*
- * ---------------------------------------------------------------
- * GRAB OUR CODEIGNITER INSTANCE
- * ---------------------------------------------------------------
- *
- * The CodeIgniter class contains the core functionality to make
- * the application run, and does all of the dirty work to get
- * the pieces all working together.
- */
-
-$app = Config\Services::codeigniter();
-$app->initialize();
-$context = is_cli() ? 'php-cli' : 'web';
-$app->setContext($context);
-
-/*
- *---------------------------------------------------------------
- * LAUNCH THE APPLICATION
- *---------------------------------------------------------------
- * Now that everything is setup, it's time to actually fire
- * up the engines and make this app do its thang.
- */
-
-$app->run();
+// 5. Launch the web environment kernel cleanly
+exit(CodeIgniter\Boot::bootWeb($paths));

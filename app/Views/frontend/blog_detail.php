@@ -2,35 +2,42 @@
 $this->extend('layouts/master');
 $this->section('page');
 $transparentHeader = true;
+
+// Estimate reading time from the article body
+$readingWordCount = isset($detail->description) ? str_word_count(strip_tags($detail->description)) : 0;
+$readingMinutes    = max(1, (int) ceil($readingWordCount / 200));
+
+// Process crisp fallback descriptive summaries from structural backend strings
+$cleanHeroDesc = isset($detail->description) ? mb_strimwidth(strip_tags($detail->description), 0, 180, '...') : '';
 ?>
 
 <style>
 /* ============================================================
-   BLOG DETAIL PAGE — ENTERPRISE PREMIUM REDESIGN
+   BLOG DETAIL PAGE — LUXURY BLUE ENTERPRISE THEME
    ============================================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  --clr-navy:      #0D1B2A;
-  --clr-gold:      #C9A84C;
-  --clr-gold-lt:   #EDD690;
-  --clr-white:     #FFFFFF;
-  --clr-surface:   #F7F8FA;
-  --clr-border:    #E2E6EA;
-  --clr-text:      #2C3E50;
-  --clr-muted:     #6B7A8D;
-  --clr-tag-bg:    #EAF0F8;
-  --clr-tag-text:  #2056A3;
+  --clr-navy:        #16324F;
+  --clr-blue:         #2D7DD2;
+  --clr-blue-deep:    #1F5FA8;
+  --clr-sky:          #EEF6FC;
+  --clr-white:        #FFFFFF;
+  --clr-border:       #D9E8F5;
+  --clr-text:         #28415A;
+  --clr-muted:        #65809B;
 
-  --ff-display: 'Inter', system-ui, -apple-system, sans-serif;
-  --ff-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-display:     'Sora', system-ui, -apple-system, sans-serif;
+  --font-body:        'Inter', system-ui, -apple-system, sans-serif;
 
-  --radius-card: 14px;
-  --shadow-card: 0 2px 18px rgba(13,27,42,.07);
-  --shadow-hover: 0 8px 36px rgba(13,27,42,.14);
-  --trans: 0.28s cubic-bezier(.4,0,.2,1);
+  --radius-card:       16px;
+  --shadow-sm:         0 4px 16px rgba(22, 50, 79, 0.05);
+  --shadow-md:         0 16px 40px rgba(22, 50, 79, 0.1);
+  --ease:              cubic-bezier(.25, .8, .25, 1);
 }
 
-/* ----  Hero banner ---- */
+/* ---- Hero Banner ---- */
 .blog-detail-hero {
   position: relative;
   min-height: 520px;
@@ -47,22 +54,19 @@ $transparentHeader = true;
   object-fit: cover;
   object-position: center;
   display: block;
-  opacity: .45;
+  opacity: .25;
 }
 .blog-detail-hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(13,27,42,.92) 0%,
-    rgba(13,27,42,.55) 55%,
-    rgba(13,27,42,.25) 100%
-  );
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0) 0 0/24px 24px,
+    linear-gradient(to top, rgba(11, 21, 33, 0.98) 0%, rgba(22, 50, 79, 0.75) 60%, rgba(22, 50, 79, 0.4) 100__);
 }
 .blog-detail-hero__content {
   position: relative;
   z-index: 2;
-  padding: 80px 0 64px;
+  padding: 120px 0 64px;
   width: 100%;
 }
 .blog-detail-hero__tag {
@@ -71,20 +75,29 @@ $transparentHeader = true;
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
-  background: var(--clr-gold);
-  color: var(--clr-navy);
+  background: var(--clr-blue);
+  color: var(--clr-white);
   border-radius: 100px;
   padding: 4px 14px;
   margin-bottom: 20px;
 }
 .blog-detail-hero__title {
-  font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.5vw, 3rem);
   font-weight: 800;
   color: var(--clr-white);
-  line-height: 1.15;
-  letter-spacing: -.03em;
-  margin: 0 0 24px;
-  max-width: 800px;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  margin: 0 0 16px;
+  max-width: 900px;
+}
+.blog-detail-hero__lead {
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.6;
+  color: rgba(238, 246, 252, 0.85);
+  max-width: 760px;
+  margin-bottom: 28px;
+  font-family: var(--font-body);
 }
 .blog-detail-hero__meta {
   display: flex;
@@ -96,143 +109,168 @@ $transparentHeader = true;
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-size: 13px;
-  color: rgba(255,255,255,.75);
+  font-size: 14px;
+  color: rgba(255,255,255,.85);
   font-weight: 500;
 }
-.blog-detail-hero__meta-item svg {
-  opacity: .7;
-}
 
-/* ---- Article body container ---- */
+/* ---- Page Container Setup ---- */
 .blog-detail-wrap {
-  background: var(--clr-surface);
-  padding: 0 0 80px;
+  background: var(--clr-white);
+  padding: 0 0 110px;
+  font-family: var(--font-body);
+  color: var(--clr-text);
 }
 
-/* ---- Article layout ---- */
+/* ---- Component Grid Layout Matrix ---- */
 .blog-detail-layout {
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: 1fr 320px;
   gap: 40px;
   align-items: start;
   padding-top: 56px;
 }
 
-/* ---- Main content ---- */
+/* ---- Article Body Core styles ---- */
 .blog-detail-article {
   background: var(--clr-white);
   border-radius: var(--radius-card);
   border: 1px solid var(--clr-border);
-  box-shadow: var(--shadow-card);
-  padding: 48px 52px;
+  box-shadow: var(--shadow-sm);
+  padding: 48px;
 }
 .blog-detail-article .article-body {
   font-size: 1.05rem;
   line-height: 1.85;
   color: var(--clr-text);
+  word-wrap: break-word;
 }
 .blog-detail-article .article-body h2,
 .blog-detail-article .article-body h3 {
+  font-family: var(--font-display);
   color: var(--clr-navy);
   font-weight: 700;
-  margin-top: 2em;
-  margin-bottom: .75em;
-  letter-spacing: -.02em;
+  margin-top: 1.8em;
+  margin-bottom: .8em;
+  letter-spacing: -.01em;
 }
-.blog-detail-article .article-body p {
-  margin-bottom: 1.4em;
-}
-.blog-detail-article .article-body a {
-  color: var(--clr-gold);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
+.blog-detail-article .article-body p { margin-bottom: 1.3em; }
 .blog-detail-article .article-body img {
   width: 100%;
   height: auto;
-  border-radius: 10px;
-  margin: 1.5em 0;
+  border-radius: 12px;
+  margin: 2.2em 0;
   display: block;
 }
 .blog-detail-article .article-body blockquote {
-  border-left: 3px solid var(--clr-gold);
-  padding: 16px 24px;
-  margin: 1.5em 0;
-  background: var(--clr-surface);
-  border-radius: 0 8px 8px 0;
+  border-left: 4px solid var(--clr-blue);
+  padding: 18px 24px;
+  margin: 2em 0;
+  background: var(--clr-sky);
+  border-radius: 0 12px 12px 0;
   font-style: italic;
   color: var(--clr-navy);
 }
 
-/* ---- Share strip inside article ---- */
+/* ---- Share Strip Component ---- */
 .blog-detail-share-strip {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 20px 0 0;
-  margin-top: 32px;
-  border-top: 1.5px solid var(--clr-border);
+  padding-top: 24px;
+  margin-top: 40px;
+  border-top: 1px solid var(--clr-border);
   flex-wrap: wrap;
 }
 .blog-detail-share-strip .share-label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--clr-muted);
 }
 
-/* ---- Sidebar ---- */
+/* ---- Sticky Sticky Sidebar System ---- */
 .blog-detail-sidebar {
   display: flex;
   flex-direction: column;
   gap: 24px;
   position: sticky;
-  top: 100px;
+  top: 110px;
 }
 .blog-sidebar-card {
   background: var(--clr-white);
   border: 1px solid var(--clr-border);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-sm);
   padding: 28px;
 }
 .blog-sidebar-card__label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: .12em;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--clr-gold);
+  color: var(--clr-blue);
+  margin-bottom: 18px;
+}
+.sidebar-fact {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.sidebar-fact:last-child { margin-bottom: 0; }
+.sidebar-fact__icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: var(--clr-sky);
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 20px;
+  justify-content: center;
 }
-.blog-sidebar-card__label::before {
-  content: '';
+.sidebar-fact__text small {
   display: block;
-  width: 20px;
-  height: 2px;
-  background: var(--clr-gold);
-  border-radius: 2px;
-}
-/* Published meta in sidebar */
-.sidebar-published {
-  font-size: 14px;
-  color: var(--clr-text);
-  font-weight: 600;
-}
-.sidebar-published small {
-  display: block;
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 11.5px;
+  font-weight: 500;
   color: var(--clr-muted);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
+.sidebar-fact__text strong {
+  font-size: 14.5px;
+  color: var(--clr-navy);
+  font-weight: 700;
+}
+.blog-sidebar-cta {
+  background: var(--clr-navy);
+  border: none;
+}
+.blog-sidebar-cta p {
+  color: rgba(255,255,255,.78);
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+.blog-sidebar-cta .sidebar-cta-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--clr-blue);
+  color: var(--clr-white);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 100px;
+  transition: background var(--ease);
+}
+.blog-sidebar-cta .sidebar-cta-link:hover { background: var(--clr-blue-deep); }
 
-/* ---- Back to blog link ---- */
+/* ---- Action Buttons ---- */
 .blog-back-link {
   display: inline-flex;
   align-items: center;
@@ -241,35 +279,34 @@ $transparentHeader = true;
   font-weight: 600;
   color: var(--clr-navy);
   text-decoration: none;
-  border: 1.5px solid var(--clr-border);
+  border: 1px solid var(--clr-border);
+  background: var(--clr-white);
   border-radius: 100px;
-  padding: 9px 20px;
-  transition: background var(--trans), border-color var(--trans), color var(--trans);
+  padding: 10px 24px;
+  transition: all var(--ease);
   margin-bottom: 24px;
-  display: inline-flex;
+  box-shadow: var(--shadow-sm);
 }
 .blog-back-link:hover {
-  background: var(--clr-navy);
-  border-color: var(--clr-navy);
+  background: var(--clr-blue);
+  border-color: var(--clr-blue);
   color: var(--clr-white);
 }
 
-/* ---- Related posts section ---- */
+/* ---- Related Section Header Layout ---- */
 .blog-related-section {
-  padding: 72px 0 0;
-  border-top: 1.5px solid var(--clr-border);
-  margin-top: 72px;
+  padding: 80px 0 0;
+  border-top: 1px solid var(--clr-border);
+  margin-top: 80px;
 }
-
-/* ---- Section header (reused from blog.php) ---- */
 .blog-section-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 1.5px solid var(--clr-border);
+  margin-bottom: 36px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--clr-border);
 }
 .blog-section-header .eyebrow {
   display: inline-flex;
@@ -277,103 +314,95 @@ $transparentHeader = true;
   gap: 8px;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: .12em;
+  letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--clr-gold);
+  color: var(--clr-blue);
   margin-bottom: 8px;
 }
 .blog-section-header .eyebrow::before {
-  content: '';
-  display: block;
-  width: 28px;
+  content: "";
+  width: 14px;
   height: 2px;
-  background: var(--clr-gold);
-  border-radius: 2px;
+  background: var(--clr-blue);
+  display: inline-block;
 }
-.blog-section-header h2.section-title {
-  font-size: clamp(1.5rem, 2.5vw, 2rem);
+.blog-section-header .section-title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
   font-weight: 800;
   color: var(--clr-navy);
   margin: 0;
-  line-height: 1.15;
-  letter-spacing: -.02em;
 }
 
-/* ---- Card (shared) ---- */
+/* ---- Premium Proportional Card Grid Architecture ---- */
 .blog-card {
   background: var(--clr-white);
   border-radius: var(--radius-card);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-sm);
   border: 1px solid var(--clr-border);
   height: 100%;
   position: relative;
-  transition: box-shadow var(--trans), transform var(--trans);
-}
-.blog-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--clr-gold);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--trans);
-  z-index: 2;
+  transition: box-shadow var(--ease), transform var(--ease), border-color var(--ease);
 }
 .blog-card:hover {
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-4px);
-}
-.blog-card:hover::before {
-  transform: scaleX(1);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-5px);
+  border-color: var(--clr-blue);
 }
 .blog-card__img-wrap {
   position: relative;
   overflow: hidden;
-  background: var(--clr-navy);
+  background: var(--clr-sky);
+  width: 100%;
+  aspect-ratio: 16 / 10; /* Strictly locks proportional scaling context across rows */
 }
 .blog-card__img-wrap img {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
-  object-position: center;
+  height: 100%;
+  object-fit: cover !important;
   display: block;
-  transition: transform 0.5s cubic-bezier(.4,0,.2,1), opacity 0.3s;
+  transition: transform 0.6s var(--ease);
 }
-.blog-card:hover .blog-card__img-wrap img {
-  transform: scale(1.04);
-  opacity: .92;
-}
+.blog-card:hover .blog-card__img-wrap img { transform: scale(1.05); }
 .blog-card__body {
-  padding: 20px 22px 24px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
-.blog-card__meta {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-}
+.blog-card__meta { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
 .blog-card__date {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 13px;
   color: var(--clr-muted);
 }
 .blog-card__title {
-  font-size: 1rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--clr-navy);
-  line-height: 1.4;
-  margin: 0 0 14px;
-  letter-spacing: -.01em;
+  line-height: 1.45;
+  margin: 0 0 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 3.2rem;
+}
+.blog-card__excerpt {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--clr-muted);
+  margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .blog-card__read-more {
   display: inline-flex;
@@ -384,42 +413,34 @@ $transparentHeader = true;
   color: var(--clr-navy);
   text-decoration: none;
   margin-top: auto;
-  padding-top: 12px;
+  padding-top: 14px;
   border-top: 1px solid var(--clr-border);
-  transition: color var(--trans), gap var(--trans);
+  transition: color var(--ease), gap var(--ease);
 }
-.blog-card__read-more:hover {
-  color: var(--clr-gold);
-  gap: 14px;
-}
-.blog-card__read-more svg path {
-  fill: currentColor;
+.blog-card__read-more:hover { color: var(--clr-blue); gap: 12px; }
+
+/* ---- Structural Responsive Layout Hooks ---- */
+@media (max-width: 1099px) {
+  .blog-detail-layout { grid-template-columns: 1fr; }
+  .blog-detail-sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 }
 
-/* ---- Responsive ---- */
-@media (max-width: 1099px) {
-  .blog-detail-layout {
-    grid-template-columns: 1fr;
-  }
-  .blog-detail-sidebar {
-    position: static;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
+@media (max-width: 991px) and (min-width: 768px) {
+  /* Enforces highly balanced proportional layouts explicitly for Medium Device Columns */
+  .blog-card__title { font-size: 1.05rem; min-height: 3.1rem; }
+  .blog-card__body { padding: 20px; }
 }
+
 @media (max-width: 767px) {
-  .blog-detail-hero { min-height: 380px; }
-  .blog-detail-hero__content { padding: 60px 0 48px; }
-  .blog-detail-article { padding: 28px 20px 32px; }
+  .blog-detail-hero { min-height: 420px; }
+  .blog-detail-hero__content { padding: 90px 0 40px; }
+  .blog-detail-article { padding: 28px 20px; }
   .blog-detail-sidebar { grid-template-columns: 1fr; }
-  .blog-detail-layout { padding-top: 36px; gap: 24px; }
-  .blog-related-section { padding: 48px 0 0; margin-top: 48px; }
-  .blog-section-header { flex-direction: column; align-items: flex-start; }
+  .blog-detail-layout { padding-top: 32px; gap: 24px; }
+  .blog-card__title { min-height: auto; }
 }
 </style>
 
-<!-- ========= HERO BANNER ========= -->
 <section class="blog-detail-hero">
   <img
     src="<?php echo $detail->image ? base_url($detail->image) : base_url($config_logo); ?>"
@@ -432,13 +453,22 @@ $transparentHeader = true;
   <div class="blog-detail-hero__content">
     <div class="container">
       <div class="row">
-        <div class="col-lg-9 col-xl-8">
-          <span class="blog-detail-hero__tag">Article</span>
+        <div class="col-lg-10">
+          <span class="blog-detail-hero__tag">Article Publication</span>
           <h1 class="blog-detail-hero__title"><?php echo $detail->title; ?></h1>
+          
+          <?php if (!empty($cleanHeroDesc)) { ?>
+            <p class="blog-detail-hero__lead"><?php echo $cleanHeroDesc; ?></p>
+          <?php } ?>
+
           <div class="blog-detail-hero__meta">
             <span class="blog-detail-hero__meta-item">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="12" rx="2" stroke="rgba(255,255,255,.75)" stroke-width="1.4"/><path d="M5 1v3M11 1v3M1 7h14" stroke="rgba(255,255,255,.75)" stroke-width="1.4" stroke-linecap="round"/></svg>
-              Published: <?php echo $detail->publish ? date('d M Y', strtotime($detail->publish)) : ''; ?>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="3" width="14" height="12" rx="2" stroke="rgba(255,255,255,.8)" stroke-width="1.4"/><path d="M5 1v3M11 1v3M1 7h14" stroke="rgba(255,255,255,.8)" stroke-width="1.4" stroke-linecap="round"/></svg>
+              Published <?php echo $detail->publish ? date('d M Y', strtotime($detail->publish)) : date('d M Y'); ?>
+            </span>
+            <span class="blog-detail-hero__meta-item">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.3" stroke="rgba(255,255,255,.8)" stroke-width="1.4"/><path d="M8 4.5V8l2.6 1.5" stroke="rgba(255,255,255,.8)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <?php echo $readingMinutes; ?> min read
             </span>
           </div>
         </div>
@@ -447,17 +477,14 @@ $transparentHeader = true;
   </div>
 </section>
 
-<!-- ========= ARTICLE BODY ========= -->
 <div class="blog-detail-wrap">
   <div class="container">
-
     <div class="blog-detail-layout">
 
-      <!-- Main article -->
       <main>
         <a href="<?php echo base_url('blog'); ?>" class="blog-back-link">
-          <svg width="14" height="12" viewBox="0 0 16 12" fill="none"><path d="M15 5.25a.75.75 0 0 1 0 1.5zm-14.53 1.28a.75.75 0 0 1 0-1.06L5.243.697a.75.75 0 0 1 1.06 1.06L2.061 6l4.242 4.243a.75.75 0 0 1-1.06 1.06zM15 6.75H1v-1.5h14z" fill="currentColor"/></svg>
-          Back to Blog
+          <svg width="14" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M15 5.25a.75.75 0 0 1 0 1.5zm-14.53 1.28a.75.75 0 0 1 0-1.06L5.243.697a.75.75 0 0 1 1.06 1.06L2.061 6l4.242 4.243a.75.75 0 0 1-1.06 1.06zM15 6.75H1v-1.5h14z" fill="currentColor"/></svg>
+          Back to Articles
         </a>
 
         <article class="blog-detail-article">
@@ -465,7 +492,6 @@ $transparentHeader = true;
             <?php echo $detail->description; ?>
           </div>
 
-          <!-- Share strip at bottom of article -->
           <div class="blog-detail-share-strip">
             <span class="share-label">Share this article</span>
             <?php echo $this->include('frontend/includes/share'); ?>
@@ -473,36 +499,54 @@ $transparentHeader = true;
         </article>
       </main>
 
-      <!-- Sidebar -->
       <aside class="blog-detail-sidebar">
-
-        <!-- Published date card -->
         <div class="blog-sidebar-card">
-          <div class="blog-sidebar-card__label">Published</div>
-          <div class="sidebar-published">
-            <small>Date</small>
-            <?php echo $detail->publish ? date('d M Y', strtotime($detail->publish)) : 'N/A'; ?>
+          <div class="blog-sidebar-card__label">Article Details</div>
+
+          <div class="sidebar-fact">
+            <span class="sidebar-fact__icon">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="3" width="14" height="12" rx="2" stroke="#2D7DD2" stroke-width="1.4"/><path d="M5 1v3M11 1v3M1 7h14" stroke="#2D7DD2" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </span>
+            <span class="sidebar-fact__text">
+              <small>Published</small>
+              <strong><?php echo $detail->publish ? date('d M Y', strtotime($detail->publish)) : 'N/A'; ?></strong>
+            </span>
+          </div>
+
+          <div class="sidebar-fact">
+            <span class="sidebar-fact__icon">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.3" stroke="#2D7DD2" stroke-width="1.4"/><path d="M8 4.5V8l2.6 1.5" stroke="#2D7DD2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="sidebar-fact__text">
+              <small>Reading time</small>
+              <strong><?php echo $readingMinutes; ?> minutes</strong>
+            </span>
           </div>
         </div>
 
-        <!-- Optional: you can add more sidebar widgets here -->
-
+        <div class="blog-sidebar-card blog-sidebar-cta">
+          <div class="blog-sidebar-card__label" style="color: rgba(255,255,255,.65);">Keep Exploring</div>
+          <p>Browse the rest of our articles for more updates and insights.</p>
+          <a href="<?php echo base_url('blog'); ?>" class="sidebar-cta-link">All Articles</a>
+        </div>
       </aside>
 
     </div>
 
-    <!-- ========= RELATED POSTS ========= -->
     <?php if (!empty($relatedPost)) { ?>
     <section class="blog-related-section">
-      <div class="blog-section-header" data-cue="slideInUp">
+      <div class="blog-section-header">
         <div>
-          <div class="eyebrow">Continue Reading</div>
+          <div class="eyebrow">Recommended</div>
           <h2 class="section-title">Related Articles</h2>
         </div>
       </div>
 
-      <div class="row g-4" data-cues="slideInUp">
-        <?php foreach ($relatedPost as $key => $value) { ?>
+      <div class="row g-4">
+        <?php foreach ($relatedPost as $key => $value) { 
+          // Build string text summaries dynamically from relational data
+          $cleanCardExcerpt = isset($value->description) ? mb_strimwidth(strip_tags($value->description), 0, 110, '...') : 'Explore deeper insights and strategy metrics from our latest structural updates...';
+        ?>
         <div class="col-lg-4 col-md-6 d-flex">
           <div class="blog-card w-100">
             <div class="blog-card__img-wrap">
@@ -515,14 +559,17 @@ $transparentHeader = true;
             <div class="blog-card__body">
               <div class="blog-card__meta">
                 <span class="blog-card__date">
-                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="12" rx="2" stroke="#6B7A8D" stroke-width="1.4"/><path d="M5 1v3M11 1v3M1 7h14" stroke="#6B7A8D" stroke-width="1.4" stroke-linecap="round"/></svg>
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="3" width="14" height="12" rx="2" stroke="#65809B" stroke-width="1.4"/><path d="M5 1v3M11 1v3M1 7h14" stroke="#65809B" stroke-width="1.4" stroke-linecap="round"/></svg>
                   <?php echo $value->publish ? date('d M Y', strtotime($value->publish)) : ''; ?>
                 </span>
               </div>
-              <h4 class="blog-card__title"><?php echo $value->title; ?></h4>
+              <h4 class="blog-card__title"><?php echo esc($value->title); ?></h4>
+              
+              <p class="blog-card__excerpt"><?php echo $cleanCardExcerpt; ?></p>
+
               <a href="<?php echo base_url('blog/' . $value->slug); ?>" class="blog-card__read-more">
                 Read Article
-                <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="currentColor"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="currentColor"/></svg>
               </a>
             </div>
           </div>
