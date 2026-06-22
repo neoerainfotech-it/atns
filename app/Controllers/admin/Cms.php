@@ -51,7 +51,7 @@ class Cms extends BaseController
             $data['description'] = $row->description; 
             $data['solutionTitle'] = $row->solutionTitle; 
             $data['image'] = $row->image;  
-            $data['solutionDescription'] = $row->solutionDescription;  
+            $data['solutionDescription'] = $row->solutionDescription;   
             $data['keyTitle'] = $row->keyTitle;
             $data['whyTitle'] = $row->whyTitle;
             $data['customerTitle'] = $row->customerTitle;  
@@ -71,6 +71,8 @@ class Cms extends BaseController
             $data['image1'] = $row->image1;
             
             $data['featureList'] = $this->AdminModel->all_fetch('home_feature', ['home_id' => $row->id]);
+            // Fetch existing sliders to load them inside the carousel interface fields
+            $data['sliders'] = $this->AdminModel->all_fetch('home_slider', ['home_id' => $row->id]);
         } else {
             $data['page_title'] = 'Add Heading';
             $data['form_action'] = 'admin/add_home_heading';
@@ -98,9 +100,9 @@ class Cms extends BaseController
             $data['link'] = ''; 
             $data['image1'] = ''; 
             $data['featureList'] = [];
+            $data['sliders'] = [];
         }
 
-        // FIXED: Modernized request type verification to prevent CodeIgniter 4.7 warnings
         if ($this->request->is('post')) {
             $rules = [
                 'title' => 'permit_empty|trim'
@@ -129,7 +131,7 @@ class Cms extends BaseController
                 $save['info']['newsDescription'] = $this->request->getVar('newsDescription');
                 $save['info']['link'] = $this->request->getVar('link');
             
-                // File Uploader Processors
+                // Static File Uploader Processors
                 $fileFields = ['workImage', 'image1', 'image', 'successImage'];
                 foreach ($fileFields as $field) {
                     $file = $this->request->getFile($field);
@@ -161,6 +163,45 @@ class Cms extends BaseController
                 $save['featureValue'] = $this->request->getVar('featureValue');
                 $save['featureSymbol'] = $this->request->getVar('featureSymbol');
                 $save['feature_sort_order'] = $this->request->getVar('feature_sort_order');
+
+                // Dynamic Slider Carousel Processors
+                $save['slide_id']           = $this->request->getVar('slide_id');
+                $save['slide_title']        = $this->request->getVar('slide_title');
+                $save['slide_description']  = $this->request->getVar('slide_description');
+                $save['slide_link']         = $this->request->getVar('slide_link');
+                $save['slide_sort_order']   = $this->request->getVar('slide_sort_order');
+
+                // Process image file uploads for NEW dynamic slideshow lines
+                $sliderImagesNew = [];
+                $newSliderFiles  = $this->request->getFileMultiple('slide_image_new');
+                if ($newSliderFiles) {
+                    foreach ($newSliderFiles as $key => $file) {
+                        if ($file->isValid() && !$file->hasMoved()) {
+                            $file_name = $file->getRandomName();
+                            if ($file->move('uploads/images/', $file_name)) {
+                                $sliderImagesNew[$key] = 'uploads/images/' . $file_name;
+                            }
+                        }
+                    }
+                }
+                $save['slide_image_new'] = $sliderImagesNew;
+
+                // Process image replacements for existing lines
+                $sliderImagesUpdate = [];
+                if (!empty($save['slide_id'])) {
+                    foreach ($save['slide_id'] as $sId) {
+                        if (!empty($sId)) {
+                            $existingFile = $this->request->getFile('slide_image_' . $sId);
+                            if ($existingFile && $existingFile->isValid() && !$existingFile->hasMoved()) {
+                                $file_name = $existingFile->getRandomName();
+                                if ($existingFile->move('uploads/images/', $file_name)) {
+                                    $sliderImagesUpdate[$sId] = 'uploads/images/' . $file_name;
+                                }
+                            }
+                        }
+                    }
+                }
+                $save['slide_image_update'] = $sliderImagesUpdate;
 
                 if ($id) {
                     $save['id'] = $id;
@@ -198,6 +239,7 @@ class Cms extends BaseController
                 $this->AdminModel->deleteData('home_heading', ['id' => $value]);
                 $this->AdminModel->deleteData('home_feature', ['home_id' => $value]);
                 $this->AdminModel->deleteData('home_gallery', ['home_id' => $value]);
+                $this->AdminModel->deleteData('home_slider', ['home_id' => $value]);
             }
             $this->session->setFlashdata('success', 'Record Deleted successfully');
         }

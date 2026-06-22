@@ -1,36 +1,56 @@
 <?php
 
-// Check PHP version requirement.
-if (version_compare(PHP_VERSION, '8.1', '<')) {
-    exit(sprintf('Your PHP version must be 8.1 or higher to run CodeIgniter. Current version: %s', PHP_VERSION));
-}
+/*
+ *---------------------------------------------------------------
+ * CHECK PHP VERSION
+ *---------------------------------------------------------------
+ */
 
-// 1. Path to the front controller directory (this directory)
-define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
+$minPhpVersion = '8.1'; // If you update this, don't forget to update `spark`.
+if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
+    $message = sprintf(
+        'Your PHP version must be %s or higher to run CodeIgniter. Current version: %s',
+        $minPhpVersion,
+        PHP_VERSION
+    );
 
-// 2. Ensure the current directory is pointed to the front controller's directory
-if (getcwd() !== __DIR__) {
-    chdir(__DIR__);
+    header('HTTP/1.1 503 Service Unavailable.', true, 503);
+    echo $message;
+
+    exit(1);
 }
 
 /*
  *---------------------------------------------------------------
- * BOOTSTRAP THE FRAMEWORK
+ * SET THE CURRENT DIRECTORY
  *---------------------------------------------------------------
- * The boot file initializes the framework core components and
- * schedules the request execution lifecycles cleanly.
  */
 
-// 3. Load our paths config file
-// Move up one directory out of 'public' to find the 'app' directory config
-$pathsConfig = realpath(FCPATH . '../app/Config/Paths.php') ?: FCPATH . '../app/Config/Paths.php';
-require_once $pathsConfig;
+// Path to the front controller (this file)
+define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
+
+// Ensure the current directory is pointing to the front controller's directory
+if (getcwd() . DIRECTORY_SEPARATOR !== FCPATH) {
+    chdir(FCPATH);
+}
+
+/*
+ *---------------------------------------------------------------
+ * BOOTSTRAP THE APPLICATION
+ *---------------------------------------------------------------
+ * This process sets up the path constants, loads and registers
+ * our autoloader, along with Composer's, loads our constants
+ * and fires up an environment-specific bootstrapping.
+ */
+
+// LOAD OUR PATHS CONFIG FILE
+// This is the line that might need to be changed, depending on your folder structure.
+require FCPATH . '../app/Config/Paths.php';
+// ^^^ Change this line if you move your application folder
 
 $paths = new Config\Paths();
 
-// 4. LOAD THE FRAMEWORK BOOTSTRAP KERNEL FILE
-// 🌟 FIXED: Replaced legacy bootstrap.php lookup with the modern 4.5+ Boot.php handler
+// LOAD THE FRAMEWORK BOOTSTRAP FILE
 require $paths->systemDirectory . '/Boot.php';
 
-// 5. Launch the web environment kernel cleanly
 exit(CodeIgniter\Boot::bootWeb($paths));

@@ -5,11 +5,6 @@ namespace Config;
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
 
-/*
- * --------------------------------------------------------------------
- * Router Setup
- * --------------------------------------------------------------------
- */
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Frontend');
 $routes->setDefaultMethod('index');
@@ -678,3 +673,9 @@ $routes->post('admin/export_webinar_registration', 'admin\WebinarController::exp
 if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
     require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
+
+
+$routes->get('admin/testimonial', 'Admin\Testimonial::index');
+$routes->match(['get', 'post'], 'admin/testimonial/add', 'Admin\Testimonial::add');
+$routes->match(['get', 'post'], 'admin/testimonial/add/(:num)', 'Admin\Testimonial::add/$1');
+$routes->post('admin/testimonial/delete', 'Admin\Testimonial::delete');

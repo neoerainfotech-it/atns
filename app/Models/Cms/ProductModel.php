@@ -14,7 +14,30 @@ class ProductModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    
+    // Configured allowed fields guard to protect standard built-in queries
+    protected $allowedFields    = [
+        'name', 
+        'shortDescription', 
+        'description', 
+        'category_id', 
+        'metaTitle', 
+        'metaKeyword', 
+        'metaDescription', 
+        'status', 
+        'feature', 
+        'slug', 
+        'image', 
+        'thumbnail', 
+        'hero_banner', // Added field validation capability
+        'keyTitle', 
+        'keyDescription', 
+        'caseTitle', 
+        'casetDescription', 
+        'industryTitle', 
+        'industryDescription', 
+        'industries'
+    ];
 
     // Dates
     protected $useTimestamps = false;
@@ -40,100 +63,77 @@ class ProductModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-
-    
-function save_product($data){
-      $array = array();
-
-      $query = $this->db->table('products');
-
-      if ($data['id']) {
-        $query->where('id',$data['id'])->update($data['info']);
-        $product_id = $data['id'];
-      }else{
-        $query->insert($data['info']);
-        $product_id = $this->db->insertID();
-      }
-
-      $query1 = $this->db->table('product_feature');
-      $query1->where('product_id',$product_id)->delete();
-
-   
-
-      if (!empty($data['featureTitle'])) {
-          $num = count($data['featureTitle']);
-        
-        for ($i=0; $i < $num ; $i++) { 
+    public function save_product($data)
+    {
         $array = array();
-        $array['product_id']= $product_id;
-        if (!empty($data['featureImages'][$i])) {
-        $array['image'] = $data['featureImages'][$i];
-        }else{
-        $array['image'] = @$data['feature_old_image'][$i];
+        $query = $this->db->table('products');
+
+        // Processes main project text fields alongside single files (image, thumbnail, and hero_banner)
+        if (!empty($data['id'])) {
+            $query->where('id', $data['id'])->update($data['info']);
+            $product_id = $data['id'];
+        } else {
+            $query->insert($data['info']);
+            $product_id = $this->db->insertID();
         }
 
-        $array['title'] = $data['featureTitle'][$i];
-        $array['sort_order'] = $data['featureSortOrder'][$i];
-         $array['description'] = $data['featureDescription'][$i];
-          $array['youtube'] = $data['featureYoutube'][$i]; 
-          $result =  $query1->insert($array); 
-            
-           }
-        
+        // Process Use Cases (Dynamic Rows)
+        $query1 = $this->db->table('product_feature');
+        $query1->where('product_id', $product_id)->delete();
+
+        if (!empty($data['featureTitle'])) {
+            $num = count($data['featureTitle']);
+            for ($i = 0; $i < $num; $i++) { 
+                $array = array();
+                $array['product_id'] = $product_id;
+                if (!empty($data['featureImages'][$i])) {
+                    $array['image'] = $data['featureImages'][$i];
+                } else {
+                    $array['image'] = @$data['feature_old_image'][$i];
+                }
+                $array['title'] = $data['featureTitle'][$i];
+                $array['sort_order'] = $data['featureSortOrder'][$i];
+                $array['description'] = $data['featureDescription'][$i];
+                $array['youtube'] = $data['featureYoutube'][$i]; 
+                $query1->insert($array); 
+            }
         }
 
-      $query2 = $this->db->table('product_capabilities');
-      $query2->where('product_id',$product_id)->delete();
+        // Process Key Features (Dynamic Rows)
+        $query2 = $this->db->table('product_capabilities');
+        $query2->where('product_id', $product_id)->delete();
 
-      if (!empty($data['capabilitiesTitle'])) {
-          $num = count($data['capabilitiesTitle']);
-        
-        for ($i=0; $i < $num ; $i++) { 
-        $array = array();
-        $array['product_id']= $product_id;
-        $array['title'] = $data['capabilitiesTitle'][$i];
-        $array['description'] = $data['capabilitiesDescription'][$i];
-        $array['sort_order'] = $data['capabilitiesSortOrder'][$i];
-          
-         $result =  $query2->insert($array); 
-
-        
+        if (!empty($data['capabilitiesTitle'])) {
+            $num = count($data['capabilitiesTitle']);
+            for ($i = 0; $i < $num; $i++) { 
+                $array = array();
+                $array['product_id'] = $product_id;
+                $array['title'] = $data['capabilitiesTitle'][$i];
+                $array['description'] = $data['capabilitiesDescription'][$i];
+                $array['sort_order'] = $data['capabilitiesSortOrder'][$i];
+                $query2->insert($array); 
+            }
         }
-      }
 
-      $query3 = $this->db->table('product_images');
-      $query3->where('product_id',$product_id)->delete();
+        // Process Additional Images List (Dynamic Rows)
+        $query3 = $this->db->table('product_images');
+        $query3->where('product_id', $product_id)->delete();
 
-      if (!empty($data['imageSortOrder'])) {
-          $num = count($data['imageSortOrder']);
-        
-        for ($i=0; $i < $num ; $i++) { 
-        $array = array();
-     
-        $array['product_id']= $product_id;
-        if (!empty($data['images'][$i])) {
+        if (!empty($data['imageSortOrder'])) {
+            $num = count($data['imageSortOrder']);
+            for ($i = 0; $i < $num; $i++) { 
+                $array = array();
+                $array['product_id'] = $product_id;
+                if (!empty($data['images'][$i])) {
+                    $array['image'] = $data['images'][$i];
+                } else {
+                    $array['image'] = @$data['old_image'][$i];
+                }
+                $array['sort_order'] = $data['imageSortOrder'][$i];
+                $query3->insert($array); 
+            }
+        }
       
-        $array['image'] = $data['images'][$i];
-        }else{
-        $array['image'] = @$data['old_image'][$i];
-        }
-
-        $array['sort_order'] = $data['imageSortOrder'][$i];
-          
-          $result =  $query3->insert($array); 
-            
-           }
-        
-        }
-    
-    return $product_id;
-    
-  }
-
-
-
-
-
-
-
+        return $product_id;
+    }
 }

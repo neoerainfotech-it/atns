@@ -41,50 +41,50 @@ class Frontend extends BaseController
   }
 
 
-    public function index()
-    {
-    
+   public function index()
+{
     $FrontModel = new FrontModel();  
     $MediaModel = new MediaModel();
     
-    
-    
-    $meta = $this->AdminModel->fs('front_menu',array('link'=>'home'));
+    $meta = $this->AdminModel->fs('front_menu', array('link' => 'home'));
     $data['metaTitle'] = $meta->metaTitle;
-    $data['metaDescription'] =  $meta->metaDescription;
-    $data['metaKeyword'] =  $meta->metaKeyword;
-    $data['meta'] =  $meta;
+    $data['metaDescription'] = $meta->metaDescription;
+    $data['metaKeyword'] = $meta->metaKeyword;
+    $data['meta'] = $meta;
       
+    $data['heading'] = $this->AdminModel->fs('home_heading', null);
     
-    $data['heading'] =  $this->AdminModel->fs('home_heading',null);
-    $data['counterList'] =  $this->AdminModel->all_fetch('home_feature',array('home_id'=>$data['heading']->id),'sort_order','asc');
+    // ==========================================
+    // ADDED: Fetch Active Carousel Sliders
+    // ==========================================
+    if (!empty($data['heading'])) {
+        $data['sliders'] = $this->AdminModel->all_fetch('home_slider', array('home_id' => $data['heading']->id), 'sort_order', 'asc');
+    } else {
+        $data['sliders'] = [];
+    }
+    // ==========================================
     
-    // $data['withList'] =  $this->AdminModel->all_fetch('home_gallery',array('home_id'=>$data['heading']->id));
+    $data['counterList'] = $this->AdminModel->all_fetch('home_feature', array('home_id' => $data['heading']->id), 'sort_order', 'asc');
     
-    $data['industryList'] =  $this->AdminModel->all_fetch('industries',array('status'=>1),'sortOrder','asc');
+    // $data['withList'] = $this->AdminModel->all_fetch('home_gallery', array('home_id' => $data['heading']->id));
     
-    $data['productList'] =  $this->AdminModel->all_fetch('products',array('status'=>1),'','',6);
+    $data['industryList'] = $this->AdminModel->all_fetch('industries', array('status' => 1), 'sortOrder', 'asc');
     
-     $data['servicesList'] =  $this->AdminModel->all_fetch('services',array('status'=>1,'feature'=>1),'sortOrder','asc');
+    $data['productList'] = $this->AdminModel->all_fetch('products', array('status' => 1), '', '', 6);
     
+    $data['servicesList'] = $this->AdminModel->all_fetch('services', array('status' => 1, 'feature' => 1), 'sortOrder', 'asc');
     
+    $data['recognitionList'] = $this->AdminModel->all_fetch('awards', array('status' => 1, 'type' => 'Recognitions'), 'sortOrder', 'asc');
     
-    $data['recognitionList'] =  $this->AdminModel->all_fetch('awards',array('status'=>1,'type'=>'Recognitions'),'sortOrder','asc');
-    
-    
-    
-     $data['blogList'] = $MediaModel->asObject()->select('blogs.id,blogs.shortDescription,blogs.thumbnail,blogs.slug,blogs.title,blog_category.name as category_name')->join('blog_category','blog_category.id=blogs.category','left')->where(['blogs.status'=>1,'feature'=>1,'type'=>'BLOG'])->findAll();
+    $data['blogList'] = $MediaModel->asObject()->select('blogs.id,blogs.shortDescription,blogs.thumbnail,blogs.slug,blogs.title,blog_category.name as category_name')->join('blog_category', 'blog_category.id=blogs.category', 'left')->where(['blogs.status' => 1, 'feature' => 1, 'type' => 'BLOG'])->findAll();
    
-    
-     $data['caseStudyList'] = $MediaModel->asObject()->select('blogs.id,blogs.shortDescription,blogs.thumbnail,blogs.slug,blogs.title,blogs.whitepaper_download')->where(['blogs.status'=>1,'feature'=>1,'type'=>'CASE_STUDY'])->findAll();
+    $data['caseStudyList'] = $MediaModel->asObject()->select('blogs.id,blogs.shortDescription,blogs.thumbnail,blogs.slug,blogs.title,blogs.whitepaper_download')->where(['blogs.status' => 1, 'feature' => 1, 'type' => 'CASE_STUDY'])->findAll();
      
-     
-    $data['successStoryList'] = $MediaModel->asObject()->select('blogs.id,blogs.shortDescription,blogs.thumbnail,blogs.slug,blogs.title')->where(['blogs.status'=>1,'type'=>'SUCCESS_STORY'])->findAll(10);
+    $data['successStoryList'] = $MediaModel->asObject()->select('blogs.id,blogs.shortDescription,blogs.thumbnail,blogs.slug,blogs.title')->where(['blogs.status' => 1, 'type' => 'SUCCESS_STORY'])->findAll(10);
     
-   
-    $data['certificateList'] =  $this->AdminModel->all_fetch('awards',array('status'=>1,'type'=>'AWARD'),'sortOrder','asc');
+    $data['certificateList'] = $this->AdminModel->all_fetch('awards', array('status' => 1, 'type' => 'AWARD'), 'sortOrder', 'asc');
     
-    // $globleCategory = $this->AdminModel->all_fetch('presence_category',array('status'=>1),'sortOrder','asc');
+    // $globleCategory = $this->AdminModel->all_fetch('presence_category', array('status' => 1), 'sortOrder', 'asc');
     // $final = [];
     
     // if(!empty($globleCategory)){
@@ -92,20 +92,20 @@ class Frontend extends BaseController
     //         $arr = [];
     //         $arr['id'] = $value->id;
     //         $arr['name'] = $value->name;
-    //           $arr['color'] = $value->color;
+    //         $arr['color'] = $value->color;
     //         $arr['list'] = $FrontModel->get_global_presence_list($value->id);
     //         $final[]= $arr; 
     //     }
     // }
 
-    //  $data['presenceList']  = $final;
-          $data['config_logo']  = $this->config_logo;
-    //  echo '<pre>';
-    //  print_r($data['presenceList']); exit;
+    // $data['presenceList'] = $final;
+    $data['config_logo'] = $this->config_logo;
+    // echo '<pre>';
+    // print_r($data['presenceList']); exit;
     $data['offset'] = 5;
-     return view('frontend/home',$data);
-    }
-    
+
+    return view('frontend/home', $data);
+}
     
     
     

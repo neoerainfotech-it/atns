@@ -10,7 +10,7 @@ $model = new ProductCategoryModel();
  <div class="page-header">
  <div class="container-fluid">
   <div class="float-end">
-  <button type="submit" form="form-user" data-bs-toggle="tooltip" title="Save" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i></button>
+  <button type="submit" form="form-user" data-bs-toggle="tooltip" title="Save All Settings" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i></button>
   <a href="<?php echo base_url('admin/products');?>" data-bs-toggle="tooltip" title="Back" class="btn btn-light">
   <i class="fa-solid fa-reply"></i>
   </a>
@@ -33,7 +33,7 @@ $model = new ProductCategoryModel();
 
   <?php if ($error = session()->getFlashdata('error')): ?>
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong><?php echo $success; ?></strong>
+        <strong><?php echo $error; ?></strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   <?php endif ?>
@@ -41,27 +41,19 @@ $model = new ProductCategoryModel();
  <form action="<?php echo $form_action; ?>" method="post" enctype="multipart/form-data" id="form-user" class="form-horizontal">
 <ul class="nav nav-tabs">
   <li class="nav-item"><a href="#tab-general" data-bs-toggle="tab" class="nav-link active">General</a></li>
-
   <li class="nav-item"><a href="#tab-data" data-bs-toggle="tab" class="nav-link">Data</a></li> 
-
   <li class="nav-item"><a href="#tab-capabilities" data-bs-toggle="tab" class="nav-link">Key Features</a></li>
-  
-    <li class="nav-item"><a href="#tab-feature" data-bs-toggle="tab" class="nav-link">Use Cases</a></li>
-    
-  <li class="nav-item"><a href="#tab-gallery" data-bs-toggle="tab" class="nav-link">Images</a></li>
-
+  <li class="nav-item"><a href="#tab-feature" data-bs-toggle="tab" class="nav-link">Use Cases</a></li>
+  <li class="nav-item"><a href="#tab-gallery" data-bs-toggle="tab" class="nav-link text-primary fw-bold"><i class="fa-solid fa-images"></i> Images</a></li>
 </ul>
-
 
  <div class="tab-content">
    <div id="tab-general" class="tab-pane active">
       <fieldset>
-        
           <div class="row mb-3 required">
               <label for="input-username" class="col-sm-2 col-form-label">Project Name</label>
               <div class="col-sm-10">
                   <input type="text" name="name" value="<?php echo set_value('name',$name); ?>" placeholder="name"  class="form-control" />
-
                  <?php echo $validation->hasError('name')?$validation->showError('name','my_single'):''; ?>
               </div>
           </div>
@@ -70,7 +62,6 @@ $model = new ProductCategoryModel();
             <label for="input-username" class="col-sm-2 col-form-label">Short Description </label>
               <div class="col-sm-10">
                    <textarea name="shortDescription" class="form-control" rows="5"><?php echo set_value('shortDescription',$shortDescription); ?></textarea>
-
               </div>
           </div>
 
@@ -81,14 +72,10 @@ $model = new ProductCategoryModel();
               </div>
           </div>
 
-
-
            <div class="row mb-3 required">
               <label for="input-email" class="col-sm-2 col-form-label">Meta Title</label>
               <div class="col-sm-10">
-       
                  <input type="text" name="metaTitle" value="<?php echo set_value('metaTitle',$metaTitle); ?>" placeholder=""  class="form-control" />
-
               </div>
           </div>
 
@@ -96,7 +83,6 @@ $model = new ProductCategoryModel();
               <label for="input-lastname" class="col-sm-2 col-form-label">Meta Keyword</label>
               <div class="col-sm-10">
                  <textarea name="metaKeyword" class="form-control" rows="5"><?php echo set_value('metaKeyword',$metaKeyword); ?></textarea>
-          
               </div>
           </div>
 
@@ -104,20 +90,15 @@ $model = new ProductCategoryModel();
               <label for="input-lastname" class="col-sm-2 col-form-label">Meta Description</label>
               <div class="col-sm-10">
                  <textarea name="metaDescription" class="form-control" rows="5"><?php echo set_value('metaDescription',$metaDescription); ?></textarea>
-          
               </div>
           </div>
-
-
 
                <div class="row mb-3 ">
               <label for="input-username" class="col-sm-2 col-form-label">Slug (optional)</label>
               <div class="col-sm-10">
                   <input type="text" name="slug" value="<?php echo set_value('slug',$slug); ?>" placeholder=""  class="form-control" />
-
               </div>
           </div>
-
 
            <div class="row mb-3">
                 <label for="input-status" class="col-sm-2 col-form-label">Status</label>
@@ -128,15 +109,10 @@ $model = new ProductCategoryModel();
                     </div>
                 </div>
             </div> 
-
-         
       </fieldset>
-
   </div>
 
-
       <div id="tab-data" class="tab-pane">
-          
                 <div class="row mb-3 d-none">
               <label for="input-email" class="col-sm-2 col-form-label">Select Category</label>
               <div class="col-sm-10">       
@@ -144,107 +120,78 @@ $model = new ProductCategoryModel();
                   <option value="">Select</option>
                    <?php
            if(!empty($categoryList)){
-
            foreach ($categoryList as $key => $value){ ?>
             <option value="<?php echo $value->id; ?>" <?php echo $value->id==$category_id?'selected':''; ?>><?php echo $value->name; ?></option>
              <?php 
              $level1 = $model->asObject()->where(array('parent'=>$value->id))->findAll();
-
             if ($level1) {
             foreach ($level1 as $key => $l1) {?>
-
                 <option value="<?php echo @$l1->id; ?>" <?php echo $l1->id==$category_id?'selected':''; ?>><?php echo $value->name.' > '.@$l1->name; ?></option>
-
-
            <?php 
            $level2 = $model->asObject()->where(array('parent'=>$l1->id))->findAll();
            if ($level2) {
           foreach ($level2 as $key => $l2) {?>     
-
             <option value="<?php echo $l2->id; ?>" <?php echo $l2->id==$category_id?'selected':''; ?>><?php echo $value->name.' > '.$l1->name.' > '.$l2->name; ?></option>
-
         <?php 
         $level3 = $model->asObject()->where(array('parent'=>$l2->id))->findAll();
         if ($level3) {
           foreach ($level3 as $key => $l3) {?>
-
           <option value="<?php echo @$l3->id; ?>" <?php echo @$l3->id==$category_id?'selected':''; ?>><?php echo $value->name.' > '.$l1->name.' > '.$l2->name.' > '.@$l3->name; ?></option>
-
-
           <?php } } ?>
-
           <?php }} ?>
-
           <?php }} ?> 
-
           <?php }} ?>
                 </select>
               </div>
           </div>
-
             
          <legend>Key Features</legend>
               <div class="row mb-3 ">
               <label for="input-email" class="col-sm-2 col-form-label">Title</label>
               <div class="col-sm-10">
-       
                  <input type="text" name="keyTitle" value="<?php echo set_value('keyTitle',$keyTitle); ?>" placeholder=""  class="form-control" />
-
               </div>
           </div>
 
-             <div class="row mb-3 ">
+              <div class="row mb-3 ">
               <label for="input-lastname" class="col-sm-2 col-form-label"> Description</label>
               <div class="col-sm-10">
                  <textarea name="keyDescription" class="form-control" rows="5"><?php echo set_value('keyDescription',$keyDescription); ?></textarea>
-          
               </div>
           </div>
-          
           
           <legend>Use Cases</legend>
             <div class="row mb-3 ">
               <label for="input-email" class="col-sm-2 col-form-label">Title</label>
               <div class="col-sm-10">
-       
                  <input type="text" name="caseTitle" value="<?php echo set_value('caseTitle',$caseTitle); ?>" placeholder=""  class="form-control" />
-
               </div>
           </div>
 
-             <div class="row mb-3 ">
+              <div class="row mb-3 ">
               <label for="input-lastname" class="col-sm-2 col-form-label"> Description</label>
               <div class="col-sm-10">
                  <textarea name="casetDescription" class="form-control" rows="5"><?php echo set_value('casetDescription',$casetDescription); ?></textarea>
-          
               </div>
           </div>
           
-          
-
            <legend>Industries</legend>
-
             <div class="row mb-3 ">
               <label for="input-email" class="col-sm-2 col-form-label">Select Industries</label>
               <div class="col-sm-10">
-       
                  <select name="industries[]"  class="form-control multiple" multiple="multiple">
                      <option value="">Select</option>
                      <?php if(!empty($inudstryList)){ foreach ($inudstryList as $key => $value){ ?>
                         <option value="<?php echo $value->id; ?>"  <?php echo @in_array($value->id, $industries)?'selected':''; ?>  ><?php echo $value->name; ?></option>
                      <?php } } ?>
                  </select>
-
               </div>
           </div>
-
 
           <div class="row mb-3 ">
               <label for="input-email" class="col-sm-2 col-form-label">Title</label>
               <div class="col-sm-10">
-       
                  <input type="text" name="industryTitle" value="<?php echo set_value('industryTitle',$industryTitle); ?>" placeholder=""  class="form-control" />
-
               </div>
           </div>
 
@@ -252,38 +199,15 @@ $model = new ProductCategoryModel();
               <label for="input-lastname" class="col-sm-2 col-form-label"> Description</label>
               <div class="col-sm-10">
                  <textarea name="industryDescription" class="form-control" rows="5"><?php echo set_value('industryDescription',$industryDescription); ?></textarea>
-          
               </div>
           </div>
-
-       
-     
-
-
-
-          
-   
-
-      
-
-
-
 </div>
 
-
-
-
-
-
-
-
 <div id="tab-feature" class="tab-pane">
-
 <div class="table-responsive">
         <table id="feature" class="table table-striped table-bordered table-hover">
          <thead>
           <tr>
-
            <td class="text-start required">Title</td>
            <td class="text-start required">Description</td>
           <td class="text-start">Image</td>
@@ -294,39 +218,22 @@ $model = new ProductCategoryModel();
          </thead>
          <tbody>
          <?php if (!empty($featureList)){ foreach ($featureList as $key => $row) {?>
-         
          <tr id="feature-row<?php  echo $row->id; ?>">  
-
             <td class="text-left"><input type="text" name="featureTitle[]" value="<?php echo $row->title; ?>"  placeholder="Title" class="form-control" /></td>
-
              <td class="text-left" style="width: 30%;"><textarea name="featureDescription[]"  placeholder="Description" class="form-control"><?php echo $row->description; ?></textarea></td>
-
-
             <td class="text-center">
               <?php if (!empty($row->image)): ?>
                   <img src="<?php echo base_url($row->image) ?>" width="100" height="100" alt="Image description">
-
                   <input type="hidden" name="feature_old_image[]" value="<?php echo $row->image; ?>">
               <?php endif ?>
               <input type="file" class="form-control" name="featureImages[]"  id="input-image' + image_row + '" /></td>
-
                <td class="text-left"><input type="text" name="featureYoutube[]" value="<?php echo $row->youtube; ?>"  placeholder="" class="form-control" /></td>
-
               <td class="text-right" style="width: 10%;"><input type="number" name="featureSortOrder[]"  placeholder="Sort Order" class="form-control" value="<?php echo $row->sort_order; ?>" />
-
-
              <td class="text-left"><button type="button" onclick="$('#feature-row<?php  echo $row->id; ?>').remove();" data-toggle="tooltip" title="Remove" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button>
        </td>
      </tr>  
-
-
-
         <?php } } ?>  
-
-
-
          </tbody>
-
          <tfoot>
           <tr>
            <td colspan="5"></td>
@@ -337,19 +244,13 @@ $model = new ProductCategoryModel();
          </tfoot>
         </table>
        </div>
-
 </div>
 
-
-
-
 <div id="tab-capabilities" class="tab-pane">
-
 <div class="table-responsive">
         <table id="capabilities" class="table table-striped table-bordered table-hover">
          <thead>
           <tr>
-
            <td class="text-start required">Title</td>
           <td class="text-start">Description</td>
           <td class="text-start">Sort Order </td>
@@ -358,28 +259,15 @@ $model = new ProductCategoryModel();
          </thead>
          <tbody>
          <?php if (!empty($capabilitiesList)){ foreach ($capabilitiesList as $key => $row) {?>
-         
          <tr id="capabilities-row<?php  echo $row->id; ?>">  
-
             <td class="text-left"><input type="text" name="capabilitiesTitle[]" value="<?php echo $row->title; ?>"  placeholder="Title" class="form-control" /></td>
-       
             <td class="text-left" style="width: 30%;"><textarea name="capabilitiesDescription[]"  placeholder="Description" class="form-control"><?php echo $row->description; ?></textarea></td>
-
               <td class="text-right" style="width: 10%;"><input type="number" name="capabilitiesSortOrder[]"  placeholder="Sort Order" class="form-control" value="<?php echo $row->sort_order; ?>" />
-
-
              <td class="text-left"><button type="button" onclick="$('#capabilities-row<?php  echo $row->id; ?>').remove();" data-toggle="tooltip" title="Remove" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button>
        </td>
      </tr>  
-
-
-
         <?php } } ?>  
-
-
-
          </tbody>
-
          <tfoot>
           <tr>
            <td colspan="3"></td>
@@ -390,43 +278,48 @@ $model = new ProductCategoryModel();
          </tfoot>
         </table>
        </div>
-
 </div>
 
-
 <div id="tab-gallery" class="tab-pane">
-
 <div class="table-responsive">
-       <table class="table table-striped table-bordered table-hover">
-        <thead>
+       <table class="table table-striped table-bordered table-hover align-middle">
+        <thead class="table-dark">
           <tr>
-            <td>Image</td>
-            <td>Thumbnail</td>
+            <td>Standard Image Asset</td>
+            <td>Thumbnail Grid Icon</td>
+            <td class="text-primary"><i class="fa-solid fa-layer-group"></i> Hero Layout Banner</td>
           </tr>
         </thead>
         <tbody>
           <tr>
            <td> 
-              <div class="row mb-3">
-              
-              <div class="col-sm-9">       
+              <div class="row mb-3 m-0">
+              <div class="col-sm-12">       
                <?php if (!empty($image)): ?>
-                <img src="<?php echo base_url($image); ?>" width="100" height="100" alt="Image description">
+                <div class="mb-2"><img src="<?php echo base_url($image); ?>" width="90" height="90" style="object-fit:cover;" class="border rounded" alt="Image description"></div>
               <?php endif ?>
-              <input type="file" name="image"  id="input-image" class="form-control" />
+              <input type="file" name="image" id="input-image" class="form-control" />
               </div>
           </div>
-        
          </td>
 
            <td> 
-            <div class="row mb-3">
-              
-              <div class="col-sm-9">       
+            <div class="row mb-3 m-0">
+              <div class="col-sm-12">       
                <?php if (!empty($thumbnail)): ?>
-                <img src="<?php echo base_url($thumbnail); ?>" width="100" height="100" alt="thumbnail">
+                <div class="mb-2"><img src="<?php echo base_url($thumbnail); ?>" width="90" height="90" style="object-fit:cover;" class="border rounded" alt="thumbnail"></div>
               <?php endif ?>
-              <input type="file" name="thumbnail"  id="input-image" class="form-control" />
+              <input type="file" name="thumbnail" id="input-thumbnail" class="form-control" />
+              </div>
+          </div></td>
+
+          <td> 
+            <div class="row mb-3 m-0">
+              <div class="col-sm-12">       
+               <?php if (!empty($hero_banner)): ?>
+                <div class="mb-2"><img src="<?php echo base_url($hero_banner); ?>" width="180" height="90" style="object-fit:cover;" class="border rounded" alt="Hero Banner Frame View"></div>
+              <?php endif ?>
+              <input type="file" name="hero_banner" id="input-hero-banner" class="form-control" />
               </div>
           </div></td>
  
@@ -434,14 +327,12 @@ $model = new ProductCategoryModel();
         </tbody>
        </table>
 
-
         <table id="images" class="table table-striped table-bordered table-hover d-none">
          <thead>
           <tr>
             <td class="2">Additional Image</td>
           </tr>
           <tr>
-
           <td class="text-start">Image</td>
           <td class="text-start">Sort Order </td>
            <td>Action</td>
@@ -449,33 +340,19 @@ $model = new ProductCategoryModel();
          </thead>
          <tbody>
          <?php if (!empty($imagesList)){ foreach ($imagesList as $key => $row) {?>
-         
          <tr id="image-row<?php  echo $row->id; ?>">  
-
-          
             <td class="text-center">
               <?php if (!empty($row->image)): ?>
                   <img src="<?php echo base_url($row->image) ?>" width="100" height="100" alt="Image description">
-
                   <input type="hidden" name="old_image[]" value="<?php echo $row->image; ?>">
               <?php endif ?>
               <input type="file" class="form-control" name="images[]"  id="input-image' + image_row + '" /></td>
-
               <td class="text-right" style="width: 10%;"><input type="number" name="imageSortOrder[]"  placeholder="Sort Order" class="form-control" value="<?php echo $row->sort_order; ?>" />
-
-
              <td class="text-left"><button type="button" onclick="$('#image-row<?php  echo $row->id; ?>').remove();" data-toggle="tooltip" title="Remove" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button>
        </td>
      </tr>  
-
-
-
         <?php } } ?>  
-
-
-
          </tbody>
-
          <tfoot>
           <tr>
            <td colspan="2"></td>
@@ -486,12 +363,7 @@ $model = new ProductCategoryModel();
          </tfoot>
         </table>
        </div>
-
 </div>
-
-
-
-
 </div>
 </form>
 </div>
@@ -499,72 +371,43 @@ $model = new ProductCategoryModel();
 </div>
 </div>
 
-
 <script type="text/javascript">
   var feature = 0;
-
     function addFeature() {
     html  = '<tr id="feature-row' + feature + '">';
-      html += '  <td class="text-left"><input type="text" name="featureTitle[]"  placeholder="Title" class="form-control required" /></td>';
-
+    html += '  <td class="text-left"><input type="text" name="featureTitle[]"  placeholder="Title" class="form-control required" /></td>';
     html += '<td class="text-left" style="width: 30%;"><textarea name="featureDescription[]"  placeholder="Description" class="form-control"></textarea></td>';
-        
-
     html += '  <td class="text-center"><input type="file" class="form-control" name="featureImages[]"  id="input-image' + feature + '" /></td>';
-
-     html += ' <td class="text-left"><input type="text" name="featureYoutube[]" placeholder="" class="form-control" /></td>';
-
+    html += ' <td class="text-left"><input type="text" name="featureYoutube[]" placeholder="" class="form-control" /></td>';
     html += '  <td class="text-right" style="width: 10%;"><input type="number" name="featureSortOrder[]"  placeholder="Sort Order" class="form-control" /></td>';
-
     html += '  <td class="text-left"><button type="button" onclick="$(\'#feature-row' + feature  + ', .tooltip\').remove();" data-toggle="tooltip" title="Remove" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
     html += '</tr>';
-
     $('#feature tbody').append(html);
-
     feature++;
   }
 
-
    var capabilities = 0;
-
     function addCapabilities() {
     html  = '<tr id="capabilities-row' + capabilities + '">';
-      html += '  <td class="text-left"><input type="text" name="capabilitiesTitle[]"  placeholder="Title" class="form-control required" /></td>';
-  
+    html += '  <td class="text-left"><input type="text" name="capabilitiesTitle[]"  placeholder="Title" class="form-control required" /></td>';
     html += '  <td class="text-left" style="width: 30%;"><textarea name="capabilitiesDescription[]"  placeholder="Description" class="form-control"></textarea></td>';
-   
     html += '  <td class="text-right" style="width: 10%;"><input type="number" name="capabilitiesSortOrder[]"  placeholder="Sort Order" class="form-control" /></td>';
-
     html += '  <td class="text-left"><button type="button" onclick="$(\'#capabilities-row' + capabilities  + ', .tooltip\').remove();" data-toggle="tooltip" title="Remove" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
     html += '</tr>';
-
     $('#capabilities tbody').append(html);
-
     capabilities++;
   }
 
-
    var image_row = 0;
-
     function addImage() {
     html  = '<tr id="image-row' + image_row + '">';
-
-  
     html += '  <td class="text-center"><input type="file" class="form-control" name="images[]"  id="input-image' + image_row + '" /></td>';
-
     html += '  <td class="text-right" style="width: 10%;"><input type="number" name="imageSortOrder[]"  placeholder="Sort Order" class="form-control" /></td>';
-
     html += '  <td class="text-left"><button type="button" onclick="$(\'#image-row' + image_row  + ', .tooltip\').remove();" data-toggle="tooltip" title="Remove" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
     html += '</tr>';
-
     $('#images tbody').append(html);
-
     image_row++;
   }
 </script>
-
-
-
-
 
 <?php $this->endSection(); ?>

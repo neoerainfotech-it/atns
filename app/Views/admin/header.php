@@ -94,63 +94,67 @@ $wconfig = websetting();
         </header>
 
         <nav id="column-left">
-            <div id="navigation"><span class="fa-solid fa-bars"></span> Navigation</div>
-            <ul id="menu">
-                
-                <?php 
-                $menu = $model->asObject()->where(array('parent_id' => 0, 'status' => 1, 'visible' => 1))->orderBy('sort_order', 'asc')->findAll();
-                $webinarAdded = false;
+    <div id="navigation"><span class="fa-solid fa-bars"></span> Navigation</div>
+    <ul id="menu">
+        
+        <?php 
+        $menu = $model->asObject()->where(array('parent_id' => 0, 'status' => 1, 'visible' => 1))->orderBy('sort_order', 'asc')->findAll();
 
-                foreach ($menu as $mKey => $value) {
-                    $level1 = $model->asObject()->where(array('parent_id' => $value->id, 'status' => 1, 'visible' => 1))->orderBy('sort_order', 'asc')->findAll();
-                    
-                    if ($level1) { 
-                        if ($this->AdminModel->hasPermission($value->id)) { ?>
-                            <li id="menu-section-<?php echo $value->id; ?>">
-                                <a href="#collapse<?php echo $value->id; ?>" data-bs-toggle="collapse" class="parent collapsed"><?php echo $value->fafa; ?> <?php echo $value->name; ?></a>
-                                <ul id="collapse<?php echo $value->id; ?>" class="collapse">
+        foreach ($menu as $mKey => $value) {
+            $level1 = $model->asObject()->where(array('parent_id' => $value->id, 'status' => 1, 'visible' => 1))->orderBy('sort_order', 'asc')->findAll();
+            
+            if ($level1) { 
+                if ($this->AdminModel->hasPermission($value->id)) { ?>
+                    <li id="menu-section-<?php echo $value->id; ?>">
+                        <a href="#collapse<?php echo $value->id; ?>" data-bs-toggle="collapse" class="parent collapsed"><?php echo $value->fafa; ?> <?php echo $value->name; ?></a>
+                        <ul id="collapse<?php echo $value->id; ?>" class="collapse">
+                            
+                            <?php foreach ($level1 as $l1Key => $l1) {
+                                $level2 = $model->asObject()->where(array('parent_id' => $l1->id, 'status' => 1, 'visible' => 1))->orderBy('sort_order', 'asc')->findAll();
+                                
+                                if (!empty($level2)) { ?>
+                                    <li>
+                                        <a href="#collapse<?php echo $l1->id; ?>" data-bs-toggle="collapse" class="parent collapsed"><?php echo $l1->name; ?></a>
+                                        <ul id="collapse<?php echo $l1->id; ?>" class="collapse">
+                                            <?php foreach ($level2 as $l2Key => $l2) { 
+                                                if (@$this->AdminModel->hasPermission($l2->id)) { ?>   
+                                                    <li><a href="<?php echo base_url($l2->link); ?>"><?php echo $l2->name; ?></a></li>
+                                                <?php } 
+                                            } ?>
+                                        </ul>
+                                    </li>
                                     
-                                    <?php foreach ($level1 as $l1Key => $l1) {
-                                        $level2 = $model->asObject()->where(array('parent_id' => $l1->id, 'status' => 1, 'visible' => 1))->orderBy('sort_order', 'asc')->findAll();
-                                        
-                                        if (!empty($level2)) { ?>
-                                            <li>
-                                                <a href="#collapse<?php echo $l1->id; ?>" data-bs-toggle="collapse" class="parent collapsed"><?php echo $l1->name; ?></a>
-                                                <ul id="collapse<?php echo $l1->id; ?>" class="collapse">
-                                                    <?php foreach ($level2 as $l2Key => $l2) { 
-                                                        if (@$this->AdminModel->hasPermission($l2->id)) { ?>   
-                                                            <li><a href="<?php echo base_url($l2->link); ?>"><?php echo $l2->name; ?></a></li>
-                                                        <?php } 
-                                                    } ?>
-                                                </ul>
-                                            </li>
-                                        <?php } else { 
-                                            if ($this->AdminModel->hasPermission($l1->id)) { ?>
-                                                <li><a href="<?php echo base_url($l1->link); ?>"><?php echo $l1->name; ?></a></li>   
-                                            <?php } 
-                                        } 
-                                    } ?>
+                                <?php } else { 
+                                    if ($this->AdminModel->hasPermission($l1->id)) { ?>
+                                        <li><a href="<?php echo base_url($l1->link); ?>"><?php echo $l1->name; ?></a></li>   
+                                    <?php } 
+                                } 
+                            } ?>
 
-                                    <?php 
-                                    $parentNameLower = strtolower((string)$value->name);
-                                    if (str_contains($parentNameLower, 'enquiry') || str_contains($parentNameLower, 'enquiries')): 
-                                        $webinarAdded = true;
-                                    ?>
-                                        <li>
-                                            <a href="<?php echo base_url('admin/webinar_registrations'); ?>">Webinar Enquire</a>
-                                        </li>
-                                    <?php endif; ?>
-                                    
-                                </ul>
-                            </li>
-                        <?php } 
-                    } else { ?>
-                        <li id="menu-dashboard-<?php echo $value->id; ?>">
-                            <a href="<?php echo base_url($value->link); ?>"><?php echo $value->fafa; ?> <?php echo $value->name; ?></a>
-                        </li>
-                    <?php } 
-                } ?>
-
-                       
-            </ul>
-        </nav>
+                            <?php 
+                            $parentNameLower = strtolower((string)$value->name);
+                            if (str_contains($parentNameLower, 'enquiry') || str_contains($parentNameLower, 'enquiries')): 
+                            ?>
+                                <li>
+                                    <a href="<?php echo base_url('admin/webinar_registrations'); ?>">Webinar Enquire</a>
+                                </li>
+                            <?php endif; ?>
+                            
+                        </ul>
+                    </li>
+                <?php } 
+            } else { 
+                if ($this->AdminModel->hasPermission($value->id)) { ?>
+                    <li id="menu-dashboard-<?php echo $value->id; ?>">
+                        <a href="<?php echo base_url($value->link); ?>"><?php echo $value->fafa; ?> <?php echo $value->name; ?></a>
+                    </li>
+                <?php } 
+            } 
+        } ?>
+           <li id="menu-testimonial-forced">
+    <a href="<?php echo base_url('admin/testimonial'); ?>">
+        <i class="fa-solid fa-comments fa-fw"></i> Testimonials
+    </a>
+</li>    
+    </ul>
+</nav>

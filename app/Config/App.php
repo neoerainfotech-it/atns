@@ -15,7 +15,7 @@ class App extends BaseConfig
      * URL to your CodeIgniter root. 
      * FIXED: Changed from port 8080 to match your exact working local development url path string.
      */
-    public string $baseURL = 'http://localhost/atns/public/';
+    public $baseURL = 'http://localhost/ATNA/public/'; 
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.

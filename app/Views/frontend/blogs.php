@@ -153,8 +153,7 @@ $this->section('page');
   position: relative;
   overflow: hidden;
   background: var(--clr-sky);
-  width: 100%;
-  aspect-ratio: 16 / 10;
+  
 }
 .blog-card__img-wrap::before,
 .blog-card__img-wrap::after {

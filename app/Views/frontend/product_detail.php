@@ -7,13 +7,16 @@ $transparentHeader = true;
 <!-- Premium UI Configurations Specific for Dynamic Detail Viewports -->
 <style>
     /* ==========================================================================
-       ADDED ELEMENT: MINIMALIST INTEGRATED PRODUCT HERO BANNER CANVAS
+       PRODUCT HERO BANNER CANVAS (ICON CONTAINER REMOVED)
        ========================================================================== */
     .premium-detail-hero-banner {
         position: relative;
         width: 100%;
         padding: 160px 0 100px 0;
-        background-color: #0F172A; /* Rich deep tech navy background backdrop */
+        background-color: #0F172A; /* Fallback rich deep tech navy background backdrop */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         overflow: hidden;
         border-bottom: 1px solid rgba(56, 189, 248, 0.15);
     }
@@ -32,6 +35,7 @@ $transparentHeader = true;
     }
 
     .banner-bread-node-pills {
+        position: relative;
         font-size: 0.82rem;
         font-weight: 700;
         color: #38bdf8; /* Clear sky-blue theme accent */
@@ -39,9 +43,11 @@ $transparentHeader = true;
         text-transform: uppercase;
         margin-bottom: 16px;
         display: inline-block;
+        z-index: 2;
     }
 
     .banner-display-headline {
+        position: relative;
         font-size: 3.5rem;
         font-weight: 800;
         color: #ffffff;
@@ -49,41 +55,24 @@ $transparentHeader = true;
         letter-spacing: -0.02em;
         margin-bottom: 24px;
         text-transform: uppercase;
+        z-index: 2;
     }
 
     .banner-lead-paragraph-desc {
+        position: relative;
         font-size: 1.1rem;
         line-height: 1.65;
-        color: #94a3b8;
-        max-width: 680px;
+        color: #e2e8f0; 
+        max-width: 780px;
         margin: 0;
-    }
-
-    .banner-media-showcase-wrapper {
-        width: 100%;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 16px;
-        padding: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        backdrop-filter: blur(8px);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-    }
-
-    .banner-media-showcase-wrapper img {
-        max-width: 100%;
-        height: auto;
-        max-height: 240px;
-        object-fit: contain;
+        z-index: 2;
     }
 
     /* ==========================================================================
-       ADDED ELEMENT: PREMIUM LIGHT-MODE TESTIMONIALS SLIDER SECTION
+       PREMIUM LIGHT-MODE TESTIMONIALS SLIDER SECTION
        ========================================================================== */
     .premium-testimonials-section {
-        background-color: #F8FAFC; /* Consistent light milk-white background canvas */
+        background-color: #F8FAFC; 
         padding: 120px 0;
         position: relative;
         overflow: hidden;
@@ -208,13 +197,12 @@ $transparentHeader = true;
     }
 
     /* ==========================================================================
-       RESPONSIVE SYSTEM BREAKPOINTS FOR THE LAYOUT MATRICES
+       RESPONSIVE SYSTEM BREAKPOINTS
        ========================================================================== */
     @media (max-width: 991px) {
         .premium-detail-hero-banner { padding: 130px 0 70px 0; text-align: center; }
         .banner-display-headline { font-size: 2.5rem; }
         .banner-lead-paragraph-desc { max-width: 100%; font-size: 1rem; }
-        .banner-media-showcase-wrapper { margin-top: 40px; }
         .premium-testimonials-section { padding: 80px 0; }
         .testimonial-headline { font-size: 2.3rem; }
         .testimonial-premium-bento-card { padding: 30px; }
@@ -222,8 +210,6 @@ $transparentHeader = true;
 
     @media (max-width: 576px) {
         .banner-display-headline { font-size: 2rem; }
-        .banner-media-showcase-wrapper { padding: 20px; }
-        .banner-media-showcase-wrapper img { max-height: 180px; }
         .testimonial-headline { font-size: 1.85rem; }
         .testimonial-feedback-text { font-size: 0.98rem; }
     }
@@ -231,15 +217,15 @@ $transparentHeader = true;
 
 <!-- ==========================================================================
      ADDED MODULE: HIGH-END ENTERPRISE BRAND BANNER CANVAS INTERFACE
-     ========================================================================== -->
-<div class="premium-detail-hero-banner">
+     ========================================================================== */ -->
+<div class="premium-detail-hero-banner" style="<?php echo !empty($detail->hero_banner) ? "background-image: linear-gradient(to right, rgba(15, 23, 42, 0.95) 30%, rgba(15, 23, 42, 0.75) 70%, rgba(15, 23, 42, 0.4) 100%), url('".base_url($detail->hero_banner)."');" : ''; ?>">
     <div class="detail-banner-mesh-overlay"></div>
     <div class="detail-banner-radial-glow"></div>
     <div class="container position-relative z-index-2">
         <div class="row align-items-center">
             
-            <!-- Left Grid Pane: Context Text Headers Elements -->
-            <div class="col-lg-7">
+            <!-- Left Grid Pane: Expanded to full width layout -->
+            <div class="col-lg-12">
                 <span class="banner-bread-node-pills">Solutions Profile</span>
                 <h1 class="banner-display-headline">
                     <?php echo !empty($detail->name) ? esc($detail->name) : 'Product Profile'; ?>
@@ -248,15 +234,6 @@ $transparentHeader = true;
                     Optimize operations, eliminate infrastructure dependencies, and accelerate enterprise growth with custom-tailored system ecosystems.
                 </p>
             </div>
-
-            <!-- Right Grid Pane: Floating Contained Thumbnail Representation Graphic -->
-            <?php if (!empty($detail->thumbnail)): ?>
-                <div class="col-lg-5">
-                    <div class="banner-media-showcase-wrapper">
-                        <img src="<?php echo base_url($detail->thumbnail); ?>" alt="<?php echo !empty($detail->name) ? esc($detail->name) : 'Product'; ?> Graphic Node">
-                    </div>
-                </div>
-            <?php endif; ?>
 
         </div>
     </div>
@@ -272,7 +249,7 @@ $transparentHeader = true;
                 <div class="title-wrap d-flex" data-cues="slideInUp">
                     <div>
                         <?php if (!empty($detail->thumbnail)): ?>
-                             <img src="<?php echo $detail->thumbnail; ?>" alt="project page image">
+                             <img src="<?php echo base_url($detail->thumbnail); ?>" alt="project page image">
                         <?php endif ?>
                     </div>
                     <div>
@@ -285,7 +262,7 @@ $transparentHeader = true;
 
     <div class="value_bg">
         <?php if (!empty($detail->image)): ?>
-             <img src="<?php echo $detail->image; ?>" alt="background image">
+             <img src="<?php echo base_url($detail->image); ?>" alt="background image">
         <?php endif ?>
     </div>
 </section>
