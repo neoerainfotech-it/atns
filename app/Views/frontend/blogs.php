@@ -79,18 +79,10 @@ $this->section('page');
   color: var(--clr-navy);
   background: var(--clr-sky);
 }
-.filter-btn:focus-visible {
-  outline: 2px solid var(--clr-blue);
-  outline-offset: 2px;
-}
 .filter-btn.active {
   background: var(--clr-blue);
   color: var(--clr-white);
   box-shadow: 0 6px 18px rgba(45, 125, 210, 0.32);
-}
-.filter-btn.active:hover {
-  background: var(--clr-blue-deep);
-  color: var(--clr-white);
 }
 
 /* ---- Section header ---- */
@@ -102,24 +94,6 @@ $this->section('page');
   margin-bottom: 32px;
   padding-bottom: 18px;
   border-bottom: 1px solid var(--clr-border);
-}
-.blog-section-header .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--clr-blue);
-  margin-bottom: 8px;
-}
-.blog-section-header .eyebrow::before {
-  content: "";
-  width: 14px;
-  height: 2px;
-  background: var(--clr-blue);
-  display: inline-block;
 }
 .blog-section-header h2.section-title {
   font-family: var(--font-display);
@@ -149,9 +123,12 @@ $this->section('page');
   transform: translateY(-5px);
   border-color: var(--clr-blue);
 }
+
+/* Updated Image Wrapper Setup */
 .blog-card__img-wrap {
   position: relative;
   overflow: hidden;
+<<<<<<< HEAD
   background: var(--clr-sky);
   
 }
@@ -185,16 +162,24 @@ $this->section('page');
 .blog-card:hover .blog-card__img-wrap::after {
   opacity: 1;
   transform: translate(0, 0);
+=======
+  background: #FFFFFF; /* Pure white matches the thumbnail canvas backgrounds perfectly */
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-bottom: 1px solid var(--clr-border);
+>>>>>>> d886708e2e80d441e3ae0f385c6d3fc1238a2a5c
 }
 .blog-card__img-wrap img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* Contain displays the entire illustration graphic assets gracefully without distortion */
+  object-fit: contain !important; 
+  object-position: center !important;
   display: block;
-  transition: transform 0.6s var(--ease);
+  transition: transform 0.5s var(--ease);
 }
 .blog-card:hover .blog-card__img-wrap img {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 .blog-card__body {
   padding: 24px;
@@ -249,6 +234,7 @@ $this->section('page');
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  min-height: 2.7rem;
 }
 .blog-card__read-more {
   display: inline-flex;
@@ -261,61 +247,22 @@ $this->section('page');
   margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid var(--clr-border);
-  transition: color var(--ease), gap var(--ease);
 }
 .blog-card__read-more:hover {
   color: var(--clr-blue);
-  gap: 10px;
-}
-.blog-card__read-more:focus-visible {
-  outline: 2px solid var(--clr-blue);
-  outline-offset: 3px;
-  border-radius: 4px;
 }
 
-/* ---- Empty state ---- */
-.blog-empty-state {
-  width: 100%;
-  text-align: center;
-  padding: 48px 24px;
-  background: var(--clr-sky);
-  border: 1px dashed var(--clr-border);
-  border-radius: var(--radius-card);
-  color: var(--clr-muted);
-  font-size: 14px;
-}
-
-/* ---- Filtering states ---- */
-.blog-section-wrapper {
-  transition: opacity 0.3s ease;
-}
 .blog-section-wrapper.hidden-block {
   display: none !important;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .blog-card, .blog-card__img-wrap img, .filter-btn, .blog-card__read-more {
-    transition: none !important;
-  }
-}
-
-@media (max-width: 991px) {
-  .blog-section-header { flex-wrap: wrap; }
-  /* Smooth proportional configuration context for tablet layouts */
-  .blog-card__body { padding: 22px; }
+@media (max-width: 1199px) {
   .blog-card__title { font-size: 1.08rem; min-height: 3.1rem; }
+  .blog-card__excerpt { font-size: 13.5px; min-height: 2.5rem; }
 }
-
 @media (max-width: 767px) {
-  .blog-filter-container { margin: -20px auto 36px; }
-  .filter-btn { padding: 9px 12px; font-size: 13px; }
-  .blog-card__title { min-height: auto; }
+  .blog-card__title, .blog-card__excerpt { min-height: auto; }
   .blog-card__body { padding: 20px; }
-}
-
-@media (max-width: 420px) {
-  .blog-filter-wrapper { flex-wrap: nowrap; }
-  .filter-btn { padding: 9px 8px; font-size: 12.5px; }
 }
 </style>
 
@@ -323,9 +270,9 @@ $this->section('page');
 
   <div class="blog-filter-container">
     <div class="blog-filter-wrapper" data-cue="fadeIn" role="group" aria-label="Filter articles">
-      <button type="button" class="filter-btn active" aria-pressed="true" onclick="filterBlogType('all', this)">All Articles</button>
-      <button type="button" class="filter-btn" aria-pressed="false" onclick="filterBlogType('featured', this)">Featured</button>
-      <button type="button" class="filter-btn" aria-pressed="false" onclick="filterBlogType('latest', this)">Latest</button>
+      <button type="button" class="filter-btn active" onclick="filterBlogType('all', this)">All Articles</button>
+      <button type="button" class="filter-btn" onclick="filterBlogType('featured', this)">Featured</button>
+      <button type="button" class="filter-btn" onclick="filterBlogType('latest', this)">Latest</button>
     </div>
   </div>
 
@@ -334,17 +281,15 @@ $this->section('page');
       <div class="container">
         <div class="blog-section-header" data-cue="slideInUp">
           <div>
-            <div class="eyebrow">Editor's Selection</div>
-            <h2 class="section-title"><?php echo isset($meta->title1) ? esc($meta->title1) : 'Featured Articles'; ?></h2>
+            <h2 class="section-title"><?php echo isset($meta->title1) ? esc($meta->title1) : 'Featured Blogs'; ?></h2>
           </div>
         </div>
 
         <div class="row g-4" data-cues="slideInUp">
           <?php if (!empty($featureList)) { foreach ($featureList as $key => $value) { 
-            // Dynamic generation of content excerpts directly from the structural description string
-            $featuredExcerpt = isset($value->description) ? mb_strimwidth(strip_tags($value->description), 0, 120, '...') : 'Explore our collection of comprehensive enterprise updates, system methodologies, and industry highlights...';
+            $featuredExcerpt = isset($value->description) ? mb_strimwidth(strip_tags($value->description), 0, 120, '...') : '';
           ?>
-          <div class="col-lg-6 col-md-6 d-flex">
+          <div class="col-xl-4 col-lg-6 col-md-6 d-flex">
             <div class="blog-card w-100">
               <div class="blog-card__img-wrap">
                 <img
@@ -362,21 +307,12 @@ $this->section('page');
                   </span>
                 </div>
                 <h4 class="blog-card__title"><?php echo esc($value->title); ?></h4>
-                
                 <p class="blog-card__excerpt"><?php echo $featuredExcerpt; ?></p>
-
-                <a href="<?php echo base_url('blog/' . $value->slug); ?>" class="blog-card__read-more">
-                  Read Article
-                  <svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="currentColor"/></svg>
-                </a>
+                <a href="<?php echo base_url('blog/' . $value->slug); ?>" class="blog-card__read-more">Read Article →</a>
               </div>
             </div>
           </div>
-          <?php } } else { ?>
-            <div class="col-12">
-              <p class="blog-empty-state">No featured articles have been published yet.</p>
-            </div>
-          <?php } ?>
+          <?php } } ?>
         </div>
       </div>
     </section>
@@ -389,15 +325,13 @@ $this->section('page');
       <div class="container">
         <div class="blog-section-header" data-cue="slideInUp">
           <div>
-            <div class="eyebrow">Just In</div>
-            <h2 class="section-title"><?php echo isset($meta->title2) ? esc($meta->title2) : 'Latest Articles'; ?></h2>
+            <h2 class="section-title"><?php echo isset($meta->title2) ? esc($meta->title2) : 'Latest Blogs'; ?></h2>
           </div>
         </div>
 
         <div class="row g-4" data-cues="slideInUp">
           <?php if (!empty($blogList)) { foreach ($blogList as $key => $value) { 
-            // Dynamic generation of content excerpts directly from the structural description string
-            $latestExcerpt = isset($value->description) ? mb_strimwidth(strip_tags($value->description), 0, 110, '...') : 'Read through our latest workflow architecture publications, technology reviews, and innovation breakdowns...';
+            $latestExcerpt = isset($value->description) ? mb_strimwidth(strip_tags($value->description), 0, 110, '...') : '';
           ?>
           <div class="col-lg-4 col-md-6 d-flex">
             <div class="blog-card w-100">
@@ -417,21 +351,12 @@ $this->section('page');
                   </span>
                 </div>
                 <h4 class="blog-card__title"><?php echo esc($value->title); ?></h4>
-                
                 <p class="blog-card__excerpt"><?php echo $latestExcerpt; ?></p>
-
-                <a href="<?php echo base_url('blog/' . $value->slug); ?>" class="blog-card__read-more">
-                  Read Article
-                  <svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="currentColor"/></svg>
-                </a>
+                <a href="<?php echo base_url('blog/' . $value->slug); ?>" class="blog-card__read-more">Read Article →</a>
               </div>
             </div>
           </div>
-          <?php } } else { ?>
-            <div class="col-12">
-              <p class="blog-empty-state">No articles have been published yet.</p>
-            </div>
-          <?php } ?>
+          <?php } } ?>
         </div>
       </div>
     </section>
@@ -443,10 +368,8 @@ $this->section('page');
 function filterBlogType(type, buttonElement) {
   document.querySelectorAll('.filter-btn').forEach(function (btn) {
     btn.classList.remove('active');
-    btn.setAttribute('aria-pressed', 'false');
   });
   buttonElement.classList.add('active');
-  buttonElement.setAttribute('aria-pressed', 'true');
 
   var featuredBlock = document.getElementById('section-featured');
   var latestBlock = document.getElementById('section-latest');
