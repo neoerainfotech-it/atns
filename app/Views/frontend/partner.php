@@ -4,16 +4,17 @@ $this->section('page');
 $transparentHeader = true;
 ?>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
 <style>
     /* ==========================================================================
-       DESIGN TOKENS — scoped to this page only
+       DESIGN TOKENS — Scoped strictly to prevent layout pollution
        ========================================================================== */
     .page-partners {
         --atna-primary:    #0d2c6c;
-        --atna-secondary:  #2f7cff;
+        --atna-secondary:  rgb(27, 71, 146);
         --atna-bg-light:   #f8f9fb;
         --atna-text-dark:  #1a1a1a;
         --atna-border:      rgba(13, 44, 108, 0.08);
@@ -26,297 +27,165 @@ $transparentHeader = true;
         overflow-x: hidden;
     }
 
-    .page-partners h1,
-    .page-partners h2,
-    .page-partners h3,
-    .page-partners h4,
-    .page-partners h5,
-    .page-partners h6 { line-height: 1.25; }
-
+    .page-partners h1, .page-partners h2, .page-partners h3, .page-partners h4, .page-partners h5, .page-partners h6 { line-height: 1.25; }
     .page-partners img { display: block; max-width: 100%; height: auto; }
 
     /* ==========================================================================
-       BACKGROUNDS & COMPOSITOR
+       BACKGROUNDS & COMPOSITOR LAYOUTS
        ========================================================================== */
-    .bg-enterprise-dark {
-        background: linear-gradient(135deg, #051433 0%, #0d2c6c 100%);
-    }
-    .bg-gradient-enterprise {
-        background: linear-gradient(135deg, #051433 0%, #0d2c6c 100%);
-    }
-    
-    /* Premium Ultra-Trendy Hero Composition */
+    .bg-enterprise-dark { background: linear-gradient(135deg,  #0083BF 0%, #0d2c6c 100%); }
     .network-glow-bg {
         position: relative;
-        background-color: #061126;
+        background-color:  #0083BF;
         background-image: 
             radial-gradient(circle at 10% 20%, rgba(47, 124, 255, 0.15) 0%, transparent 50%),
             radial-gradient(circle at 90% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
         overflow: hidden;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
-    
-    /* Hardware-Accelerated Vector Network Mesh Grid Overlay */
     .network-glow-bg::before {
         content: '';
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%232f7cff' stroke-width='0.5' stroke-opacity='0.04'%3E%3Cpath d='M40 0v80M0 40h80'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        z-index: 1;
-        pointer-events: none;
+        z-index: 1; pointer-events: none;
     }
-
-    /* Ambient Blur Orb Elements */
     .hero-blur-orb {
-        position: absolute;
-        width: 500px;
-        height: 500px;
+        position: absolute; width: 500px; height: 500px;
         background: radial-gradient(circle, rgba(47, 124, 255, 0.12) 0%, rgba(6, 17, 38, 0) 70%);
-        filter: blur(40px);
-        pointer-events: none;
-        z-index: 1;
+        filter: blur(40px); pointer-events: none; z-index: 1;
     }
     .orb-top-right { top: -20%; right: -10%; }
     .orb-bottom-left { bottom: -30%; left: -10%; }
 
     /* ==========================================================================
-       TRENDING HERO UI COMPONENTS
+       TYPOGRAPHY & BRAND COMPONENT DESIGN ELEMENTS
        ========================================================================== */
     .text-gradient-premium {
         background: linear-gradient(135deg, #ffffff 30%, #a5c7fe 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     .tracking-wider { letter-spacing: 0.08em; }
-
     .hero-badge-glow {
-        background: rgba(255, 255, 255, 0.04);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        padding: 6px 16px;
-        border-radius: 50px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #e2e8f0;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
+        background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 16px; border-radius: 50px;
+        font-size: 0.8rem; font-weight: 600; color: #e2e8f0; display: inline-flex; align-items: center; gap: 8px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
-
     .rounded-pill-custom { border-radius: 50px !important; }
     
     .btn-atna-primary {
-        background-color: var(--atna-secondary);
-        border: none;
-        color: #fff;
+        background-color: var(--atna-secondary); border: none; color: #fff;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn-atna-primary:hover {
-        background-color: #1a62dc;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(47, 124, 255, 0.3);
-        color: #fff;
+        background-color: #1a62dc; transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(47, 124, 255, 0.3); color: #fff;
     }
     .btn-outline-custom {
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2); color: #fff;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn-outline-custom:hover {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: #fff;
-        transform: translateY(-2px);
-        color: #fff;
+        background: rgba(255, 255, 255, 0.05); border-color: #fff; transform: translateY(-2px); color: #fff;
     }
 
-    /* Premium Asymmetrical Interactive Right Image Enclosure */
-    .hero-showroom-viewport {
-        position: relative;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 2;
-    }
+    .hero-showroom-viewport { position: relative; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2; }
     .hero-glass-frame {
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.07);
-        border-radius: 24px;
-        padding: 30px;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
-        width: 100%;
-        max-width: 480px;
+        border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 24px; padding: 30px;
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2); width: 100%; max-width: 480px;
     }
     .hero-image-canvas {
-        border-radius: 14px;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: #091428;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        border-radius: 14px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #091428; box-shadow: 0 15px 35px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; min-height: 250px;
     }
-    .hero-image-canvas img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-        display: block;
-    }
-
-    /* Floating Micro Stats Badge Inside Hero */
-    .hero-floating-indicator {
-        position: absolute;
-        bottom: 10px;
-        left: -15px;
-        background: #ffffff;
-        padding: 12px 20px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-        animation: heroFloatY 4s ease-in-out infinite;
-        z-index: 3;
-    }
-    .hero-floating-indicator i {
-        width: 32px; height: 32px;
-        background: #eaf3ff; color: var(--atna-secondary);
-        border-radius: 50%; display: flex; align-items: center; justify-content: center;
-        font-size: 0.9rem;
-    }
-    .hero-floating-indicator span { font-size: 0.8rem; font-weight: 700; color: #0f172a; }
-
-    @keyframes heroFloatY {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-8px); }
-    }
+    .hero-image-canvas img { width: 100%; height: 100%; object-fit: cover; }
 
     /* ==========================================================================
-       BODY SECTIONS CORE COMPONENTS
+       PREMIUM CARD & UI INTERACTIONS
        ========================================================================== */
     .premium-card-hover {
         transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.35s ease;
     }
     .premium-card-hover:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 1.25rem 3rem rgba(13, 44, 108, 0.09) !important;
+        transform: translateY(-6px) scale(1.01);
+        box-shadow: 0 20px 40px rgba(13, 44, 108, 0.08) !important;
     }
-
     .icon-wrapper-circle {
-        width: 52px;
-        height: 52px;
-        background: rgba(47, 124, 255, 0.08);
-        color: var(--atna-secondary);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        font-size: 1.3rem;
+        width: 52px; height: 52px; background: rgba(47, 124, 255, 0.08); color: var(--atna-secondary);
+        display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.3rem;
         flex-shrink: 0;
     }
 
-    .grayscale-logo-strip {
-        filter: grayscale(100%);
-        opacity: 0.55;
-        transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
-        max-width: 120px;
-        height: auto;
-        display: inline-block;
+    /* ==========================================================================
+       MARQUEE STRIP ELEMENTS ALIGNMENTS
+       ========================================================================== */
+    .ecosystem-marquee-strip {
+        display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: center; width: 100%;
     }
-    .grayscale-logo-strip:hover {
-        filter: grayscale(0%);
-        opacity: 1;
-        transform: scale(1.04);
-    }
+    
+    .grayscale-logo-strip:hover { filter: grayscale(0%); opacity: 1; }
 
-    .logo-grid-cell {
-        background: var(--atna-bg-light);
-        border: 1px solid var(--atna-border);
-        border-radius: 0.5rem;
-        padding: 1rem;
-        transition: all 0.3s ease;
+    /* ==========================================================================
+       REDESIGNED: TECHNOLOGY PARTNERSHIPS CAROUSEL SLIDER 
+       ========================================================================== */
+    .partner-logo-card {
+        height: 90px; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        background: #ffffff; border: 1px solid rgba(13, 44, 108, 0.06); box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        display: flex; align-items: center; justify-content: center; padding: 15px 25px; border-radius: 8px;
     }
-    .logo-grid-cell:hover {
-        background: #ffffff;
-        border-color: var(--atna-secondary);
-        box-shadow: 0 0.5rem 1rem rgba(13, 44, 108, 0.05);
+    .partner-logo-card:hover { border-color: var(--atna-secondary); box-shadow: 0 10px 20px rgba(13, 44, 108, 0.06); }
+    
+    .logo-greyscale {
+        filter: grayscale(0%); transition: all 0.4s ease; max-height: 42px; max-width: 100%; object-fit: contain;
     }
+    .partner-logo-card:hover .logo-greyscale { filter: grayscale(0%) opacity(1); transform: scale(1.04); }
 
-    .partner-scroll-box {
-        overflow-y: auto;
-        overflow-x: hidden;
-        max-height: 400px;
-        padding-right: 4px;
-        scrollbar-width: thin;
-        scrollbar-color: rgba(47,124,255,0.25) transparent;
+    /* Swiper Controls Navigation Positioning Refinements */
+    .swiper-partner-wrapper { position: relative; width: 100%; }
+    .partner-next, .partner-prev {
+        color: var(--atna-secondary) !important; width: 44px !important; height: 44px !important;
+        background: #ffffff; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        top: 50%; transform: translateY(-50%); z-index: 10; transition: all 0.2s ease-in-out;
     }
-    .partner-scroll-box::-webkit-scrollbar { width: 4px; }
-    .partner-scroll-box::-webkit-scrollbar-track { background: transparent; }
-    .partner-scroll-box::-webkit-scrollbar-thumb {
-        background: rgba(47,124,255,0.3);
-        border-radius: 4px;
-    }
+    .partner-next:hover, .partner-prev:hover { background: var(--atna-secondary); color: #ffffff !important; }
+    .partner-next { right: -22px !important; }
+    .partner-prev { left: -22px !important; }
+    .partner-next:after, .partner-prev:after { font-size: 16px !important; font-weight: 700; }
+    
+    .hover-bg-light:hover { background-color: var(--atna-bg-light) !important; }
+    .hover-lift:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(47, 124, 255, 0.1); }
+    .transition-all { transition: all 0.2s ease-in-out; }
 
+    /* Scoped layout padding source of truth rules */
     .page-partners .sec-vpad {
         padding-top: var(--section-py);
         padding-bottom: var(--section-py);
     }
-    .page-partners .sec-vpad-sm {
-        padding-top: var(--section-py-sm);
-        padding-bottom: var(--section-py-sm);
-    }
-
-    .ms-stat-grid .ms-stat-cell { padding: 1.5rem 1rem; }
-    .ms-stat-grid .ms-stat-cell.border-right-md { border-right: 1px solid #dee2e6; }
-    .ms-stat-grid .ms-stat-cell.border-bottom-md { border-bottom: 1px solid #dee2e6; }
 
     /* ==========================================================================
-       RESPONSIVE MODIFIERS 
+       RESPONSIVE SYSTEM BREAKPOINTS
        ========================================================================== */
-    @media (min-width: 992px) {
-        .page-partners { --section-py: 5rem; }
+    @media (max-width: 1200px) {
+        .partner-next { right: -10px !notimportant; }
+        .partner-prev { left: -10px !notimportant; }
     }
-
     @media (max-width: 991.98px) {
-        .network-glow-bg { padding: 120px 0 60px 0 !important; }
+        .network-glow-bg { padding-top: 140px !important; padding-bottom: 60px !important; }
         .hero-showroom-viewport { margin-top: 40px; }
-        .hero-floating-indicator { left: 15px; }
-        .ms-stat-grid .ms-stat-cell.border-right-md { border-right: none; }
-        .ms-stat-grid .ms-stat-cell.border-bottom-md { border-bottom: none; }
-        .ms-stat-grid .ms-stat-cell {
-            border-bottom: 1px solid #dee2e6;
-            border-right: 1px solid #dee2e6;
-        }
-        .ms-stat-grid .ms-stat-cell:nth-child(2n) { border-right: none; }
-        .ms-stat-grid .ms-stat-cell:nth-child(3),
-        .ms-stat-grid .ms-stat-cell:nth-child(4) { border-bottom: none; }
+        .partner-next, .partner-prev { top: auto; bottom: -50px; transform: none; }
+        .partner-prev { left: calc(50% - 55px) !important; }
+        .partner-next { right: calc(50% - 55px) !important; }
+        .swiper-partner-wrapper { padding-bottom: 50px !important; }
     }
-
     @media (max-width: 767.98px) {
-        .page-partners {
-            --section-py: 4rem;
-            --section-py-sm: 2.5rem;
-        }
-        .logo-divider { display: none !important; }
+        .page-partners { --section-py: 4rem; --section-py-sm: 2.5rem; }
+        .logo-divider { display: none; }
+        .ecosystem-marquee-strip { gap: 25px; }
     }
-
     @media (max-width: 575.98px) {
-        .hero-floating-indicator { display: none; }
         .hero-glass-frame { padding: 15px; border-radius: 16px; }
-        .ms-stat-grid .ms-stat-cell {
-            border-right: none !important;
-            border-bottom: 1px solid #dee2e6 !important;
-        }
-        .ms-stat-grid .ms-stat-cell:last-child { border-bottom: none !important; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .premium-card-hover,
-        .grayscale-logo-strip,
-        .hero-floating-indicator { transition: none !important; animation: none !important; }
-        .premium-card-hover:hover { transform: none !important; }
     }
 </style>
 
@@ -328,24 +197,23 @@ $transparentHeader = true;
     
     <div class="container-xl position-relative" style="z-index: 2;">
         <div class="row align-items-center g-4 g-lg-5">
-
             <div class="col-lg-6 text-center text-lg-start">
-                <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start mb-4" data-cues="slideInUp">
+                <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start mb-4">
                     <span class="hero-badge-glow"><i class="fab fa-microsoft text-info"></i> Strategic Partnerships</span>
                     <span class="hero-badge-glow"><i class="bi bi-cpu-fill text-warning"></i> Enterprise Ecosystem</span>
                 </div>
 
-                <h1 class="display-5 fw-bold mb-3 text-gradient-premium" data-cues="slideInUp">
-                    Accelerating Digital Transformation Through Strategic Partnerships
+                <h1 class="display-5 fw-bold mb-3 text-gradient-premium">
+                    Digital Transformation Through Strategic Alliances
                 </h1>
 
-                <p class="lead mb-4 text-white-50 fs-6 lh-base" data-cues="slideInUp">
+                <p class="lead mb-4 text-white fs-6 lh-base">
                     At ATNA Technologies, we collaborate with leading global technology providers to deliver innovative ERP, Cloud, Data Analytics, AI, and Digital Transformation solutions. Our strategic partnerships empower organizations to modernize operations, improve decision-making, and achieve sustainable growth with confidence.
                 </p>
 
-                <div class="pt-3 pb-3 border-top border-bottom border-light border-opacity-10 mb-4" data-cues="slideInUp">
-                    <span class="small text-uppercase tracking-wider text-white-50 fw-semibold d-block mb-3" style="font-size:0.7rem;">Trusted by businesses across manufacturing, distribution, retail, textile, FMCG, and professional services verticals.</span>
-                    <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3 text-white-50 small" style="font-size:0.8rem;">
+                <div class="pt-3 pb-3 border-top border-bottom border-light border-opacity-10 mb-4">
+                    <span class="small text-uppercase tracking-wider text-white fw-semibold d-block mb-3" style="font-size:0.7rem;">Trusted by businesses across manufacturing, distribution, retail, textile, FMCG, and professional services verticals.</span>
+                    <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3 text-white small" style="font-size:0.8rem;">
                         <span class="d-flex align-items-center"><i class="bi bi-building-gear text-info me-2"></i>Manufacturing</span>
                         <span class="opacity-25 d-none d-sm-inline">|</span>
                         <span class="d-flex align-items-center"><i class="bi bi-cart3 text-info me-2"></i>Retail &amp; E-comm</span>
@@ -354,31 +222,24 @@ $transparentHeader = true;
                     </div>
                 </div>
 
-                <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start" data-cues="slideInUp">
-                    <a href="#contact" class="btn btn-atna-primary rounded-pill-custom px-4 py-2.5 fw-semibold shadow-sm text-uppercase tracking-wider small" style="font-size:0.75rem;">Talk to Our Experts</a>
-                    <a href="#ecosystem" class="btn btn-outline-custom rounded-pill-custom px-4 py-2.5 fw-semibold text-uppercase tracking-wider small" style="font-size:0.75rem;">Explore Our Solutions</a>
+                <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+                    <a href="#contact" class="btn btn-atna-primary rounded-pill-custom px-4 py-2 fw-semibold shadow-sm text-uppercase tracking-wider small" style="font-size:0.75rem;">Talk to Our Experts</a>
+                    <a href="#ecosystem" class="btn btn-outline-custom rounded-pill-custom px-4 py-2 fw-semibold text-uppercase tracking-wider small" style="font-size:0.75rem;">Explore Our Solutions</a>
                 </div>
             </div>
 
             <div class="col-lg-6 d-flex justify-content-center align-items-center">
-                <div class="hero-showroom-viewport" data-cues="slideInRight">
-                    
-                    <div class="hero-floating-indicator">
-                        <i class="fas fa-handshake"></i>
-                        <span>Global Certified Tier One</span>
-                    </div>
-
+                <div class="hero-showroom-viewport">
                     <div class="hero-glass-frame">
                         <div class="hero-image-canvas">
-                            <img src="<?php echo $meta->image ? base_url($meta->image) : base_url($config_logo); ?>"
+                            <img src="<?php echo !empty($meta->image) ? base_url($meta->image) : base_url($config_logo ?? 'assets/frontend/img/logo.png'); ?>"
                                  loading="eager"
-                                 alt="Ecosystem Matrix Showcase Platform Blueprint Illustration Graph Canvas Asset">
+                                 alt="Ecosystem Matrix Showcase Platform Blueprint"
+                                 onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/1/1a/Microsoft_Dynamics_logo.svg';">
                         </div>
                     </div>
-                    
                 </div>
             </div>
-
         </div>
     </div>
 </section>
@@ -409,120 +270,139 @@ $transparentHeader = true;
 
 <section class="sec-vpad bg-light border-bottom">
     <div class="container-xl">
-
-        <div class="row mb-5">
-            <div class="col-lg-8 mx-auto text-center">
-                <h3 class="h2 fw-bold text-dark position-relative d-inline-block pb-3 mb-0">
-                    Technology Partnerships That Deliver Business Value
-                    <span class="position-absolute bottom-0 start-50 translate-middle-x rounded-pill" style="width: 56px; height: 4px; background-color: var(--atna-secondary);"></span>
-                </h3>
+        
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-9 text-center">
+                <h3 class="h2 fw-bold text-dark mb-3">Technology Partnerships That Deliver Business Value</h3>
+                <p class="lead text-muted mx-auto fs-6" style="max-width: 650px; font-weight: 400;">We combine our deep industry expertise with the world's leading platforms to accelerate your digital transformation journey.</p>
             </div>
         </div>
 
-        <div class="row align-items-stretch g-4">
+        <div class="swiper-partner-wrapper position-relative mb-5">
+            <div class="swiper partnerSwiper" style="padding: 10px 4px;">
+                <div class="swiper-wrapper align-items-center">
+                    
+                    <?php if (!empty($gallery)): foreach ($gallery as $key => $value): if (!empty($value['list'])): foreach ($value['list'] as $row): ?>
+                        <div class="swiper-slide">
+                            <div class="partner-logo-card">
+                                <img src="<?php echo !empty($row->image) ? base_url($row->image) : base_url($config_logo); ?>" alt="<?php echo !empty($row->name) ? htmlspecialchars($row->name) : 'Partner Logo'; ?>" class="img-fluid logo-greyscale">
+                            </div>
+                        </div>
+                    <?php endforeach; endif; endforeach; else: ?>
+                        <div class="swiper-slide">
+                            <div class="partner-logo-card">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Power_BI_logo.svg" alt="Power BI" class="img-fluid logo-greyscale">
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="partner-logo-card">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Microsoft_Dynamics_logo.svg" alt="Dynamics 365" class="img-fluid logo-greyscale">
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="partner-logo-card">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="img-fluid logo-greyscale" style="max-height: 38px;">
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="partner-logo-card">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft" class="img-fluid logo-greyscale">
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="partner-logo-card">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS" class="img-fluid logo-greyscale">
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="partner-logo-card">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg" alt="Google Cloud" class="img-fluid logo-greyscale">
+                            </div>
+                        </div>
+                    <?php endif; ?>
 
-            <div class="col-12 col-lg-5 d-flex">
-                <div class="bg-white p-4 p-xl-5 rounded-4 shadow-sm border border-light-subtle w-100 d-flex flex-column justify-content-center">
-                    <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
-                        <div class="icon-wrapper-circle" style="background: rgba(13,44,108,0.08); color: var(--atna-primary);">
-                            <i class="fab fa-microsoft"></i>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="row g-4" data-cues="slideInUp">
+            
+            <div class="col-lg-4 d-flex">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 premium-card-hover bg-white w-100 flex-column d-flex">
+                    <div class="d-flex align-items-center gap-3 mb-4 flex-shrink-0">
+                        <div class="icon-wrapper-circle bg-primary bg-opacity-10 text-primary">
+                            <i class="fas fa-microchip"></i>
                         </div>
                         <div>
-                            <h4 class="h5 fw-bold text-dark mb-0">Microsoft Solutions</h4>
-                            <span class="text-muted small">Gold / Strategic Alliance</span>
+                            <h5 class="fw-bold mb-0" style="font-size:1.05rem;">Microsoft Core Stack</h5>
+                            <span class="text-muted small">Solutions Partner Integration</span>
                         </div>
                     </div>
-                    <p class="text-muted mb-4 lh-base" style="font-size: 0.95rem;">As a specialized technology partner, ATNA Technologies enables enterprise clients to scale with modern solutions deployed directly within Microsoft Ecosystem layers including unified infrastructure modernizations.</p>
-                    <div class="d-flex flex-wrap gap-2">
-                        <span class="badge bg-light text-secondary border py-2 px-3 rounded-pill fw-medium" style="font-size: 0.75rem;">Unified Integration</span>
-                        <span class="badge bg-light text-secondary border py-2 px-3 rounded-pill fw-medium" style="font-size: 0.75rem;">Enterprise Tier</span>
+                    <p class="text-muted mb-4 lh-base flex-grow-1" style="font-size: 0.95rem;">
+                        We architect, deploy, and manage enterprise-grade solutions seamlessly across the entire Microsoft ecosystem, ensuring maximum ROI and operational agility.
+                    </p>
+                    <div class="d-flex flex-wrap gap-2 mt-auto pt-2 border-top border-light border-opacity-50">
+                        <span class="badge bg-light text-dark border rounded-pill py-2 px-3 small fw-normal" style="font-size:0.75rem;">Unified Data</span>
+                        <span class="badge bg-light text-dark border rounded-pill py-2 px-3 small fw-normal" style="font-size:0.75rem;">Hybrid Cloud</span>
                     </div>
                 </div>
             </div>
 
-            <div class="col-12 col-lg-7 d-flex">
-                <div class="row g-4 w-100 m-0">
+            <div class="col-lg-4 d-flex">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 premium-card-hover bg-white w-100 flex-column d-flex">
+                    <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3 flex-shrink-0">
+                        <h5 class="fw-bold mb-0" style="font-size:1.05rem;"><i class="fas fa-gears text-primary me-2"></i>Core Capabilities</h5>
+                        <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary fw-semibold small px-2 py-1" style="font-size:0.7rem;">Enterprise-Grade</span>
+                    </div>
                     
-                    <div class="col-12 col-md-6 d-flex p-0 pe-md-2">
-                        <div class="bg-white p-4 rounded-4 shadow-sm border border-light-subtle w-100 d-flex flex-column">
-                            <div class="d-flex align-items-center justify-content-between gap-2 mb-3 pb-3 border-bottom">
-                                <h5 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size: 1rem;">
-                                    <i class="bi bi-cpu" style="color: var(--atna-secondary);"></i> Key Capabilities
-                                </h5>
-                                <span class="badge rounded-pill fw-semibold" style="background: rgba(47,124,255,0.1); color: var(--atna-secondary); font-size: 0.72rem;">
-                                    Capabilities Array
-                                </span>
+                    <div class="d-flex flex-column gap-3 flex-grow-1 justify-content-center">
+                        <div class="d-flex align-items-center gap-3 p-2 rounded-3 hover-bg-light transition-all" style="cursor: default;">
+                            <div class="bg-light rounded-circle p-2 d-flex align-items-center justify-content-center text-primary flex-shrink-0" style="width: 38px; height: 38px;">
+                                <i class="fas fa-cloud-arrow-up"></i>
                             </div>
+                            <span class="fw-medium text-dark small" style="font-size:0.85rem;">Cloud Migration &amp; Modernization</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 p-2 rounded-3 hover-bg-light transition-all" style="cursor: default;">
+                            <div class="bg-light rounded-circle p-2 d-flex align-items-center justify-content-center text-primary flex-shrink-0" style="width: 38px; height: 38px;">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <span class="fw-medium text-dark small" style="font-size:0.85rem;">Data Analytics &amp; BI Solutions</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3 p-2 rounded-3 hover-bg-light transition-all" style="cursor: default;">
+                            <div class="bg-light rounded-circle p-2 d-flex align-items-center justify-content-center text-primary flex-shrink-0" style="width: 38px; height: 38px;">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <span class="fw-medium text-dark small" style="font-size:0.85rem;">Power Platform Automation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                            <div class="partner-scroll-box w-100 flex-grow-1">
-                                <div class="row g-2 m-0 p-0">
-                                    <?php if (!empty($gallery)): foreach ($gallery as $key => $value): if (!empty($value['list'])): foreach ($value['list'] as $row): ?>
-                                    <div class="col-12 col-sm-6 p-1">
-                                        <div class="logo-grid-cell d-flex flex-column align-items-center justify-content-center h-100 text-center" title="<?php echo !empty($row->name) ? htmlspecialchars($row->name) : 'Partner Alliance'; ?>">
-                                            <div class="d-flex align-items-center justify-content-center mb-1" style="height: 44px; width: 100%;">
-                                                <img src="<?php echo !empty($row->image) ? base_url($row->image) : base_url($config_logo); ?>" loading="lazy" alt="<?php echo !empty($row->name) ? htmlspecialchars($row->name) : 'Partner Logo'; ?>" style="max-height: 34px; object-fit: contain;">
-                                            </div>
-                                            <?php if (!empty($row->name)): ?>
-                                                <span class="d-block text-dark fw-semibold text-truncate w-100 px-1 mt-1" style="font-size: 0.72rem;">
-                                                    <?php echo htmlspecialchars($row->name); ?>
-                                                </span>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                    <?php endforeach; endif; endforeach; else: ?>
-                                        <?php 
-                                        $fallback_caps = [
-                                            'Dynamics 365 Business Central', 'Dynamics 365 Customer Engagement', 
-                                            'Microsoft Azure Platform', 'Microsoft Power Platform', 
-                                            'Microsoft Fabric Infrastructure', 'Advanced Power BI Analytics', 
-                                            'AI Systems & Copilot Architectures', 'Application Modernization'
-                                        ];
-                                        foreach($fallback_caps as $fc): ?>
-                                        <div class="col-12 p-1">
-                                            <div class="d-flex align-items-center gap-2 p-2 bg-light rounded-3 border w-100">
-                                                <i class="bi bi-patch-check-fill text-primary small flex-shrink-0"></i>
-                                                <span class="small fw-semibold text-dark text-truncate"><?php echo $fc; ?></span>
-                                            </div>
-                                        </div>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </div>
+            <div class="col-lg-4 d-flex">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 premium-card-hover w-100 flex-column d-flex" style="background: linear-gradient(135deg, #f8f9fb 0%, #ffffff 100%);">
+                    <h5 class="fw-bold mb-4 pb-3 border-bottom flex-shrink-0" style="font-size:1.05rem;"><i class="fas fa-circle-check text-success me-2"></i>Strategic Benefits</h5>
+                    
+                    <div class="d-flex flex-column gap-3 flex-grow-1 justify-content-center">
+                        <div class="benefit-item d-flex align-items-start gap-3">
+                            <div class="bg-success bg-opacity-10 text-success rounded-circle p-1 mt-1 flex-shrink-0 d-inline-flex align-items-center justify-content-center" style="width:24px; height:24px;">
+                                <i class="fas fa-check" style="font-size: 0.7rem;"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">Reduce Time-to-Value</h6>
+                                <span class="text-muted d-block mt-1" style="font-size:0.8rem; line-height:1.4;">Pre-built accelerators cut deployment timelines by up to 40%.</span>
+                            </div>
+                        </div>
+                        <div class="benefit-item d-flex align-items-start gap-3">
+                            <div class="bg-success bg-opacity-10 text-success rounded-circle p-1 mt-1 flex-shrink-0 d-inline-flex align-items-center justify-content-center" style="width:24px; height:24px;">
+                                <i class="fas fa-check" style="font-size: 0.7rem;"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">Future-Proof Architecture</h6>
+                                <span class="text-muted d-block mt-1" style="font-size:0.8rem; line-height:1.4;">Scalable cloud foundations built for modern enterprise growth.</span>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-12 col-md-6 d-flex p-0 ps-md-2">
-                        <div class="bg-white p-4 rounded-4 shadow-sm border border-light-subtle w-100 d-flex flex-column">
-                            <div class="d-flex align-items-center gap-2 mb-3 pb-3 border-bottom">
-                                <h5 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size: 1rem;">
-                                    <i class="bi bi-shield-check text-success"></i> Business Benefits
-                                </h5>
-                            </div>
-                            <ul class="list-unstyled d-flex flex-column gap-3 mb-0 justify-content-center flex-grow-1">
-                                <li class="d-flex align-items-start gap-3 p-1">
-                                    <i class="bi bi-check-lg text-success fw-bold fs-5 flex-shrink-0" style="line-height: 1;"></i>
-                                    <span class="small fw-semibold text-muted">Accelerate digital transformation initiatives</span>
-                                </li>
-                                <li class="d-flex align-items-start gap-3 p-1">
-                                    <i class="bi bi-check-lg text-success fw-bold fs-5 flex-shrink-0" style="line-height: 1;"></i>
-                                    <span class="small fw-semibold text-muted">Improve operational infrastructure metrics</span>
-                                </li>
-                                <li class="d-flex align-items-start gap-3 p-1">
-                                    <i class="bi bi-check-lg text-success fw-bold fs-5 flex-shrink-0" style="line-height: 1;"></i>
-                                    <span class="small fw-semibold text-muted">Gain global operations deployment visibility</span>
-                                </li>
-                                <li class="d-flex align-items-start gap-3 p-1">
-                                    <i class="bi bi-check-lg text-success fw-bold fs-5 flex-shrink-0" style="line-height: 1;"></i>
-                                    <span class="small fw-semibold text-muted">Enable secure multi-region architecture scaling</span>
-                                </li>
-                                <li class="d-flex align-items-start gap-3 p-1">
-                                    <i class="bi bi-check-lg text-success fw-bold fs-5 flex-shrink-0" style="line-height: 1;"></i>
-                                    <span class="small fw-semibold text-muted">Drive intelligent data-driven analytical insights</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
@@ -536,15 +416,15 @@ $transparentHeader = true;
             <div class="col-lg-8 text-center">
                 <span class="text-uppercase fw-bold small tracking-wider mb-2 d-block" style="color: var(--atna-secondary);">Industry Solutions Framework</span>
                 <h2 class="h2 fw-bold text-dark mb-2">Targeted Vertical Applications</h2>
-                <p class="text-muted mb-0">Our partner ecosystem enables us to deliver specialized systems designed specifically for unique manufacturing, retail, distribution and service environments.</p>
+                <p class="text-muted mb-0">Our partner ecosystem enables us to deliver specialized enterprise architecture maps configured uniquely for core target sectors.</p>
             </div>
         </div>
         <div class="row g-4">
-            <div class="col-xl-3 col-md-6">
-                <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover">
+            <div class="col-xl-3 col-md-6 d-flex">
+                <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover w-100 d-flex flex-column">
                     <div class="icon-wrapper-circle mb-3"><i class="bi bi-buildings"></i></div>
                     <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom">Manufacturing</h5>
-                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0">
+                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0 flex-grow-1 justify-content-center">
                         <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Production Planning Engines</li>
                         <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Multi-Warehouse Optimization</li>
                         <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Supply Chain Integrations</li>
@@ -552,11 +432,11 @@ $transparentHeader = true;
                     </ul>
                 </div>
             </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover">
+            <div class="col-xl-3 col-md-6 d-flex">
+                <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover w-100 d-flex flex-column">
                     <div class="icon-wrapper-circle mb-3"><i class="bi bi-cart3"></i></div>
                     <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom">Retail &amp; Distribution</h5>
-                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0">
+                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0 flex-grow-1 justify-content-center">
                         <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Automated Omni-Channel Control</li>
                         <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Dynamic Demand Forecasting</li>
                         <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Modern Barcode System Flows</li>
@@ -564,11 +444,11 @@ $transparentHeader = true;
                     </ul>
                 </div>
             </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover">
+            <div class="col-xl-3 col-md-6 d-flex">
+                <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover w-100 d-flex flex-column">
                     <div class="icon-wrapper-circle mb-3"><i class="bi bi-tags"></i></div>
                     <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom">Textile &amp; Apparel</h5>
-                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0">
+                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0 flex-grow-1 justify-content-center">
                         <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Advanced Production Tracking</li>
                         <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Global Currency Trade Logic</li>
                         <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Raw Inventory Management</li>
@@ -576,11 +456,11 @@ $transparentHeader = true;
                     </ul>
                 </div>
             </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover">
+            <div class="col-xl-3 col-md-6 d-flex">
+                <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover w-100 d-flex flex-column">
                     <div class="icon-wrapper-circle mb-3"><i class="bi bi-cup-hot"></i></div>
                     <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom">Food &amp; Beverage</h5>
-                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0">
+                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0 flex-grow-1 justify-content-center">
                         <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Standard Batch Traceability</li>
                         <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Compliance &amp; Regulation Matrix</li>
                         <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Secure Vendor Management</li>
@@ -679,19 +559,19 @@ $transparentHeader = true;
                                 Certified Ecosystem Footprint
                             </h4>
                             <div class="row g-0 ms-stat-grid">
-                                <div class="col-6 ms-stat-cell border-right-md border-bottom-md">
+                                <div class="col-6 p-3 border-end border-bottom">
                                     <p class="fw-bold mb-1 text-primary h2">250+</p>
                                     <span class="small text-muted fw-semibold">Global Clients</span>
                                 </div>
-                                <div class="col-6 ms-stat-cell border-bottom-md">
+                                <div class="col-6 p-3 border-bottom">
                                     <p class="fw-bold mb-1 text-primary h2">100+</p>
                                     <span class="small text-muted fw-semibold">Deployments</span>
                                 </div>
-                                <div class="col-6 ms-stat-cell border-right-md">
+                                <div class="col-6 p-3 border-end">
                                     <p class="fw-bold mb-1 text-primary h2">20+</p>
                                     <span class="small text-muted fw-semibold">Years Active</span>
                                 </div>
-                                <div class="col-6 ms-stat-cell">
+                                <div class="col-6 p-3">
                                     <p class="fw-bold mb-1 text-primary h2">20+</p>
                                     <span class="small text-muted fw-semibold">Regions Served</span>
                                 </div>
@@ -738,76 +618,58 @@ $transparentHeader = true;
     </div>
 </section>
 
-<div class="bg-gradient-enterprise text-white py-5 position-relative overflow-hidden">
+<div class="bg-enterprise-dark text-white py-5 position-relative overflow-hidden">
     <div class="container-xl position-relative" style="z-index: 2;">
         <div class="row g-4 justify-content-center align-items-center text-center">
             <div class="col-6 col-md-3">
                 <p class="display-5 fw-bold mb-1 text-info">250+</p>
-                <span class="small text-uppercase tracking-wider opacity-75 fw-semibold">Global Customers</span>
+                <span class="small text-uppercase tracking-wider opacity-75 fw-semibold" style="font-size:0.75rem;">Global Customers</span>
             </div>
-            <div class="col-6 col-md-3 border-start-md border-light border-opacity-20">
+            <div class="col-6 col-md-3 border-start border-light border-opacity-20">
                 <p class="display-5 fw-bold mb-1 text-info">100+</p>
-                <span class="small text-uppercase tracking-wider opacity-75 fw-semibold">Live Systems</span>
+                <span class="small text-uppercase tracking-wider opacity-75 fw-semibold" style="font-size:0.75rem;">Live Systems</span>
             </div>
-            <div class="col-6 col-md-3 border-start-md border-light border-opacity-20">
+            <div class="col-6 col-md-3 border-start border-light border-opacity-20">
                 <p class="display-5 fw-bold mb-1 text-info">20+</p>
-                <span class="small text-uppercase tracking-wider opacity-75 fw-semibold">Countries Active</span>
+                <span class="small text-uppercase tracking-wider opacity-75 fw-semibold" style="font-size:0.75rem;">Countries Active</span>
             </div>
-            <div class="col-6 col-md-3 border-start-md border-light border-opacity-20">
+            <div class="col-6 col-md-3 border-start border-light border-opacity-20">
                 <p class="display-5 fw-bold mb-1 text-info">20+</p>
-                <span class="small text-uppercase tracking-wider opacity-75 fw-semibold">Years Experience</span>
+                <span class="small text-uppercase tracking-wider opacity-75 fw-semibold" style="font-size:0.75rem;">Years Experience</span>
             </div>
         </div>
     </div>
 </div>
 
-<section id="contact" class="sec-vpad bg-white">
-    <div class="container-xl">
-        <div class="row align-items-center g-4 g-lg-5">
 
-            <div class="col-12 col-lg-6 text-center text-lg-start">
-                <span class="text-uppercase fw-bold small tracking-wider mb-2 d-block" style="color: var(--atna-secondary);">Initiate Operational Discovery</span>
-                <h2 class="display-5 fw-bold text-dark mb-4">Let's Build Future Systems Together</h2>
-                <p class="text-muted fs-5 mb-0 lh-base">Connect with an enterprise applications systems architect today to conduct structured architecture gap analyses and product discovery tracks.</p>
-            </div>
-
-            <div class="col-12 col-lg-6 d-flex justify-content-center justify-content-lg-end">
-                <div class="card border-0 shadow-lg p-4 p-md-5 rounded-4 bg-light text-center w-100" style="max-width: 500px;">
-                    <div class="icon-wrapper-circle mx-auto mb-3" style="width: 66px; height: 66px; font-size: 1.7rem; background: rgba(13,44,108,0.06); color: var(--atna-primary);">
-                        <i class="bi bi-headset"></i>
-                    </div>
-                    <h4 class="fw-bold text-dark mb-2 h4 pb-2 border-bottom">Schedule Technical Consultation</h4>
-                    <p class="text-muted small mb-4">Have precise deployment landscape or database logic synchronization queries? Our discovery team coordinates custom diagnostic reviews.</p>
-
-                    <div class="d-flex flex-column gap-3 mb-4 text-start">
-                        <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-3 border border-light-subtle shadow-sm">
-                            <i class="bi bi-telephone text-primary fs-4 flex-shrink-0"></i>
-                            <div class="min-width-0 overflow-hidden">
-                                <span class="d-block text-muted fw-bold text-uppercase mb-1" style="font-size: 0.65rem;">Direct Core Line</span>
-                                <a href="tel:+15550199234" class="fw-bold text-dark text-decoration-none">+1 (555) 0199-234</a>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center gap-3 p-3 bg-white rounded-3 border border-light-subtle shadow-sm">
-                            <i class="bi bi-envelope text-primary fs-4 flex-shrink-0"></i>
-                            <div class="min-width-0 overflow-hidden">
-                                <span class="d-block text-muted fw-bold text-uppercase mb-1" style="font-size: 0.65rem;">Enterprise Inquiries</span>
-                                <a href="mailto:alliances@atnatechnologies.com" class="fw-bold text-dark text-decoration-none text-break">alliances@atnatechnologies.com</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-column gap-2">
-                        <a href="mailto:alliances@atnatechnologies.com" class="btn btn-lg w-100 py-3 fw-bold rounded-3 border-0 shadow-sm text-white" style="background-color: var(--atna-primary); font-size: 0.95rem;">
-                            Request Ecosystem Discovery
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var swiper = new Swiper(".partnerSwiper", {
+            slidesPerView: 4,
+            spaceBetween: 30,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            navigation: {
+                nextEl: ".partner-next",
+                prevEl: ".partner-prev",
+            },
+            breakpoints: {
+                0: { slidesPerView: 1, spaceBetween: 15 },
+                480: { slidesPerView: 2, spaceBetween: 15 },
+                768: { slidesPerView: 3, spaceBetween: 20 },
+                1024: { slidesPerView: 4, spaceBetween: 30 },
+            }
+        });
+    });
+</script>
+
 <?php echo $this->include('frontend/includes/bottom_section'); ?>
 <?php $this->endSection(); ?>

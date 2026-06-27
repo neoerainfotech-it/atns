@@ -4,18 +4,22 @@ $this->section('page');
 $transparentHeader = true;
 ?>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
 <style>
     /* ==========================================================================
-       PREMIUM ENTERPRISE UI CONFIGURATIONS
+       PREMIUM ENTERPRISE UI CONFIGURATIONS — CALIBRATED FOR BRAND METRICS
        ========================================================================== */
     :root {
-        --navy-deep: #0a1a3a;
-        --navy-dark: #0d2742;
-        --primary-blue: #2f7cff;
-        --light-blue: #eaf3ff;
-        --accent-cyan: #00d4ff;
-        --text-dark: #1a202c;
-        --text-muted: #64748b;
+        --navy-deep:  #0083BF; /* Your exact corporate color standard token */
+        --navy-dark: #005d94; /* High-contrast deeper blue fallback tint */
+        --primary-blue: #0083BF;
+        --light-blue: #f0f9ff; /* Soft contrast sky background tint */
+        --accent-cyan: #00e5ff; /* Hyper-vibrant cyan accent element text */
+        --text-dark: #0f172a;
+        --text-muted: #475569;
         --border-light: #e2e8f0;
     }
 
@@ -32,54 +36,54 @@ $transparentHeader = true;
         position: relative;
         width: 100%;
         padding: 140px 0 100px 0;
-        background-color: #0F172A;
+        background-color: var(--navy-deep);
         background-size: cover;
         background-position: center;
         overflow: hidden;
-        border-bottom: 4px solid rgba(47, 124, 255, 0.1);
+        border-bottom: 4px solid rgba(0, 131, 191, 0.15);
     }
 
     .hero-network-overlay {
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background-image: radial-gradient(circle at 20% 50%, rgba(47, 124, 255, 0.15) 0%, transparent 60%),
-                          radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
+        background-image: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.12) 0%, transparent 60%),
+                          radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.15) 0%, transparent 50%);
         z-index: 1; pointer-events: none;
     }
     .hero-network-overlay::after {
         content: ''; position: absolute; top: 10%; left: 10%; width: 80%; height: 80%;
-        background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%232f7cff' stroke-width='0.5' stroke-opacity='0.2'%3E%3Cpath d='M100 0v200M0 100h200'/%3E%3C/g%3E%3Ccircle cx='100' cy='100' r='3' fill='%2300d4ff' fill-opacity='0.4'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23ffffff' stroke-width='0.5' stroke-opacity='0.15'%3E%3Cpath d='M100 0v200M0 100h200'/%3E%3C/g%3E%3Ccircle cx='100' cy='100' r='3' fill='%2300e5ff' fill-opacity='0.4'/%3E%3C/svg%3E");
         background-size: 60px 60px; opacity: 0.6;
     }
 
     .hero-content-wrapper { position: relative; z-index: 2; }
     .hero-breadcrumb-pill {
-        display: inline-block; background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 16px;
+        display: inline-block; background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2); padding: 6px 16px;
         border-radius: 50px; font-size: 0.75rem; font-weight: 600;
-        color: #94a3b8; letter-spacing: 0.05em; margin-bottom: 20px;
+        color: #f1f5f9; letter-spacing: 0.05em; margin-bottom: 20px;
     }
     .hero-headline {
         font-size: 3.2rem; font-weight: 700; color: #ffffff; line-height: 1.2; margin-bottom: 20px;
     }
-    .hero-headline span { color: var(--accent-cyan); }
+    .hero-headline span { color: var(--accent-cyan); text-shadow: 0 2px 10px rgba(0, 229, 255, 0.2); }
     .hero-desc {
-        font-size: 1.1rem; line-height: 1.6; color: #cbd5e1; max-width: 550px; margin-bottom: 30px;
+        font-size: 1.1rem; line-height: 1.6; color: #f1f5f9; max-width: 550px; margin-bottom: 30px;
     }
     .hero-cta-group .btn { padding: 12px 28px; font-weight: 600; border-radius: 6px; margin-right: 12px; }
-    .btn-primary-custom { background-color: var(--primary-blue); border: none; color: #fff; }
-    .btn-primary-custom:hover { background-color: #2663d6; color: #fff; }
-    .btn-outline-light-custom { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; }
-    .btn-outline-light-custom:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: #fff; }
+    .btn-primary-custom { background-color: #ffffff; border: none; color: var(--navy-deep); }
+    .btn-primary-custom:hover { background-color: #f8fafc; color: var(--navy-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+    .btn-outline-light-custom { background: transparent; border: 1px solid rgba(255,255,255,0.4); color: #fff; }
+    .btn-outline-light-custom:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: #fff; transform: translateY(-2px); }
 
     .hero-stat-pills-wrapper {
         display: flex; flex-wrap: wrap; gap: 15px; justify-content: flex-end; align-items: flex-end; height: 100%; padding-bottom: 10px;
     }
     .hero-stat-pill {
-        background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.08);
-        padding: 15px 25px; border-radius: 8px; text-align: center; backdrop-filter: blur(4px); flex: 0 1 auto;
+        background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.15);
+        padding: 15px 25px; border-radius: 8px; text-align: center; backdrop-filter: blur(6px); flex: 0 1 auto;
     }
     .hero-stat-pill h4 { color: #fff; font-size: 1.6rem; font-weight: 700; margin: 0; line-height: 1; }
-    .hero-stat-pill p { color: #94a3b8; font-size: 0.75rem; margin: 8px 0 0 0; text-transform: uppercase; letter-spacing: 0.05em; }
+    .hero-stat-pill p { color: #e2e8f0; font-size: 0.75rem; margin: 8px 0 0 0; text-transform: uppercase; letter-spacing: 0.05em; }
 
     /* ==========================================================================
        PRODUCT DETAILS CANVAS WITH GLOW EFFECTS
@@ -97,19 +101,13 @@ $transparentHeader = true;
         right: -10%;
         width: 600px;
         height: 600px;
-        background: radial-gradient(circle, rgba(47, 124, 255, 0.04) 0%, rgba(255,255,255,0) 70%);
+        background: radial-gradient(circle, rgba(0, 131, 191, 0.05) 0%, rgba(255,255,255,0) 70%);
         z-index: 1;
         pointer-events: none;
     }
 
-    .asymmetrical-canvas-row {
-        position: relative;
-        z-index: 2;
-    }
-
-    .narrative-content-block {
-        padding-right: 30px;
-    }
+    .asymmetrical-canvas-row { position: relative; z-index: 2; }
+    .narrative-content-block { padding-right: 30px; }
 
     .badge-interactive-tech {
         display: inline-flex;
@@ -124,6 +122,7 @@ $transparentHeader = true;
         letter-spacing: 0.02em;
         text-transform: uppercase;
         margin-bottom: 25px;
+        border: 1px solid rgba(0, 131, 191, 0.1);
     }
 
     .prose-gradient-lead {
@@ -158,7 +157,7 @@ $transparentHeader = true;
         position: relative;
         border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 20px 50px rgba(10, 26, 58, 0.08);
+        box-shadow: 0 20px 50px rgba(0, 131, 191, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.8);
         background: #fff;
     }
@@ -177,7 +176,7 @@ $transparentHeader = true;
         height: 80px;
         border-radius: 12px;
         background: linear-gradient(135deg, var(--primary-blue), var(--accent-cyan));
-        opacity: 0.08;
+        opacity: 0.1;
         z-index: -1;
     }
     .chip-top-left { top: -20px; left: -20px; transform: rotate(-15deg); }
@@ -188,8 +187,8 @@ $transparentHeader = true;
         bottom: 25px;
         left: -20px;
         background: #ffffff;
-        border: 1px solid var(--border-light);
-        box-shadow: 0 15px 35px rgba(10, 26, 58, 0.08);
+        border: 1px solid rgba(0, 131, 191, 0.15);
+        box-shadow: 0 15px 35px rgba(0, 131, 191, 0.1);
         padding: 16px 22px;
         border-radius: 14px;
         display: flex;
@@ -201,7 +200,7 @@ $transparentHeader = true;
     .floating-feature-indicator i {
         width: 36px;
         height: 36px;
-        background: #2f7cff;
+        background: var(--primary-blue);
         color: #fff;
         border-radius: 50%;
         display: flex;
@@ -209,7 +208,7 @@ $transparentHeader = true;
         justify-content: center;
         font-size: 0.95rem;
     }
-    .floating-feature-indicator span { font-size: 0.85rem; font-weight: 700; color: var(--navy-deep); white-space: nowrap; }
+    .floating-feature-indicator span { font-size: 0.85rem; font-weight: 700; color: var(--text-dark); white-space: nowrap; }
 
     @keyframes floatYElement {
         0%, 100% { transform: translateY(0); }
@@ -220,21 +219,21 @@ $transparentHeader = true;
     .showroom-glass-enclosure:hover .showroom-inner-canvas img { transform: scale(1.03); }
 
     /* ==========================================================================
-       NEW REDESIGNED SECTION: PARTNER ECOSYSTEM INFINITE LOGO MARQUEE (TECH BLUE)
+       PARTNER ECOSYSTEM LOGO CAROUSEL TRACK
        ========================================================================== */
     .partner-ecosystem-section { 
         padding: 80px 0; 
-        background: linear-gradient(135deg, #0B1936 0%, #0F274D 50%, #08142B 100%); 
+        background: linear-gradient(135deg, #0083BF 0%, #006b99 50%, #005473 100%); 
         position: relative;
         overflow: hidden;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .partner-ecosystem-section::before {
         content: '';
         position: absolute; top: -50%; left: -20%; width: 600px; height: 600px;
-        background: radial-gradient(circle, rgba(47, 124, 255, 0.12) 0%, transparent 60%);
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
         pointer-events: none;
     }
 
@@ -246,74 +245,98 @@ $transparentHeader = true;
         color: var(--accent-cyan); 
         margin-bottom: 40px; 
         text-align: center;
-        text-shadow: 0 2px 10px rgba(0, 212, 255, 0.2);
+        text-shadow: 0 2px 10px rgba(0, 229, 255, 0.2);
     }
 
-    /* Infinite Track Slider Architecture Container */
-    .partner-marquee-viewport {
-        overflow: hidden;
-        width: 100%;
-        position: relative;
-        display: flex;
-        mask-image: linear-gradient(to right, transparent 0%, #000 15%, #000 85%, transparent 100%);
-        -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 15%, #000 85%, transparent 100%);
-    }
+   /* ==========================================================================
+   PARTNER ECOSYSTEM LOGO CAROUSEL TRACK (RE-ENGINEERED FOR INFINITE LOOP)
+   ========================================================================== */
+.partner-ecosystem-section { 
+    padding: 80px 0; 
+    background: linear-gradient(135deg, #0083BF 0%, #006b99 50%, #005473 100%); 
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-    .partner-marquee-track {
-        display: flex;
-        width: max-content;
-        animation: marqueeContinuous linear infinite 25s;
-        gap: 30px;
-        align-items: center;
-    }
+.partner-marquee-viewport {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    display: flex;
+    mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
+}
 
-    .partner-marquee-track:hover {
-        animation-play-state: paused;
-    }
+.partner-marquee-track {
+    display: flex;
+    width: max-content;
+    gap: 30px; /* Kept perfectly constant across items */
+    align-items: center;
+    padding-right: 30px; /* Match the exact gap width to keep layout math seamless */
+    animation: professionalMarqueeLoop 25s linear infinite;
+}
 
-    /* Glassmorphic Logo Card Nodes */
-    .partner-logo-card {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.07);
-        padding: 20px 35px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 200px;
-        height: 85px;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+.partner-marquee-track:hover {
+    animation-play-state: paused;
+}
 
-    .partner-logo-card img {
-        max-width: 140px;
-        max-height: 45px;
-        object-fit: contain;
-        filter: brightness(0) invert(1) opacity(0.75);
-        transition: all 0.3s ease;
-    }
+.partner-logo-card {
+    background: #ffffff; /* Soft background contrast for colored logos */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 35px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 200px;
+    height: 85px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+}
 
-    /* Hover Micro-lighting Trace */
-    .partner-logo-card:hover {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(0, 212, 255, 0.3);
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(0, 212, 255, 0.1);
-    }
+.partner-logo-card img {
+    max-width: 140px;
+    max-height: 45px;
+    object-fit: contain;
+    /* REMOVED brightness(0) invert(1) so native colors show. 
+       Added 30% grayscale and 0.75 opacity for a clean, unified enterprise baseline. */
+    filter: grayscale(30%) opacity(0.75);
+    transition: all 0.4s ease;
+}
 
-    .partner-logo-card:hover img {
-        filter: brightness(0) invert(1) opacity(1);
-    }
+/* ==========================================================================
+   HOVER STATES — SMOOTH ENTITY VIBRANCY TRANSITION
+   ========================================================================== */
+.partner-logo-card:hover {
+    background: rgba(255, 255, 255, 1); /* Solid white background pops the corporate colors beautifully */
+    border-color: var(--accent-cyan);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 131, 191, 0.2);
+}
 
-    @keyframes marqueeContinuous {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
+.partner-logo-card:hover img { 
+    /* Restores absolute native colors and full crisp clarity instantly on hover */
+    filter: grayscale(0%) opacity(1); 
+}
+
+/* Since we cloned the items into 4 blocks to safely cover 4K/Ultra-wide screens, 
+   translating by exactly -25% lines up the pattern seamlessly without a single pixel skip.
+*/
+@keyframes professionalMarqueeLoop {
+    0% {
+        transform: translateX(0);
     }
+    100% {
+        transform: translateX(-25%);
+    }
+}
 
     /* ==========================================================================
-       KEY FEATURES SHOWCASE (ANIMATED GRID DESIGN)
+       KEY FEATURES SHOWCASE (ANIMATED BENTO GRID)
        ========================================================================== */
     .premium-features-section { 
         padding: 100px 0; 
@@ -321,7 +344,8 @@ $transparentHeader = true;
         border-top: 1px solid var(--border-light);
         border-bottom: 1px solid var(--border-light);
     }
-    .section-title { font-size: 2.4rem; font-weight: 700; color: var(--navy-deep); margin-bottom: 15px; line-height: 1.2; }
+    .section-title { font-size: 2.4rem; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; line-height: 1.2; }
+    .section-title span { color: var(--primary-blue); }
     .section-desc { color: var(--text-muted); font-size: 1.05rem; max-width: 650px; margin-bottom: 0; line-height: 1.6; }
 
     .features-animated-grid {
@@ -342,7 +366,7 @@ $transparentHeader = true;
         flex-direction: column;
         justify-content: space-between;
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        box-shadow: 0 4px 20px rgba(10, 26, 58, 0.015);
+        box-shadow: 0 4px 20px rgba(0, 131, 191, 0.015);
     }
 
     .feature-index-node {
@@ -351,7 +375,7 @@ $transparentHeader = true;
         right: 30px;
         font-size: 2.8rem;
         font-weight: 900;
-        color: rgba(47, 124, 255, 0.05);
+        color: rgba(0, 131, 191, 0.04);
         line-height: 1;
         user-select: none;
         transition: color 0.3s ease;
@@ -369,12 +393,13 @@ $transparentHeader = true;
         font-size: 1.25rem;
         margin-bottom: 30px;
         transition: all 0.3s ease;
+        border: 1px solid rgba(0, 131, 191, 0.1);
     }
 
     .feature-bento-card h5 {
         font-size: 1.2rem;
         font-weight: 700;
-        color: var(--navy-deep);
+        color: var(--text-dark);
         margin-bottom: 12px;
         position: relative;
         z-index: 2;
@@ -401,12 +426,12 @@ $transparentHeader = true;
 
     .feature-bento-card:hover {
         transform: translateY(-6px);
-        border-color: rgba(47, 124, 255, 0.25);
-        box-shadow: 0 20px 40px rgba(10, 26, 58, 0.05);
+        border-color: rgba(0, 131, 191, 0.25);
+        box-shadow: 0 20px 40px rgba(0, 131, 191, 0.05);
     }
     .feature-bento-card:hover::after { transform: scaleX(1); }
     .feature-bento-card:hover .feature-icon-badge { background: var(--primary-blue); color: #ffffff; }
-    .feature-bento-card:hover .feature-index-node { color: rgba(47, 124, 255, 0.12); }
+    .feature-bento-card:hover .feature-index-node { color: rgba(0, 131, 191, 0.12); }
 
     /* ==========================================================================
        WHY PARTNERSHIPS MATTER
@@ -416,8 +441,8 @@ $transparentHeader = true;
     .why-partnerships-section .section-desc { text-align: center; max-width: 600px; margin: 0 auto 50px auto; }
     .why-card { background: #fff; padding: 35px 25px; border-radius: 12px; border: 1px solid var(--border-light); height: 100%; transition: transform 0.3s ease, box-shadow 0.3s ease; }
     .why-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.06); }
-    .why-icon-wrap { width: 60px; height: 60px; background: var(--light-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; color: var(--primary-blue); font-size: 1.5rem; }
-    .why-card h5 { font-size: 1.05rem; font-weight: 700; color: var(--navy-deep); margin-bottom: 10px; }
+    .why-icon-wrap { width: 60px; height: 60px; background: var(--light-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; color: var(--primary-blue); font-size: 1.5rem; border: 1px solid rgba(0, 131, 191, 0.1); }
+    .why-card h5 { font-size: 1.05rem; font-weight: 700; color: var(--text-dark); margin-bottom: 10px; }
     .why-card p { font-size: 0.9rem; color: var(--text-muted); margin: 0; line-height: 1.6; }
 
     /* ==========================================================================
@@ -426,14 +451,14 @@ $transparentHeader = true;
     .cases { padding: 80px 0; background: #fff; }
     .cases .nav-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
     .cases .nav-pills .nav-link {
-        color: var(--primary-blue); font-weight: 500; font-size: 1rem;
-        border-radius: 6px; padding: 10px 24px; background: transparent;
-        border: 1px solid transparent; transition: all 0.3s ease;
+        color: var(--primary-blue); font-weight: 600; font-size: 1rem;
+        border-radius: 6px; padding: 10px 24px; background: var(--light-blue);
+        border: 1px solid rgba(0, 131, 191, 0.15); transition: all 0.3s ease;
     }
-    .cases .nav-pills .nav-link:hover { background: rgba(47, 124, 255, 0.05); border-color: rgba(47, 124, 255, 0.2); }
+    .cases .nav-pills .nav-link:hover { background: rgba(0, 131, 191, 0.08); }
     .cases .nav-pills .nav-link.active {
         background: var(--primary-blue); color: #ffffff; border-color: var(--primary-blue);
-        box-shadow: 0 4px 10px rgba(47, 124, 255, 0.25);
+        box-shadow: 0 4px 12px rgba(0, 131, 191, 0.25);
     }
     .benefit-desc-text { text-align: left; font-size: 1.05rem; line-height: 1.7; color: var(--text-dark); }
     .video-responsive {
@@ -443,36 +468,43 @@ $transparentHeader = true;
     .video-responsive iframe, .video-responsive video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
     /* ==========================================================================
-       INDUSTRIES WE SERVE
+       INDUSTRIES WE SERVE (SOLID HIGH CONTRAST MATRIX BLOCK)
        ========================================================================== */
-    .industries-section { padding: 80px 0 50px 0; background: linear-gradient(135deg, #0B1936 0%, #0F274D 50%, #08142B 100%); text-align: center; }
+    .industries-section { 
+        padding: 80px 0 50px 0; 
+        background: linear-gradient(135deg, #0083BF 0%, #006b99 100%); 
+        text-align: center; 
+    }
     .industry-card { display: block; text-align: center; margin-bottom: 30px; text-decoration: none; }
     .industry-card img { 
         width: 55px; height: 55px; object-fit: contain; margin-bottom: 15px; 
-        filter: invert(10%) sepia(10%) saturate(0%) hue-rotate(180deg) brightness(90%) contrast(120%);
+        filter: brightness(0) invert(1); /* Forces solid white graphic icons for clean contrast styling */
         transition: all 0.3s ease;
+        opacity: 0.85;
     }
-    .industry-card:hover img { transform: scale(1.1); filter: invert(30%) sepia(100%) saturate(1000%) hue-rotate(210deg) brightness(100%) contrast(100%); }
-    .industry-card h6 { font-size: 1rem; font-weight: 600; color: #fff; margin: 0; }
+    .industry-card:hover img { transform: scale(1.1) translateY(-2px); opacity: 1; }
+    .industry-card h6 { font-size: 1rem; font-weight: 600; color: #ffffff; margin: 0; }
+    .industry-section-desc { color: #e0f2fe !important; font-size: 1.05rem; max-width: 650px; margin: 0 auto; }
 
     /* ==========================================================================
        BOTTOM CTA & TESTIMONIALS SPLIT
        ========================================================================== */
     .bottom-cta-testimonial-section { padding: 80px 0; background: #fff; }
     .cta-left-block { background: var(--navy-deep); padding: 50px; border-radius: 16px; color: #fff; height: 100%; display: flex; flex-direction: column; justify-content: center; }
-    .cta-left-block h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
-    .cta-left-block p { color: #94a3b8; margin-bottom: 30px; font-size: 1rem; line-height: 1.6; }
-    .cta-left-block .btn { padding: 14px 35px; border-radius: 8px; font-weight: 600; }
+    .cta-left-block h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 20px; line-height: 1.2; color: #ffffff; }
+    .cta-left-block p { color: #e0f2fe; margin-bottom: 30px; font-size: 1rem; line-height: 1.6; }
+    .cta-left-block .btn-primary-custom { background-color: #ffffff; color: var(--navy-deep); }
+    .cta-left-block .btn-primary-custom:hover { background-color: #f0f9ff; color: var(--navy-dark); }
 
     .testimonial-right-block { height: 100%; background: #f8fafc; padding: 40px; border-radius: 16px; border: 1px solid var(--border-light); }
     .testimonial-right-block h4 { font-size: 1.2rem; font-weight: 700; color: var(--navy-deep); margin-bottom: 20px; }
     .testimonial-swiper-container { padding-bottom: 40px !important; }
-    .testimonial-item { background: #fff; padding: 30px; border-radius: 12px; border: 1px solid var(--border-light); height: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+    .testimonial-item { background: #fff; padding: 30px; border-radius: 12px; border: 1px solid var(--border-light); height: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
     .testimonial-stars { color: #FFB900; font-size: 0.85rem; margin-bottom: 15px; }
-    .testimonial-text { font-size: 1rem; line-height: 1.7; color: var(--text-dark); margin-bottom: 20px; font-style: italic; }
+    .testimonial-text { font-size: 1rem; line-height: 1.7; color: #334155; margin-bottom: 20px; font-style: italic; }
     .testimonial-author { display: flex; align-items: center; gap: 15px; border-top: 1px solid var(--border-light); padding-top: 20px; }
     .testimonial-author img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-light); }
-    .testimonial-author-info h6 { font-size: 0.9rem; font-weight: 700; margin: 0; color: var(--navy-deep); }
+    .testimonial-author-info h6 { font-size: 0.9rem; font-weight: 700; margin: 0; color: var(--text-dark); }
     .testimonial-author-info span { font-size: 0.8rem; color: var(--text-muted); }
     .swiper-pagination-bullet-active { background: var(--primary-blue) !important; }
 
@@ -504,7 +536,6 @@ $transparentHeader = true;
         .features-animated-grid { grid-template-columns: 1fr; gap: 16px; }
         .partner-logo-card { min-width: 160px; height: 70px; padding: 15px 25px; }
         .partner-logo-card img { max-width: 110px; }
-        .partner-logo-grid { gap: 25px; }
         .why-card { padding: 25px 20px; }
         .cta-left-block { padding: 30px 25px; }
         .cta-left-block h2 { font-size: 1.8rem; }
@@ -537,10 +568,7 @@ $transparentHeader = true;
     }
 </style>
 
-<!-- ==========================================================================
-    HERO SECTION
-    ========================================================================== -->
-<div class="premium-detail-hero-banner" style="<?php echo !empty($detail->hero_banner) ? "background-image: linear-gradient(to right, rgba(10, 26, 58, 0.95) 30%, rgba(10, 26, 58, 0.85) 70%, rgba(10, 26, 58, 0.7) 100%), url('".base_url($detail->hero_banner)."');" : ''; ?>">
+<div class="premium-detail-hero-banner" style="<?php echo !empty($detail->hero_banner) ? "background-image: linear-gradient(to right, rgba(0, 131, 191, 0.95) 30%, rgba(0, 131, 191, 0.85) 70%, rgba(0, 131, 191, 0.7) 100%), url('".base_url($detail->hero_banner)."');" : ''; ?>">
     <div class="hero-network-overlay"></div>
     <div class="container hero-content-wrapper">
         <div class="row align-items-end">
@@ -577,15 +605,11 @@ $transparentHeader = true;
     </div>
 </div>
 
-<!-- ==========================================================================
-    PRODUCT DETAIL SECTION WITH MODERN ASYMMETRICAL LAYOUT
-    ========================================================================== -->
 <section class="product-key-details-section">
     <div class="canvas-ambient-glow"></div>
     <div class="container">
         <div class="row align-items-center asymmetrical-canvas-row">
             
-            <!-- Left Column Component: Text Narrative Box -->
             <div class="col-lg-5 col-md-12">
                 <div class="narrative-content-block" data-cues="slideInLeft">
                     <div class="badge-interactive-tech">
@@ -603,7 +627,6 @@ $transparentHeader = true;
                 </div>
             </div>
 
-            <!-- Right Column Component: Tech Image Showroom Frame -->
             <div class="col-lg-7 col-md-12">
                 <div class="showroom-media-wrapper" data-cues="slideInRight">
                     
@@ -630,9 +653,6 @@ $transparentHeader = true;
     </div>
 </section>
 
-<!-- ==========================================================================
-    NEW UPGRADED SECTION: PARTNER ECOSYSTEM INFINITE LOGO CAROUSEL TRACK
-    ========================================================================== -->
 <section class="partner-ecosystem-section">
     <div class="container-fluid px-0">
         <div class="partner-title">Our Partner Ecosystem</div>
@@ -640,56 +660,30 @@ $transparentHeader = true;
         <div class="partner-marquee-viewport">
             <div class="partner-marquee-track">
                 
-                <?php if (!empty($accreditationsList)): ?>
-                    <!-- Dynamic Stream Loop Iteration A -->
-                    <?php foreach ($accreditationsList as $row): ?>
-                        <div class="partner-logo-card">
-                            <img src="<?php echo base_url($row->image); ?>" alt="<?php echo esc($row->name); ?>">
-                        </div>
-                    <?php endforeach; ?>
-                    <!-- Dynamic Stream Loop Iteration B for Infinite Carousel Seam -->
-                    <?php foreach ($accreditationsList as $row): ?>
-                        <div class="partner-logo-card">
-                            <img src="<?php echo base_url($row->image); ?>" alt="<?php echo esc($row->name); ?>">
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <!-- Accredited Static Framework Badges Fallbacks -->
-                    <div class="partner-logo-card">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft Corporate Identity Badge">
-                    </div>
-                    <div class="partner-logo-card">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS Corporate Identity Badge">
-                    </div>
-                    <div class="partner-logo-card">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg" alt="Google Cloud Corporate Identity Badge">
-                    </div>
-                    <div class="partner-logo-card">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Microsoft_Power_Platform_logo.svg" alt="Power Platform Corporate Identity Badge">
-                    </div>
-                    <!-- Duplicate Static Framework Track Loops for Seam Cover -->
-                    <div class="partner-logo-card">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft Corporate Identity Badge">
-                    </div>
-                    <div class="partner-logo-card">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS Corporate Identity Badge">
-                    </div>
-                    <div class="partner-logo-card">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg" alt="Google Cloud Corporate Identity Badge">
-                    </div>
-                    <div class="partner-logo-card">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Microsoft_Power_Platform_logo.svg" alt="Power Platform Corporate Identity Badge">
-                    </div>
-                <?php endif; ?>
+                <?php 
+                // To prevent the "short-list" gap bug on wide desktop screens,
+                // we loop the list 4 times instead of 2. This ensures the track 
+                // is always wider than any monitor screen.
+                for ($i = 0; $i < 4; $i++): 
+                ?>
+                    <?php if (!empty($accreditationsList)): ?>
+                        <?php foreach ($accreditationsList as $row): ?>
+                            <div class="partner-logo-card">
+                                <img src="<?php echo base_url($row->image); ?>" alt="<?php echo esc($row->name); ?>">
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="partner-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft"></div>
+                        <div class="partner-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS"></div>
+                        <div class="partner-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg" alt="Google Cloud"></div>
+                    <?php endif; ?>
+                <?php endfor; ?>
 
             </div>
         </div>
     </div>
 </section>
 
-<!-- ==========================================================================
-    KEY FEATURES SHOWCASE (ANIMATED GRID DESIGN)
-    ========================================================================== -->
 <section class="premium-features-section" id="explore">
     <div class="container">
         <div class="row mb-4">
@@ -749,9 +743,6 @@ $transparentHeader = true;
     </div>
 </section>
 
-<!-- ==========================================================================
-    WHY PARTNERSHIPS MATTER
-    ========================================================================== -->
 <section class="why-partnerships-section">
     <div class="container">
         <span class="section-tag">Strategic Value</span>
@@ -791,9 +782,6 @@ $transparentHeader = true;
     </div>
 </section>
 
-<!-- ==========================================================================
-    USE CASES (KEY BENEFITS) - TABS + VIDEO SPLIT
-    ========================================================================== -->
 <?php if (!empty($usecasesList)): ?>
 <section class="cases sec-p">
     <div class="container">
@@ -859,17 +847,14 @@ $transparentHeader = true;
 </section>
 <?php endif; ?>
 
-<!-- ==========================================================================
-    INDUSTRIES WE SERVE
-    ========================================================================== -->
 <?php if (!empty($industryList)): ?>
-<section class="industries-section sec-p pb-0">
+<section class="industries-section">
     <div class="container">
         <div class="row align-items-center mb-4">
             <div class="col-lg-9 m-auto">
                 <div class="title-wrap text-center" data-cues="slideInUp">
-                    <h2 class="section-title text-center" style="color: #fff;"><?php echo !empty($detail->industryTitle) ? $detail->industryTitle : 'Industries Applicable'; ?></h2>
-                    <p class="section-desc text-center mx-auto"><?php echo !empty($detail->industryDescription) ? $detail->industryDescription : 'Elevate your core operating parameters across tailored verticals.'; ?></p>
+                    <h2 class="section-title text-center"><?php echo !empty($detail->industryTitle) ? $detail->industryTitle : 'Industries Applicable'; ?></h2>
+                    <p class="industry-section-desc text-center mx-auto"><?php echo !empty($detail->industryDescription) ? $detail->industryDescription : 'Elevate your core operating parameters across tailored verticals.'; ?></p>
                 </div>
             </div>
             
@@ -890,9 +875,6 @@ $transparentHeader = true;
 </section>
 <?php endif; ?>
 
-<!-- ==========================================================================
-    BOTTOM CTA & TESTIMONIALS SPLIT
-    ========================================================================== -->
 <section class="bottom-cta-testimonial-section" id="contact">
     <div class="container">
         <div class="row g-5">
@@ -967,10 +949,9 @@ $transparentHeader = true;
     </div>
 </section>
 
-<!-- Bottom included footer layout paths blocks -->
 <?php echo $this->include('frontend/includes/bottom_section'); ?>
 
-<!-- Swiper Initialization Controller Logic -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var testimonialSwiper = new Swiper('.testimonial-swiper-container', {
