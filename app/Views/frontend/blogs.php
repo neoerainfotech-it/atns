@@ -7,7 +7,7 @@ $this->section('page');
 
 <style>
 /* ============================================================
-   BLOG LISTING PAGE — LIGHT BLUE / WHITE PROFESSIONAL THEME
+    BLOG LISTING PAGE — LIGHT BLUE / WHITE PROFESSIONAL THEME
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
@@ -22,8 +22,8 @@ $this->section('page');
   --clr-text:         #28415A;
   --clr-muted:        #65809B;
 
-  --font-display:     'Sora', system-ui, -apple-system, sans-serif;
-  --font-body:        'Inter', system-ui, -apple-system, sans-serif;
+  --font-display:      'Sora', system-ui, -apple-system, sans-serif;
+  --font-body:         'Inter', system-ui, -apple-system, sans-serif;
 
   --radius-card:       14px;
   --radius-pill:       999px;
@@ -124,55 +124,17 @@ $this->section('page');
   border-color: var(--clr-blue);
 }
 
-/* Updated Image Wrapper Setup */
 .blog-card__img-wrap {
   position: relative;
   overflow: hidden;
-<<<<<<< HEAD
-  background: var(--clr-sky);
-  
-}
-.blog-card__img-wrap::before,
-.blog-card__img-wrap::after {
-  content: "";
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  border: 2px solid var(--clr-white);
-  opacity: 0;
-  transition: opacity var(--ease), transform var(--ease);
-  z-index: 2;
-  pointer-events: none;
-}
-.blog-card__img-wrap::before {
-  top: 10px;
-  left: 10px;
-  border-right: none;
-  border-bottom: none;
-  transform: translate(-4px, -4px);
-}
-.blog-card__img-wrap::after {
-  bottom: 10px;
-  right: 10px;
-  border-left: none;
-  border-top: none;
-  transform: translate(4px, 4px);
-}
-.blog-card:hover .blog-card__img-wrap::before,
-.blog-card:hover .blog-card__img-wrap::after {
-  opacity: 1;
-  transform: translate(0, 0);
-=======
-  background: #FFFFFF; /* Pure white matches the thumbnail canvas backgrounds perfectly */
+  background: #FFFFFF; 
   width: 100%;
   aspect-ratio: 16 / 10;
   border-bottom: 1px solid var(--clr-border);
->>>>>>> d886708e2e80d441e3ae0f385c6d3fc1238a2a5c
 }
 .blog-card__img-wrap img {
   width: 100%;
   height: 100%;
-  /* Contain displays the entire illustration graphic assets gracefully without distortion */
   object-fit: contain !important; 
   object-position: center !important;
   display: block;
@@ -190,15 +152,20 @@ $this->section('page');
 .blog-card__meta {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 16px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
 }
-.blog-card__date {
+.blog-card__date, .blog-card__author {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 13px;
   color: var(--clr-muted);
+}
+.blog-card__author strong {
+  color: var(--clr-navy);
+  font-weight: 600;
 }
 .blog-card__tag {
   display: inline-block;
@@ -305,6 +272,10 @@ $this->section('page');
                     <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="me-1"><rect x="1" y="3" width="14" height="12" rx="2" stroke="#65809B" stroke-width="1.4"/><path d="M5 1v3M11 1v3M1 7h14" stroke="#65809B" stroke-width="1.4" stroke-linecap="round"/></svg>
                     <?php echo $value->publish ? date('d M Y', strtotime($value->publish)) : date('d M Y'); ?>
                   </span>
+                  <span class="blog-card__author">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="5" r="3.3" stroke="#65809B" stroke-width="1.4"/><path d="M2 14c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5" stroke="#65809B" stroke-width="1.4" stroke-linecap="round"/></svg>
+                    Author: <strong><?php echo !empty($value->author_name) ? esc($value->author_name) : 'Editorial Team'; ?></strong>
+                  </span>
                 </div>
                 <h4 class="blog-card__title"><?php echo esc($value->title); ?></h4>
                 <p class="blog-card__excerpt"><?php echo $featuredExcerpt; ?></p>
@@ -348,6 +319,10 @@ $this->section('page');
                   <span class="blog-card__date">
                     <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="me-1"><rect x="1" y="3" width="14" height="12" rx="2" stroke="#65809B" stroke-width="1.4"/><path d="M5 1v3M11 1v3M1 7h14" stroke="#65809B" stroke-width="1.4" stroke-linecap="round"/></svg>
                     <?php echo $value->publish ? date('d M Y', strtotime($value->publish)) : date('d M Y'); ?>
+                  </span>
+                  <span class="blog-card__author">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="5" r="3.3" stroke="#65809B" stroke-width="1.4"/><path d="M2 14c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5" stroke="#65809B" stroke-width="1.4" stroke-linecap="round"/></svg>
+                    Author: <strong><?php echo !empty($value->author_name) ? esc($value->author_name) : 'Editorial Team'; ?></strong>
                   </span>
                 </div>
                 <h4 class="blog-card__title"><?php echo esc($value->title); ?></h4>

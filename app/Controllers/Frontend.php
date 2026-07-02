@@ -536,54 +536,146 @@ function job_detail(){
     
     
     
-     public function partners(){
-      
-    $meta = $this->AdminModel->fs('front_menu',array('link'=>$this->uri->getSegment(1),'status'=>1));
-     if(empty($meta)){
-        return redirect()->to('404');
-    }
-    
-    $data['metaTitle'] = $meta->metaTitle;
-    $data['metaDescription'] =  $meta->metaDescription;
-    $data['metaKeyword'] =  $meta->metaKeyword;
-    $data['meta'] =  $meta;
-    
-    
-     $data['breadcrumbs'] = [];
-
-    $data['breadcrumbs'][] = [
-    'text' => 'Home',
-    'href' => base_url(),
-    'active' =>false
-  ];
-
-  $data['breadcrumbs'][] = [
-    'text' => $meta->name,
-    'href' => base_url($meta->link),
-    'active' =>true
-  ];
-    
-$final = [];
-    $category = $this->AdminModel->all_fetch('partertags',array('status'=>1),'sortOrder','asc');
-    if(!empty($category)){
-        foreach($category as $key => $value){
-            $arr = [];
-            $arr['id'] = $value->id;
-            $arr['name'] = $value->name;
-            $arr['description'] = $value->description;
-             $arr['list'] = $this->AdminModel->all_fetch('partners',array('status'=>1,'tag_id'=>$value->id),'sort_order','asc');
-             $final[] = $arr;
+    public function partners()
+    {
+        // Initialize your database models
+        $model = new \App\Models\Module\PartnerModel();
+        
+        $meta = $this->AdminModel->fs('front_menu', array('link' => $this->uri->getSegment(1), 'status' => 1));
+        if (empty($meta)) {
+            return redirect()->to('404');
         }
+        
+        $data['metaTitle']       = $meta->metaTitle;
+        $data['metaDescription'] = $meta->metaDescription;
+        $data['metaKeyword']     = $meta->metaKeyword;
+        $data['meta']            = $meta;
+        
+        $data['breadcrumbs'] = [];
+        $data['breadcrumbs'][] = [
+            'text'   => 'Home',
+            'href'   => base_url(),
+            'active' => false
+        ];
+        $data['breadcrumbs'][] = [
+            'text'   => $meta->name,
+            'href'   => base_url($meta->link),
+            'active' => true
+        ];
+
+        // ========================================================================
+        // DYNAMIC BINDING LAYER: FETCH GLOBAL MASTER ROW SETTINGS (ID 21)
+        // ========================================================================
+        $masterGlobalRowId = 21;
+        $commonLayout = $model->asArray()->where(['id' => $masterGlobalRowId])->first();
+
+        if (!empty($commonLayout)) {
+            // Unpack layout sections 2 to 10 directly into template variables
+            $data['banner_badge_1']          = $commonLayout['banner_badge_1'] ?? '';
+            $data['banner_badge_2']          = $commonLayout['banner_badge_2'] ?? '';
+            $data['banner_title']            = $commonLayout['banner_title'] ?? '';
+            $data['banner_description']      = $commonLayout['banner_description'] ?? '';
+            $data['banner_image_primary']    = $commonLayout['banner_image_primary'] ?? '';
+            $data['banner_image_secondary']  = $commonLayout['banner_image_secondary'] ?? '';
+            
+            $data['trusted_verticals_text']  = $commonLayout['trusted_verticals_text'] ?? '';
+            $data['inline_sectors_list']     = $commonLayout['inline_sectors_list'] ?? '';
+            $data['cta_label_1']             = $commonLayout['cta_label_1'] ?? '';
+            $data['cta_url_1']               = $commonLayout['cta_url_1'] ?? '';
+            $data['cta_label_2']             = $commonLayout['cta_label_2'] ?? '';
+            $data['cta_url_2']               = $commonLayout['cta_url_2'] ?? '';
+
+            $data['ecosystem_badge']         = $commonLayout['ecosystem_badge'] ?? '';
+            $data['ecosystem_title']         = $commonLayout['ecosystem_title'] ?? '';
+            $data['ecosystem_description']   = $commonLayout['ecosystem_description'] ?? '';
+            $data['tech_value_title']        = $commonLayout['tech_value_title'] ?? '';
+            $data['tech_value_description']  = $commonLayout['tech_value_description'] ?? '';
+
+            // Section 6 Cards Dynamic JSON Matrix
+            $data['section_6_cards']         = $commonLayout['section_6_cards'] ?? '';
+
+            // Section 7 Targeted Sector List Variables
+            $data['vertical_title_1']        = $commonLayout['vertical_title_1'] ?? '';
+            $data['vertical_mfg_nodes']      = $commonLayout['vertical_mfg_nodes'] ?? '';
+            $data['vertical_title_2']        = $commonLayout['vertical_title_2'] ?? '';
+            $data['vertical_retail_nodes']   = $commonLayout['vertical_retail_nodes'] ?? '';
+            $data['vertical_title_3']        = $commonLayout['vertical_title_3'] ?? '';
+            $data['vertical_textile_nodes']  = $commonLayout['vertical_textile_nodes'] ?? '';
+            $data['vertical_title_4']        = $commonLayout['vertical_title_4'] ?? '';
+            $data['vertical_fnb_nodes']      = $commonLayout['vertical_fnb_nodes'] ?? '';
+
+            // Section 8 Advantage Pillars fields
+            $data['alliances_badge']         = $commonLayout['alliances_badge'] ?? '';
+            $data['alliances_title']         = $commonLayout['alliances_title'] ?? '';
+            $data['alliances_description']   = $commonLayout['alliances_description'] ?? '';
+            $data['pillar_label_1']          = $commonLayout['pillar_label_1'] ?? '';
+            $data['pillar_desc_1']           = $commonLayout['pillar_desc_1'] ?? '';
+            $data['pillar_label_2']          = $commonLayout['pillar_label_2'] ?? '';
+            $data['pillar_desc_2']           = $commonLayout['pillar_desc_2'] ?? '';
+            $data['pillar_label_3']          = $commonLayout['pillar_label_3'] ?? '';
+            $data['pillar_desc_3']           = $commonLayout['pillar_desc_3'] ?? '';
+            $data['pillar_label_4']          = $commonLayout['pillar_label_4'] ?? '';
+            $data['pillar_desc_4']           = $commonLayout['pillar_desc_4'] ?? '';
+            $data['pillar_label_5']          = $commonLayout['pillar_label_5'] ?? '';
+            $data['pillar_desc_5']           = $commonLayout['pillar_desc_5'] ?? '';
+            $data['pillar_label_6']          = $commonLayout['pillar_label_6'] ?? '';
+            $data['pillar_desc_6']           = $commonLayout['pillar_desc_6'] ?? '';
+
+            // Section 9 Microsoft Solutions Center fields
+            $data['ms_center_title']         = $commonLayout['ms_center_title'] ?? '';
+            $data['ms_center_subtitle']      = $commonLayout['ms_center_subtitle'] ?? '';
+            $data['ms_center_description']   = $commonLayout['ms_center_description'] ?? '';
+            $data['ms_bullet_t1']            = $commonLayout['ms_bullet_t1'] ?? '';
+            $data['ms_bullet_d1']            = $commonLayout['ms_bullet_d1'] ?? '';
+            $data['ms_bullet_t2']            = $commonLayout['ms_bullet_t2'] ?? '';
+            $data['ms_bullet_d2']            = $commonLayout['ms_bullet_d2'] ?? '';
+            $data['ms_bullet_t3']            = $commonLayout['ms_bullet_t3'] ?? '';
+            $data['ms_bullet_d3']            = $commonLayout['ms_bullet_d3'] ?? '';
+            $data['ms_bullet_t4']            = $commonLayout['ms_bullet_t4'] ?? '';
+            $data['ms_bullet_d4']            = $commonLayout['ms_bullet_d4'] ?? '';
+            $data['stat_val_1']              = $commonLayout['stat_val_1'] ?? '';
+            $data['stat_lbl_1']              = $commonLayout['stat_lbl_1'] ?? '';
+            $data['stat_val_2']              = $commonLayout['stat_val_2'] ?? '';
+            $data['stat_lbl_2']              = $commonLayout['stat_lbl_2'] ?? '';
+            $data['stat_val_3']              = $commonLayout['stat_val_3'] ?? ''; 
+            $data['stat_lbl_3']              = $commonLayout['stat_lbl_3'] ?? '';
+            $data['stat_val_4']              = $commonLayout['stat_val_4'] ?? '';
+            $data['stat_lbl_4']              = $commonLayout['stat_lbl_4'] ?? '';
+
+            // Section 10 Accelerators fields
+            $data['accelerators_badge']       = $commonLayout['accelerators_badge'] ?? '';
+            $data['accelerators_title']       = $commonLayout['accelerators_title'] ?? '';
+            $data['accelerators_description'] = $commonLayout['accelerators_description'] ?? '';
+            $data['sol_title_1']             = $commonLayout['sol_title_1'] ?? '';
+            $data['sol_desc_1']              = $commonLayout['sol_desc_1'] ?? '';
+            $data['sol_title_2']             = $commonLayout['sol_title_2'] ?? '';
+            $data['sol_desc_2']              = $commonLayout['sol_desc_2'] ?? '';
+            $data['sol_title_3']             = $commonLayout['sol_title_3'] ?? '';
+            $data['sol_desc_3']              = $commonLayout['sol_desc_3'] ?? '';
+            $data['sol_title_4']             = $commonLayout['sol_title_4'] ?? '';
+            $data['sol_desc_4']              = $commonLayout['sol_desc_4'] ?? '';
+        }
+
+        // Keep your original partner categories mapping engine completely intact
+        $final = [];
+        $category = $this->AdminModel->all_fetch('partertags', array('status' => 1), 'sortOrder', 'asc');
+        if (!empty($category)) {
+            foreach ($category as $key => $value) {
+                $arr = [];
+                $arr['id'] = $value->id;
+                $arr['name'] = $value->name;
+                $arr['description'] = $value->description;
+                $arr['list'] = $this->AdminModel->all_fetch('partners', array('status' => 1, 'tag_id' => $value->id), 'sort_order', 'asc');
+                $final[] = $arr;
+            }
+        }
+
+        $data['gallery'] = $final;
+        $data['wconfig'] = websetting();
+        $data['config_logo'] = $this->config_logo;
+
+        return view('frontend/partner', $data);
     }
-
- 
- $data['gallery'] = $final;
- 
-    $data['wconfig'] = websetting();
-    $data['config_logo'] = $this->config_logo;
-    return view('frontend/partner',$data);
-
-  }
     
     
     

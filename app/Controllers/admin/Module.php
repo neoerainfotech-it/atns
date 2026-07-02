@@ -10,26 +10,22 @@ use App\Models\module\PageModel;
 use App\Models\module\FaqModel;
 use App\Models\coreModule\SettingModel;
 
-
-
 use App\Models\Cms\ResourceModel;
 use App\Models\Cms\AwardsModel;
 use App\Models\Cms\JourneyModel;
 use App\Models\Cms\ParterTagModel;
 
-
 class Module extends BaseController
 {
-    
+    // FIXES ERROR 2: Explicitly declare the property here
+    protected $config_logo;
 
-   public function __construct()
-  {
-
-      $settingModel = new SettingModel();
-        $default_img = $settingModel->asObject()->where(array('key'=>'config_logo'))->first();
+    public function __construct()
+    {
+        $settingModel = new SettingModel();
+        $default_img = $settingModel->asObject()->where(array('key' => 'config_logo'))->first();
         $this->config_logo = $default_img->value; 
-             
-  }
+    }
 
   function team(){
 
@@ -362,95 +358,342 @@ function testimonial(){
     }
 
 
-    function add_partner($id=false)
-    {    error_reporting(0);
-     $ParterTagModel = new ParterTagModel();
-      $data['tagList'] = $ParterTagModel->asObject()->where('status',1)->findAll();     
+ public function add_partner($id = false)
+    {    
+        error_reporting(0);
+        $ParterTagModel = new ParterTagModel();
+        $data['tagList'] = $ParterTagModel->asObject()->where('status', 1)->findAll();     
 
-        $data['typeList'] = array('PARTNER'=>'PARTNER','CUSTOMER'=>'CUSTOMER'); 
+        $data['typeList'] = array('PARTNER' => 'PARTNER', 'CUSTOMER' => 'CUSTOMER'); 
 
-    $model = new PartnerModel();  
-    if(!empty($id)) {
-    $data['page_title'] = ' Edit Partner';
-    $data['form_action'] ='admin/add_partner/'.$id;
-    $row = $model->asObject()->where(array('id'=>$id))->first();
-    $data['status'] = $row->status;
-    $data['name'] = $row->name;
-    $data['image'] = $row->image;  
-    $data['sort_order'] = $row->sort_order; 
-    $data['tag_id'] = $row->tag_id;   
-    $data['type'] = $row->type; 
-    
-    }else{
-    $data['page_title'] = ' Add Partner';
-    $data['form_action'] ='admin/add_partner';
-    $data['name'] = '';
-    $data['status'] = '';
-    $data['image'] =  '';
-    $data['sort_order'] = ''; 
-    $data['tag_id'] = '';  
-        $data['type'] = '';   
-    }
-      
-    if($this->request->getMethod()=='post'){
-      $rules = [
-        'title'=>'trim'
-      ];
-    
-      if ($this->validate($rules)==false) {
-        $data['validation'] = $this->validator;
-    } else{
+        $model = new PartnerModel();  
+        
+        // Define a baseline master row ID to serve as the single source of truth for Sections 2-10
+        $masterGlobalRowId = 21;
+        $commonGlobalLayout = $model->asArray()->where(['id' => $masterGlobalRowId])->first();
 
-    $save= array();
-    $save['name'] = $this->request->getVar('name');
-    $save['status'] = $this->request->getVar('status');
-    $save['sort_order'] = $this->request->getVar('sort_order');
-    $save['tag_id'] = $this->request->getVar('tag_id');
-    $save['type'] = $this->request->getVar('type');
+        if (!empty($id)) {
+            $data['page_title'] = 'Edit Partner Layout Matrix';
+            $data['form_action'] = 'admin/add_partner/' . $id;
+            
+            $row_obj = $model->asObject()->where(array('id' => $id))->first();
+            
+            if ($row_obj) {
+                $row = (array) $row_obj;
 
-    $file = $this->request->getFile('image');
-     if(!empty($file->getClientName())){
-    if($file->isValid() && !$file->hasMoved()){
-      $file_name = $file->getRandomName();
-      if($file->move('uploads/images/', $file_name)){
-        $save['image'] = 'uploads/images/'.$file_name;
-      }
-     }else{
-      throw new \RuntimeException($file->getErrorString().'('.$file->getError().')');
-      exit;
-    }
-    }
-
-
-    if ($id) {
-
-      $save['modify_date'] = date('Y-m-d H:i:s');
-      $result=  $model->update(array('id'=>$id),$save);
-      if ($result) {
-      $this->session->setFlashdata('success','Record Update successfully');
-      return redirect()->to('admin/add_partner/'.$id);
-      }else{
-      $this->session->setFlashdata('error','Record not update');
-      return redirect()->to('admin/add_partner/'.$id);
-      }
-
-    }else{
-
-      $save['create_date'] = date('Y-m-d H:i:s');
-      $save['modify_date'] = date('Y-m-d H:i:s');
-      $result=  $model->insert($save);
-      if ($result) {
-      $this->session->setFlashdata('success','Record insert successfully');
-      return redirect()->to('admin/partners');
-      }else{
-        $this->session->setFlashdata('error','Record not insert');
-        return redirect()->to('admin/add_partner');
+                // 1. Isolate and map ONLY the unique Section 1 fields belonging to this partner
+                $data['id']         = $row['id'];
+                $data['status']     = $row['status'];
+                $data['name']       = $row['name'];
+                $data['image']      = $row['image'];  
+                $data['sort_order'] = $row['sort_order']; 
+                $data['tag_id']     = $row['tag_id'];   
+                $data['type']       = $row['type']; 
+            }
+        
+        } else {
+            $data['page_title'] = 'Add Partner & Design Workspace';
+            $data['form_action'] = 'admin/add_partner';
+            $data['name']       = '';
+            $data['status']     = '';
+            $data['image']      = '';
+            $data['sort_order'] = ''; 
+            $data['tag_id']     = '';  
+            $data['type']       = '';   
         }
-      }
-     }
-   }
-    return view('admin/module/add_partner',$data);
-  }
+
+        // 2. Bind Sections 2 to 10 dynamically from the common global layout data pool
+        $source = !empty($commonGlobalLayout) ? $commonGlobalLayout : ($row ?? []);
+        if (!empty($source)) {
+            $data['banner_badge_1']          = $source['banner_badge_1'] ?? '';
+            $data['banner_badge_2']          = $source['banner_badge_2'] ?? '';
+            $data['banner_title']            = $source['banner_title'] ?? '';
+            $data['banner_description']      = $source['banner_description'] ?? '';
+            $data['banner_image_primary']    = $source['banner_image_primary'] ?? '';
+            $data['banner_image_secondary']  = $source['banner_image_secondary'] ?? '';
+            
+            $data['trusted_verticals_text']  = $source['trusted_verticals_text'] ?? '';
+            $data['inline_sectors_list']     = $source['inline_sectors_list'] ?? '';
+            $data['cta_label_1']             = $source['cta_label_1'] ?? '';
+            $data['cta_url_1']               = $source['cta_url_1'] ?? '';
+            $data['cta_label_2']             = $source['cta_label_2'] ?? '';
+            $data['cta_url_2']               = $source['cta_url_2'] ?? '';
+
+            $data['ecosystem_badge']         = $source['ecosystem_badge'] ?? '';
+            $data['ecosystem_title']         = $source['ecosystem_title'] ?? '';
+            $data['ecosystem_description']   = $source['ecosystem_description'] ?? '';
+            $data['tech_value_title']        = $source['tech_value_title'] ?? '';
+            $data['tech_value_description']  = $source['tech_value_description'] ?? '';
+
+            // Dynamic layer for Section 6 Cards Repeater Engine
+            $data['section_6_cards']         = $source['section_6_cards'] ?? '';
+
+            $data['vertical_title_1']        = $source['vertical_title_1'] ?? '';
+            $data['vertical_mfg_nodes']      = $source['vertical_mfg_nodes'] ?? '';
+            $data['vertical_title_2']        = $source['vertical_title_2'] ?? '';
+            $data['vertical_retail_nodes']   = $source['vertical_retail_nodes'] ?? '';
+            $data['vertical_title_3']        = $source['vertical_title_3'] ?? '';
+            $data['vertical_textile_nodes']  = $source['vertical_textile_nodes'] ?? '';
+            $data['vertical_title_4']        = $source['vertical_title_4'] ?? '';
+            $data['vertical_fnb_nodes']      = $source['vertical_fnb_nodes'] ?? '';
+
+            $data['alliances_badge']         = $source['alliances_badge'] ?? '';
+            $data['alliances_title']         = $source['alliances_title'] ?? '';
+            $data['alliances_description']   = $source['alliances_description'] ?? '';
+            $data['pillar_label_1']          = $source['pillar_label_1'] ?? '';
+            $data['pillar_desc_1']           = $source['pillar_desc_1'] ?? '';
+            $data['pillar_label_2']          = $source['pillar_label_2'] ?? '';
+            $data['pillar_desc_2']           = $source['pillar_desc_2'] ?? '';
+            $data['pillar_label_3']          = $source['pillar_label_3'] ?? '';
+            $data['pillar_desc_3']           = $source['pillar_desc_3'] ?? '';
+            $data['pillar_label_4']          = $source['pillar_label_4'] ?? '';
+            $data['pillar_desc_4']           = $source['pillar_desc_4'] ?? '';
+            $data['pillar_label_5']          = $source['pillar_label_5'] ?? '';
+            $data['pillar_desc_5']           = $source['pillar_desc_5'] ?? '';
+            $data['pillar_label_6']          = $source['pillar_label_6'] ?? '';
+            $data['pillar_desc_6']           = $source['pillar_desc_6'] ?? '';
+
+            $data['ms_center_title']         = $source['ms_center_title'] ?? '';
+            $data['ms_center_subtitle']      = $source['ms_center_subtitle'] ?? '';
+            $data['ms_center_description']   = $source['ms_center_description'] ?? '';
+            $data['ms_bullet_t1']            = $source['ms_bullet_t1'] ?? '';
+            $data['ms_bullet_d1']            = $source['ms_bullet_d1'] ?? '';
+            $data['ms_bullet_t2']            = $source['ms_bullet_t2'] ?? '';
+            $data['ms_bullet_d2']            = $source['ms_bullet_d2'] ?? '';
+            $data['ms_bullet_t3']            = $source['ms_bullet_t3'] ?? '';
+            $data['ms_bullet_d3']            = $source['ms_bullet_d3'] ?? '';
+            $data['ms_bullet_t4']            = $source['ms_bullet_t4'] ?? '';
+            $data['ms_bullet_d4']            = $source['ms_bullet_d4'] ?? '';
+            $data['stat_val_1']              = $source['stat_val_1'] ?? '';
+            $data['stat_lbl_1']              = $source['stat_lbl_1'] ?? '';
+            $data['stat_val_2']              = $source['stat_val_2'] ?? '';
+            $data['stat_lbl_2']              = $source['stat_lbl_2'] ?? '';
+            $data['stat_val_3']              = $source['stat_val_3'] ?? ''; 
+            $data['stat_lbl_3']              = $source['stat_lbl_3'] ?? '';
+            $data['stat_val_4']              = $source['stat_val_4'] ?? '';
+            $data['stat_lbl_4']              = $source['stat_lbl_4'] ?? '';
+
+            $data['accelerators_badge']       = $source['accelerators_badge'] ?? '';
+            $data['accelerators_title']       = $source['accelerators_title'] ?? '';
+            $data['accelerators_description'] = $source['accelerators_description'] ?? '';
+            $data['sol_title_1']             = $source['sol_title_1'] ?? '';
+            $data['sol_desc_1']              = $source['sol_desc_1'] ?? '';
+            $data['sol_title_2']             = $source['sol_title_2'] ?? '';
+            $data['sol_desc_2']              = $source['sol_desc_2'] ?? '';
+            $data['sol_title_3']             = $source['sol_title_3'] ?? '';
+            $data['sol_desc_3']              = $source['sol_desc_3'] ?? '';
+            $data['sol_title_4']             = $source['sol_title_4'] ?? '';
+            $data['sol_desc_4']              = $source['sol_desc_4'] ?? '';
+        }
+          
+        if ($this->request->getMethod() === 'POST' || $this->request->getMethod() === 'post') {
+            
+            $rules = [
+                'name' => 'permit_empty'
+            ];
+        
+            if ($this->validate($rules) == false) {
+                $data['validation'] = $this->validator;
+                session()->setFlashdata('error', 'Validation constraints failed.');
+            } else {
+                $form_id = $this->request->getVar('id');
+                $current_id = !empty($id) ? $id : $form_id;
+
+                // Isolate and process Section 7 dynamic column row conversions
+                $sectorItems = $this->request->getPost('sector_items');
+
+                // Gather the common settings from sections 2-10 to update across all rows
+                $commonSettings = [
+                    'banner_badge_1'          => $this->request->getVar('banner_badge_1'),
+                    'banner_badge_2'          => $this->request->getVar('banner_badge_2'),
+                    'banner_title'            => $this->request->getVar('banner_title'),
+                    'banner_description'      => $this->request->getVar('banner_description'),
+                    'trusted_verticals_text'  => $this->request->getVar('trusted_verticals_text'),
+                    'inline_sectors_list'     => $this->request->getVar('inline_sectors_list'),
+                    'cta_label_1'             => $this->request->getVar('cta_label_1'),
+                    'cta_url_1'               => $this->request->getVar('cta_url_1'),
+                    'cta_label_2'             => $this->request->getVar('cta_label_2'),
+                    'cta_url_2'               => $this->request->getVar('cta_url_2'),
+                    'ecosystem_badge'         => $this->request->getVar('ecosystem_badge'),
+                    'ecosystem_title'         => $this->request->getVar('ecosystem_title'),
+                    'ecosystem_description'   => $this->request->getVar('ecosystem_description'),
+                    'tech_value_title'        => $this->request->getVar('tech_value_title'),
+                    'tech_value_description'  => $this->request->getVar('tech_value_description'),
+                    
+                    'vertical_title_1'        => $this->request->getVar('vertical_title_1'),
+                    'vertical_mfg_nodes'      => isset($sectorItems['mfg'])     ? implode("\n", array_filter(array_map('trim', $sectorItems['mfg']))) : '',
+                    'vertical_title_2'        => $this->request->getVar('vertical_title_2'),
+                    'vertical_retail_nodes'   => isset($sectorItems['retail'])  ? implode("\n", array_filter(array_map('trim', $sectorItems['retail']))) : '',
+                    'vertical_title_3'        => $this->request->getVar('vertical_title_3'),
+                    'vertical_textile_nodes'  => isset($sectorItems['textile']) ? implode("\n", array_filter(array_map('trim', $sectorItems['textile']))) : '',
+                    'vertical_title_4'        => $this->request->getVar('vertical_title_4'),
+                    'vertical_fnb_nodes'      => isset($sectorItems['fnb'])     ? implode("\n", array_filter(array_map('trim', $sectorItems['fnb']))) : '',
+                    
+                    'alliances_badge'         => $this->request->getVar('alliances_badge'),
+                    'alliances_title'         => $this->request->getVar('alliances_title'),
+                    'alliances_description'   => $this->request->getVar('alliances_description'),
+                    'pillar_label_1'          => $this->request->getVar('pillar_label_1'),
+                    'pillar_desc_1'           => $this->request->getVar('pillar_desc_1'),
+                    'pillar_label_2'          => $this->request->getVar('pillar_label_2'),
+                    'pillar_desc_2'           => $this->request->getVar('pillar_desc_2'),
+                    'pillar_label_3'          => $this->request->getVar('pillar_label_3'),
+                    'pillar_desc_3'           => $this->request->getVar('pillar_desc_3'),
+                    'pillar_label_4'          => $this->request->getVar('pillar_label_4'),
+                    'pillar_desc_4'           => $this->request->getVar('pillar_desc_4'),
+                    'pillar_label_5'          => $this->request->getVar('pillar_label_5'),
+                    'pillar_desc_5'           => $this->request->getVar('pillar_desc_5'),
+                    'pillar_label_6'          => $this->request->getVar('pillar_label_6'),
+                    'pillar_desc_6'           => $this->request->getVar('pillar_desc_6'),
+                    'ms_center_title'         => $this->request->getVar('ms_center_title'),
+                    'ms_center_subtitle'      => $this->request->getVar('ms_center_subtitle'),
+                    'ms_center_description'   => $this->request->getVar('ms_center_description'),
+                    'ms_bullet_t1'            => $this->request->getVar('ms_bullet_t1'),
+                    'ms_bullet_d1'            => $this->request->getVar('ms_bullet_d1'),
+                    'ms_bullet_t2'            => $this->request->getVar('ms_bullet_t2'),
+                    'ms_bullet_d2'            => $this->request->getVar('ms_bullet_d2'),
+                    'ms_bullet_t3'            => $this->request->getVar('ms_bullet_t3'),
+                    'ms_bullet_d3'            => $this->request->getVar('ms_bullet_d3'),
+                    'ms_bullet_t4'            => $this->request->getVar('ms_bullet_t4'),
+                    'ms_bullet_d4'            => $this->request->getVar('ms_bullet_d4'),
+                    'stat_val_1'              => $this->request->getVar('stat_val_1'),
+                    'stat_lbl_1'              => $this->request->getVar('stat_lbl_1'),
+                    'stat_val_2'              => $this->request->getVar('stat_val_2'),
+                    'stat_lbl_2'              => $this->request->getVar('stat_lbl_2'),
+                    'stat_val_3'              => $this->request->getVar('stat_val_3'),
+                    'stat_lbl_3'              => $this->request->getVar('stat_lbl_3'),
+                    'stat_val_4'              => $this->request->getVar('stat_val_4'),
+                    'stat_lbl_4'              => $this->request->getVar('stat_lbl_4'),
+                    'accelerators_badge'       => $this->request->getVar('accelerators_badge'),
+                    'accelerators_title'       => $this->request->getVar('accelerators_title'),
+                    'accelerators_description' => $this->request->getVar('accelerators_description'),
+                    'sol_title_1'             => $this->request->getVar('sol_title_1'),
+                    'sol_desc_1'              => $this->request->getVar('sol_desc_1'),
+                    'sol_title_2'             => $this->request->getVar('sol_title_2'),
+                    'sol_desc_2'              => $this->request->getVar('sol_desc_2'),
+                    'sol_title_3'             => $this->request->getVar('sol_title_3'),
+                    'sol_desc_3'              => $this->request->getVar('sol_desc_3'),
+                    'sol_title_4'             => $this->request->getVar('sol_title_4'),
+                    'sol_desc_4'              => $this->request->getVar('sol_desc_4'),
+                ];
+
+                // 2B. Capture and sanitize dynamic Section 6 Cards payload arrays
+                $rawCardsInput = $this->request->getPost('cards');
+                $processedCards = [];
+
+                if (is_array($rawCardsInput)) {
+                    foreach ($rawCardsInput as $cardNode) {
+                        $cleanedPoints = [];
+                        if (isset($cardNode['points']) && is_array($cardNode['points'])) {
+                            foreach ($cardNode['points'] as $pointRow) {
+                                if (!empty($pointRow['title']) || !empty($pointRow['desc'])) {
+                                    $cleanedPoints[] = [
+                                        'title' => trim($pointRow['title'] ?? ''),
+                                        'desc'  => trim($pointRow['desc'] ?? ''),
+                                    ];
+                                }
+                            }
+                        }
+
+                        $processedCards[] = [
+                            'type'        => $cardNode['type'] ?? 'pills_card',
+                            'title'       => trim($cardNode['title'] ?? ''),
+                            'subtitle'    => trim($cardNode['subtitle'] ?? ''),
+                            'card_badge'  => trim($cardNode['card_badge'] ?? ''),
+                            'description' => trim($cardNode['description'] ?? ''),
+                            'meta_items'  => trim($cardNode['meta_items'] ?? ''),
+                            'points'      => $cleanedPoints
+                        ];
+                    }
+                }
+
+                $commonSettings['section_6_cards'] = json_encode($processedCards, JSON_UNESCAPED_UNICODE);
+
+                // ========================================================================
+                // DYNAMIC GLOBAL MEDIA BALANCING INTERCEPTOR (SECTIONS 2-10)
+                // ========================================================================
+                // Primary Banner Handling
+                if ($this->request->getVar('remove_banner_image_primary') == '1') {
+                    $commonSettings['banner_image_primary'] = '';
+                } else {
+                    $bannerPrimary = $this->request->getFile('banner_image_primary');
+                    if ($bannerPrimary && $bannerPrimary->isValid() && !$bannerPrimary->hasMoved()) {
+                        $newName = $bannerPrimary->getRandomName();
+                        if ($bannerPrimary->move('uploads/images/', $newName)) {
+                            $commonSettings['banner_image_primary'] = 'uploads/images/' . $newName;
+                        }
+                    }
+                }
+
+                // Secondary Background Banner Handling
+                if ($this->request->getVar('remove_banner_image_secondary') == '1') {
+                    $commonSettings['banner_image_secondary'] = '';
+                } else {
+                    $bannerSecondary = $this->request->getFile('banner_image_secondary');
+                    if ($bannerSecondary && $bannerSecondary->isValid() && !$bannerSecondary->hasMoved()) {
+                        $newName = $bannerSecondary->getRandomName();
+                        if ($bannerSecondary->move('uploads/images/', $newName)) {
+                            $commonSettings['banner_image_secondary'] = 'uploads/images/' . $newName;
+                        }
+                    }
+                }
+
+                // Push common layout matrix updates across every partner record in the table
+                $allRecords = $model->findAll();
+                foreach ($allRecords as $record) {
+                    $recordId = is_array($record) ? $record['id'] : $record->id;
+                    $model->update($recordId, $commonSettings);
+                }
+
+                // ========================================================================
+                // ISOLATED PROFILE SAVE ROUTINE LAYER (SECTION 1 UNIQUE DATA)
+                // ========================================================================
+                $uniqueProfile = [
+                    'name'        => $this->request->getVar('name') ?? 'Unnamed Partner',
+                    'status'      => $this->request->getVar('status'),
+                    'sort_order'  => $this->request->getVar('sort_order'),
+                    'tag_id'      => $this->request->getVar('tag_id'),
+                    'type'        => $this->request->getVar('type'),
+                    'modify_date' => date('Y-m-d H:i:s')
+                ];
+
+                if ($this->request->getVar('remove_image') == '1') {
+                    $uniqueProfile['image'] = '';
+                } else {
+                    $file = $this->request->getFile('image');
+                    if ($file && !empty($file->getClientName())) {
+                        if ($file->isValid() && !$file->hasMoved()) {
+                            $file_name = $file->getRandomName();
+                            if ($file->move('uploads/images/', $file_name)) {
+                                $uniqueProfile['image'] = 'uploads/images/' . $file_name;
+                            }
+                        }
+                    }
+                }
+
+                if (!empty($current_id)) {
+                    $result = $model->update($current_id, $uniqueProfile); 
+                    if ($result) {
+                        session()->setFlashdata('success', 'Configurations and Partner Profile updated successfully.');
+                        return redirect()->to(base_url('admin/add_partner/' . $current_id));
+                    } else {
+                        session()->setFlashdata('error', 'Database reject: Record not updated.');
+                        return redirect()->to(base_url('admin/add_partner/' . $current_id));
+                    }
+                } else {
+                    $uniqueProfile['create_date'] = date('Y-m-d H:i:s');
+                    $result = $model->insert($uniqueProfile);
+                    if ($result) {
+                        session()->setFlashdata('success', 'Record inserted successfully.');
+                        return redirect()->to(base_url('admin/partners'));
+                    } else {
+                        session()->setFlashdata('error', 'Database reject: Record not inserted.');
+                        return redirect()->to(base_url('admin/add_partner'));
+                    }
+                }
+            }
+        }
+        return view('admin/module/add_partner', $data);
+    }
 
   
   function delete_partner()

@@ -37,9 +37,9 @@ $transparentHeader = true;
     .network-glow-bg {
         position: relative;
         background-color:  #0083BF;
-        background-image: 
-            radial-gradient(circle at 10% 20%, rgba(47, 124, 255, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 90% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
         overflow: hidden;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
@@ -100,7 +100,7 @@ $transparentHeader = true;
         border-radius: 14px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1);
         background: #091428; box-shadow: 0 15px 35px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; min-height: 250px;
     }
-    .hero-image-canvas img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-image-canvas img { width: 100%; height: 100%; object-fit: contain; padding: 15px; background: #fff; }
 
     /* ==========================================================================
        PREMIUM CARD & UI INTERACTIONS
@@ -119,16 +119,43 @@ $transparentHeader = true;
     }
 
     /* ==========================================================================
-       MARQUEE STRIP ELEMENTS ALIGNMENTS
+       BRAND MARQUEE GRID LAYOUT STRIP STYLING
        ========================================================================== */
-    .ecosystem-marquee-strip {
-        display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: center; width: 100%;
+    .marquee-grid-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 1140px;
+        margin: 0 auto;
+        flex-wrap: wrap;
     }
-    
-    .grayscale-logo-strip:hover { filter: grayscale(0%); opacity: 1; }
+    .brand-marquee-node {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 35px;
+        height: 45px;
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+    }
+    .brand-marquee-node:last-child {
+        border-right: none !important;
+    }
+    .brand-marquee-node img {
+        height: 100%;
+        max-height: 42px;
+        width: auto;
+        object-fit: contain;
+        filter: none !important;
+        opacity: 1 !important;
+        transition: transform 0.25s ease;
+    }
+    .brand-marquee-node img:hover {
+        transform: scale(1.05);
+    }
 
     /* ==========================================================================
-       REDESIGNED: TECHNOLOGY PARTNERSHIPS CAROUSEL SLIDER 
+       PARTNERSHIPS CAROUSEL SLIDER 
        ========================================================================== */
     .partner-logo-card {
         height: 90px; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -138,9 +165,9 @@ $transparentHeader = true;
     .partner-logo-card:hover { border-color: var(--atna-secondary); box-shadow: 0 10px 20px rgba(13, 44, 108, 0.06); }
     
     .logo-greyscale {
-        filter: grayscale(0%); transition: all 0.4s ease; max-height: 42px; max-width: 100%; object-fit: contain;
+        filter: none !important; opacity: 1 !important; transition: all 0.4s ease; max-height: 42px; max-width: 100%; object-fit: contain;
     }
-    .partner-logo-card:hover .logo-greyscale { filter: grayscale(0%) opacity(1); transform: scale(1.04); }
+    .partner-logo-card:hover .logo-greyscale { transform: scale(1.04); }
 
     /* Swiper Controls Navigation Positioning Refinements */
     .swiper-partner-wrapper { position: relative; width: 100%; }
@@ -168,8 +195,8 @@ $transparentHeader = true;
        RESPONSIVE SYSTEM BREAKPOINTS
        ========================================================================== */
     @media (max-width: 1200px) {
-        .partner-next { right: -10px !notimportant; }
-        .partner-prev { left: -10px !notimportant; }
+        .partner-next { right: -10px !important; }
+        .partner-prev { left: -10px !important; }
     }
     @media (max-width: 991.98px) {
         .network-glow-bg { padding-top: 140px !important; padding-bottom: 60px !important; }
@@ -178,20 +205,31 @@ $transparentHeader = true;
         .partner-prev { left: calc(50% - 55px) !important; }
         .partner-next { right: calc(50% - 55px) !important; }
         .swiper-partner-wrapper { padding-bottom: 50px !important; }
+        .brand-marquee-node { padding: 0 20px; height: 35px; }
     }
     @media (max-width: 767.98px) {
         .page-partners { --section-py: 4rem; --section-py-sm: 2.5rem; }
-        .logo-divider { display: none; }
-        .ecosystem-marquee-strip { gap: 25px; }
+        .marquee-grid-wrapper { gap: 25px; justify-content: center; }
+        .brand-marquee-node { border-right: none !important; width: 40%; height: 35px; padding: 0 10px; }
     }
-    @media (max-width: 575.98px) {
-        .hero-glass-frame { padding: 15px; border-radius: 16px; }
+    @media (max-width: 480px) {
+        .brand-marquee-node { width: 100%; height: 40px; }
     }
 </style>
 
 <div class="page-partners">
 
-<section class="inner_banner position-relative overflow-hidden py-5 d-flex align-items-center network-glow-bg">
+<!-- 
+  SECTION 2: DYNAMIC HERO BANNER WITH DYNAMIC BACKGROUND EXECUTION
+  Loads the Secondary Banner Image seamlessly with premium linear dark color overlays
+-->
+<?php 
+    $heroBgStyle = "background-image: radial-gradient(circle at 10% 20%, rgba(47, 124, 255, 0.15) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);";
+    if(!empty($banner_image_secondary)) {
+        $heroBgStyle = "background-image: linear-gradient(to right, rgba(13, 44, 108, 0.92) 30%, rgba(0, 131, 191, 0.45) 100%), url('" . base_url($banner_image_secondary) . "');";
+    }
+?>
+<section class="inner_banner position-relative overflow-hidden py-5 d-flex align-items-center network-glow-bg" style="<?php echo $heroBgStyle; ?>">
     <div class="hero-blur-orb orb-top-right"></div>
     <div class="hero-blur-orb orb-bottom-left"></div>
     
@@ -199,32 +237,34 @@ $transparentHeader = true;
         <div class="row align-items-center g-4 g-lg-5">
             <div class="col-lg-6 text-center text-lg-start">
                 <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start mb-4">
-                    <span class="hero-badge-glow"><i class="fab fa-microsoft text-info"></i> Strategic Partnerships</span>
-                    <span class="hero-badge-glow"><i class="bi bi-cpu-fill text-warning"></i> Enterprise Ecosystem</span>
+                    <?php if(!empty($banner_badge_1)): ?><span class="hero-badge-glow"><i class="fab fa-microsoft text-info"></i> <?php echo htmlspecialchars($banner_badge_1); ?></span><?php endif; ?>
+                    <?php if(!empty($banner_badge_2)): ?><span class="hero-badge-glow"><i class="bi bi-cpu-fill text-warning"></i> <?php echo htmlspecialchars($banner_badge_2); ?></span><?php endif; ?>
                 </div>
 
                 <h1 class="display-5 fw-bold mb-3 text-gradient-premium">
-                    Digital Transformation Through Strategic Alliances
+                    <?php echo !empty($banner_title) ? htmlspecialchars($banner_title) : 'Digital Transformation Through Strategic Alliances'; ?>
                 </h1>
 
                 <p class="lead mb-4 text-white fs-6 lh-base">
-                    At ATNA Technologies, we collaborate with leading global technology providers to deliver innovative ERP, Cloud, Data Analytics, AI, and Digital Transformation solutions. Our strategic partnerships empower organizations to modernize operations, improve decision-making, and achieve sustainable growth with confidence.
+                    <?php echo !empty($banner_description) ? htmlspecialchars($banner_description) : 'At ATNA Technologies, we collaborate with leading global technology providers...'; ?>
                 </p>
 
                 <div class="pt-3 pb-3 border-top border-bottom border-light border-opacity-10 mb-4">
-                    <span class="small text-uppercase tracking-wider text-white fw-semibold d-block mb-3" style="font-size:0.7rem;">Trusted by businesses across manufacturing, distribution, retail, textile, FMCG, and professional services verticals.</span>
+                    <span class="small text-uppercase tracking-wider text-white fw-semibold d-block mb-3" style="font-size:0.7rem;"><?php echo !empty($trusted_verticals_text) ? htmlspecialchars($trusted_verticals_text) : ''; ?></span>
                     <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3 text-white small" style="font-size:0.8rem;">
-                        <span class="d-flex align-items-center"><i class="bi bi-building-gear text-info me-2"></i>Manufacturing</span>
-                        <span class="opacity-25 d-none d-sm-inline">|</span>
-                        <span class="d-flex align-items-center"><i class="bi bi-cart3 text-info me-2"></i>Retail &amp; E-comm</span>
-                        <span class="opacity-25 d-none d-sm-inline">|</span>
-                        <span class="d-flex align-items-center"><i class="bi bi-bank text-info me-2"></i>BFSI</span>
+                        <?php 
+                        $sectors = !empty($inline_sectors_list) ? explode('|', $inline_sectors_list) : ['Manufacturing', 'Retail & E-comm', 'BFSI'];
+                        foreach($sectors as $idx => $sector):
+                        ?>
+                            <span class="d-flex align-items-center"><i class="fas fa-circle-check text-info me-2"></i><?php echo htmlspecialchars(trim($sector)); ?></span>
+                            <?php if($idx < count($sectors) - 1): ?><span class="opacity-25 d-none d-sm-inline">|</span><?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
 
                 <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
-                    <a href="#contact" class="btn btn-atna-primary rounded-pill-custom px-4 py-2 fw-semibold shadow-sm text-uppercase tracking-wider small" style="font-size:0.75rem;">Talk to Our Experts</a>
-                    <a href="#ecosystem" class="btn btn-outline-custom rounded-pill-custom px-4 py-2 fw-semibold text-uppercase tracking-wider small" style="font-size:0.75rem;">Explore Our Solutions</a>
+                    <a href="<?php echo !empty($cta_url_1) ? htmlspecialchars($cta_url_1) : '#contact'; ?>" class="btn btn-atna-primary rounded-pill-custom px-4 py-2 fw-semibold shadow-sm text-uppercase tracking-wider small" style="font-size:0.75rem;"><?php echo !empty($cta_label_1) ? htmlspecialchars($cta_label_1) : 'Talk to Our Experts'; ?></a>
+                    <a href="<?php echo !empty($cta_url_2) ? htmlspecialchars($cta_url_2) : '#ecosystem'; ?>" class="btn btn-outline-custom rounded-pill-custom px-4 py-2 fw-semibold text-uppercase tracking-wider small" style="font-size:0.75rem;"><?php echo !empty($cta_label_2) ? htmlspecialchars($cta_label_2) : 'Explore Our Solutions'; ?></a>
                 </div>
             </div>
 
@@ -232,7 +272,7 @@ $transparentHeader = true;
                 <div class="hero-showroom-viewport">
                     <div class="hero-glass-frame">
                         <div class="hero-image-canvas">
-                            <img src="<?php echo !empty($meta->image) ? base_url($meta->image) : base_url($config_logo ?? 'assets/frontend/img/logo.png'); ?>"
+                            <img src="<?php echo !empty($banner_image_primary) ? base_url($banner_image_primary) : base_url('assets/frontend/img/logo.png'); ?>"
                                  loading="eager"
                                  alt="Ecosystem Matrix Showcase Platform Blueprint"
                                  onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/1/1a/Microsoft_Dynamics_logo.svg';">
@@ -244,44 +284,65 @@ $transparentHeader = true;
     </div>
 </section>
 
+<!-- SECTION 4: ECOSYSTEM ALLIANCES OVERVIEW -->
 <section id="ecosystem" class="sec-vpad bg-white border-bottom">
     <div class="container-xl">
         <div class="row justify-content-center mb-5">
             <div class="col-lg-9 col-xl-8 text-center">
-                <span class="text-uppercase fw-bold small tracking-wider mb-2 d-block" style="color: var(--atna-secondary);">Our Partner Ecosystem</span>
-                <h2 class="h2 fw-bold text-dark mb-3">Global Alliances That Fuel Innovation</h2>
-                <p class="fs-5 text-muted lh-base mb-0">We believe successful digital transformation requires the right technology, the right expertise, and the right implementation partner. Through our strategic alliances, we help businesses unlock the full potential of industry-leading platforms and technologies.</p>
+                <span class="text-uppercase fw-bold small tracking-wider mb-2 d-block" style="color: var(--atna-secondary);"><?php echo !empty($ecosystem_badge) ? htmlspecialchars($ecosystem_badge) : 'Our Partner Ecosystem'; ?></span>
+                <h2 class="h2 fw-bold text-dark mb-3"><?php echo !empty($ecosystem_title) ? htmlspecialchars($ecosystem_title) : 'Global Alliances That Fuel Innovation'; ?></h2>
+                <p class="fs-5 text-muted lh-base mb-0"><?php echo !empty($ecosystem_description) ? htmlspecialchars($ecosystem_description) : ''; ?></p>
             </div>
         </div>
 
-        <div class="d-flex flex-wrap justify-content-center align-items-center gap-4 pt-4 border-top border-light-subtle">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft" class="grayscale-logo-strip" style="height: 22px;">
-            <span class="text-black-50 opacity-25 logo-divider">|</span>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" class="grayscale-logo-strip" style="height: 22px;">
-            <span class="text-black-50 opacity-25 logo-divider">|</span>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" class="grayscale-logo-strip" style="height: 18px;">
-            <span class="text-black-50 opacity-25 logo-divider">|</span>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" class="grayscale-logo-strip" style="height: 20px;">
-            <span class="text-black-50 opacity-25 logo-divider">|</span>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Cisco_logo.svg" alt="Cisco" class="grayscale-logo-strip" style="height: 26px;">
+        <div class="pt-4 border-top border-light-subtle">
+            <div class="marquee-grid-wrapper">
+                <?php 
+                $logoCount = 0;
+                if (!empty($gallery)): 
+                    foreach ($gallery as $cat): 
+                        if (!empty($cat['list'])): 
+                            foreach ($cat['list'] as $partnerItem): 
+                                if (!empty($partnerItem->image) && $logoCount < 5): 
+                                    $logoCount++;
+                ?>
+                                    <div class="brand-marquee-node">
+                                        <img src="<?php echo base_url($partnerItem->image); ?>" alt="<?php echo htmlspecialchars($partnerItem->name ?? 'Active Partner'); ?>">
+                                    </div>
+                <?php 
+                                endif;
+                            endforeach; 
+                        endif; 
+                    endforeach; 
+                endif; 
+
+                if ($logoCount === 0): 
+                ?>
+                    <div class="brand-marquee-node"><img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft"></div>
+                    <div class="brand-marquee-node"><img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" style="max-height: 24px;"></div>
+                    <div class="brand-marquee-node"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style="max-height: 20px; margin-top:4px;"></div>
+                    <div class="brand-marquee-node"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google"></div>
+                    <div class="brand-marquee-node"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Cisco_logo_blue_2014.svg" alt="Cisco" style="max-height: 32px;"></div>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </section>
 
+<!-- SECTION 5 & 6: VALUE SLIDER & CARDS REPEATER ENGINE -->
 <section class="sec-vpad bg-light border-bottom">
     <div class="container-xl">
         
         <div class="row justify-content-center mb-5">
             <div class="col-lg-9 text-center">
-                <h3 class="h2 fw-bold text-dark mb-3">Technology Partnerships That Deliver Business Value</h3>
-                <p class="lead text-muted mx-auto fs-6" style="max-width: 650px; font-weight: 400;">We combine our deep industry expertise with the world's leading platforms to accelerate your digital transformation journey.</p>
+                <h3 class="h2 fw-bold text-dark mb-3"><?php echo !empty($tech_value_title) ? htmlspecialchars($tech_value_title) : 'Technology Partnerships That Deliver Business Value'; ?></h3>
+                <p class="lead text-muted mx-auto fs-6" style="max-width: 650px; font-weight: 400;"><?php echo !empty($tech_value_description) ? htmlspecialchars($tech_value_description) : ''; ?></p>
             </div>
         </div>
 
         <div class="swiper-partner-wrapper position-relative mb-5">
             <div class="swiper partnerSwiper" style="padding: 10px 4px;">
                 <div class="swiper-wrapper align-items-center">
-                    
                     <?php if (!empty($gallery)): foreach ($gallery as $key => $value): if (!empty($value['list'])): foreach ($value['list'] as $row): ?>
                         <div class="swiper-slide">
                             <div class="partner-logo-card">
@@ -289,127 +350,89 @@ $transparentHeader = true;
                             </div>
                         </div>
                     <?php endforeach; endif; endforeach; else: ?>
-                        <div class="swiper-slide">
-                            <div class="partner-logo-card">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Power_BI_logo.svg" alt="Power BI" class="img-fluid logo-greyscale">
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="partner-logo-card">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Microsoft_Dynamics_logo.svg" alt="Dynamics 365" class="img-fluid logo-greyscale">
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="partner-logo-card">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="img-fluid logo-greyscale" style="max-height: 38px;">
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="partner-logo-card">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft" class="img-fluid logo-greyscale">
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="partner-logo-card">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS" class="img-fluid logo-greyscale">
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="partner-logo-card">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg" alt="Google Cloud" class="img-fluid logo-greyscale">
-                            </div>
-                        </div>
+                        <div class="swiper-slide"><div class="partner-logo-card"><img src="https://cdn.worldvectorlogo.com/logos/power-bi.svg" alt="Power BI" class="img-fluid logo-greyscale"></div></div>
+                        <div class="swiper-slide"><div class="partner-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Microsoft_Dynamics_logo.svg" alt="Dynamics 365" class="img-fluid logo-greyscale"></div></div>
+                        <div class="swiper-slide"><div class="partner-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="img-fluid logo-greyscale" style="max-height: 38px;"></div></div>
+                        <div class="swiper-slide"><div class="partner-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft" class="img-fluid logo-greyscale"></div></div>
                     <?php endif; ?>
-
                 </div>
-                
             </div>
         </div>
 
-        <div class="row g-4" data-cues="slideInUp">
-            
-            <div class="col-lg-4 d-flex">
-                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 premium-card-hover bg-white w-100 flex-column d-flex">
-                    <div class="d-flex align-items-center gap-3 mb-4 flex-shrink-0">
-                        <div class="icon-wrapper-circle bg-primary bg-opacity-10 text-primary">
-                            <i class="fas fa-microchip"></i>
-                        </div>
-                        <div>
-                            <h5 class="fw-bold mb-0" style="font-size:1.05rem;">Microsoft Core Stack</h5>
-                            <span class="text-muted small">Solutions Partner Integration</span>
-                        </div>
-                    </div>
-                    <p class="text-muted mb-4 lh-base flex-grow-1" style="font-size: 0.95rem;">
-                        We architect, deploy, and manage enterprise-grade solutions seamlessly across the entire Microsoft ecosystem, ensuring maximum ROI and operational agility.
-                    </p>
-                    <div class="d-flex flex-wrap gap-2 mt-auto pt-2 border-top border-light border-opacity-50">
-                        <span class="badge bg-light text-dark border rounded-pill py-2 px-3 small fw-normal" style="font-size:0.75rem;">Unified Data</span>
-                        <span class="badge bg-light text-dark border rounded-pill py-2 px-3 small fw-normal" style="font-size:0.75rem;">Hybrid Cloud</span>
+        <!-- DYNAMIC CARD REPEATER BLOCK -->
+        <div class="row g-4">
+            <?php 
+            $cards = !empty($section_6_cards) ? json_decode($section_6_cards, true) : [];
+            foreach($cards as $card):
+                $type = $card['type'] ?? 'pills_card';
+            ?>
+                <div class="col-lg-4 d-flex">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 p-4 premium-card-hover bg-white w-100 flex-column d-flex">
+                        
+                        <!-- STYLE 1 CANVAS -->
+                        <?php if($type === 'pills_card'): ?>
+                            <div class="d-flex align-items-center gap-3 mb-4 flex-shrink-0">
+                                <div class="icon-wrapper-circle bg-primary bg-opacity-10 text-primary">
+                                    <i class="fas fa-microchip"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-0" style="font-size:1.05rem;"><?php echo htmlspecialchars($card['title'] ?? ''); ?></h5>
+                                    <span class="text-muted small"><?php echo htmlspecialchars($card['subtitle'] ?? ''); ?></span>
+                                </div>
+                            </div>
+                            <p class="text-muted mb-4 lh-base flex-grow-1" style="font-size: 0.95rem;"><?php echo htmlspecialchars($card['description'] ?? ''); ?></p>
+                            <div class="d-flex flex-wrap gap-2 mt-auto pt-2 border-top border-light border-opacity-50">
+                                <?php 
+                                $pills = !empty($card['meta_items']) ? explode('|', $card['meta_items']) : [];
+                                foreach($pills as $pill):
+                                ?>
+                                    <span class="badge bg-light text-dark border rounded-pill py-2 px-3 small fw-normal" style="font-size:0.75rem;"><?php echo htmlspecialchars(trim($pill)); ?></span>
+                                <?php endforeach; ?>
+                            </div>
+
+                        <!-- STYLE 2 CANVAS -->
+                        <?php elseif($type === 'list_card'): ?>
+                            <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3 flex-shrink-0">
+                                <h5 class="fw-bold mb-0" style="font-size:1.05rem;"><i class="fas fa-gears text-primary me-2"></i><?php echo htmlspecialchars($card['title'] ?? ''); ?></h5>
+                                <?php if(!empty($card['card_badge'])): ?><span class="badge rounded-pill bg-primary bg-opacity-10 text-primary fw-semibold small px-2 py-1" style="font-size:0.7rem;"><?php echo htmlspecialchars($card['card_badge']); ?></span><?php endif; ?>
+                            </div>
+                            <div class="d-flex flex-column gap-3 flex-grow-1 justify-content-center">
+                                <?php foreach(($card['points'] ?? []) as $point): ?>
+                                    <div class="d-flex align-items-center gap-3 p-2 rounded-3 hover-bg-light transition-all">
+                                        <div class="bg-light rounded-circle p-2 d-flex align-items-center justify-content-center text-primary flex-shrink-0" style="width: 38px; height: 38px;">
+                                            <i class="fas fa-gear"></i>
+                                        </div>
+                                        <span class="fw-medium text-dark small" style="font-size:0.85rem;"><?php echo htmlspecialchars($point['title'] ?? ''); ?></span>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+
+                        <!-- STYLE 3 CANVAS -->
+                        <?php elseif($type === 'benefit_card'): ?>
+                            <h5 class="fw-bold mb-4 pb-3 border-bottom flex-shrink-0" style="font-size:1.05rem;"><i class="fas fa-circle-check text-success me-2"></i><?php echo htmlspecialchars($card['title'] ?? ''); ?></h5>
+                            <div class="d-flex flex-column gap-3 flex-grow-1 justify-content-center">
+                                <?php foreach(($card['points'] ?? []) as $point): ?>
+                                    <div class="benefit-item d-flex align-items-start gap-3">
+                                        <div class="bg-success bg-opacity-10 text-success rounded-circle p-1 mt-1 flex-shrink-0 d-inline-flex align-items-center justify-content-center" style="width:24px; height:24px;">
+                                            <i class="fas fa-check" style="font-size: 0.7rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;"><?php echo htmlspecialchars($point['title'] ?? ''); ?></h6>
+                                            <span class="text-muted d-block mt-1" style="font-size:0.8rem; line-height:1.4;"><?php echo htmlspecialchars($point['desc'] ?? ''); ?></span>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+
                     </div>
                 </div>
-            </div>
-
-            <div class="col-lg-4 d-flex">
-                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 premium-card-hover bg-white w-100 flex-column d-flex">
-                    <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3 flex-shrink-0">
-                        <h5 class="fw-bold mb-0" style="font-size:1.05rem;"><i class="fas fa-gears text-primary me-2"></i>Core Capabilities</h5>
-                        <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary fw-semibold small px-2 py-1" style="font-size:0.7rem;">Enterprise-Grade</span>
-                    </div>
-                    
-                    <div class="d-flex flex-column gap-3 flex-grow-1 justify-content-center">
-                        <div class="d-flex align-items-center gap-3 p-2 rounded-3 hover-bg-light transition-all" style="cursor: default;">
-                            <div class="bg-light rounded-circle p-2 d-flex align-items-center justify-content-center text-primary flex-shrink-0" style="width: 38px; height: 38px;">
-                                <i class="fas fa-cloud-arrow-up"></i>
-                            </div>
-                            <span class="fw-medium text-dark small" style="font-size:0.85rem;">Cloud Migration &amp; Modernization</span>
-                        </div>
-                        <div class="d-flex align-items-center gap-3 p-2 rounded-3 hover-bg-light transition-all" style="cursor: default;">
-                            <div class="bg-light rounded-circle p-2 d-flex align-items-center justify-content-center text-primary flex-shrink-0" style="width: 38px; height: 38px;">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <span class="fw-medium text-dark small" style="font-size:0.85rem;">Data Analytics &amp; BI Solutions</span>
-                        </div>
-                        <div class="d-flex align-items-center gap-3 p-2 rounded-3 hover-bg-light transition-all" style="cursor: default;">
-                            <div class="bg-light rounded-circle p-2 d-flex align-items-center justify-content-center text-primary flex-shrink-0" style="width: 38px; height: 38px;">
-                                <i class="fas fa-robot"></i>
-                            </div>
-                            <span class="fw-medium text-dark small" style="font-size:0.85rem;">Power Platform Automation</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 d-flex">
-                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 premium-card-hover w-100 flex-column d-flex" style="background: linear-gradient(135deg, #f8f9fb 0%, #ffffff 100%);">
-                    <h5 class="fw-bold mb-4 pb-3 border-bottom flex-shrink-0" style="font-size:1.05rem;"><i class="fas fa-circle-check text-success me-2"></i>Strategic Benefits</h5>
-                    
-                    <div class="d-flex flex-column gap-3 flex-grow-1 justify-content-center">
-                        <div class="benefit-item d-flex align-items-start gap-3">
-                            <div class="bg-success bg-opacity-10 text-success rounded-circle p-1 mt-1 flex-shrink-0 d-inline-flex align-items-center justify-content-center" style="width:24px; height:24px;">
-                                <i class="fas fa-check" style="font-size: 0.7rem;"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">Reduce Time-to-Value</h6>
-                                <span class="text-muted d-block mt-1" style="font-size:0.8rem; line-height:1.4;">Pre-built accelerators cut deployment timelines by up to 40%.</span>
-                            </div>
-                        </div>
-                        <div class="benefit-item d-flex align-items-start gap-3">
-                            <div class="bg-success bg-opacity-10 text-success rounded-circle p-1 mt-1 flex-shrink-0 d-inline-flex align-items-center justify-content-center" style="width:24px; height:24px;">
-                                <i class="fas fa-check" style="font-size: 0.7rem;"></i>
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">Future-Proof Architecture</h6>
-                                <span class="text-muted d-block mt-1" style="font-size:0.8rem; line-height:1.4;">Scalable cloud foundations built for modern enterprise growth.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
 
+<!-- SECTION 7: DYNAMIC SECTORS MATRICES -->
 <section class="sec-vpad bg-white border-bottom">
     <div class="container-xl">
         <div class="row justify-content-center mb-5">
@@ -419,87 +442,62 @@ $transparentHeader = true;
                 <p class="text-muted mb-0">Our partner ecosystem enables us to deliver specialized enterprise architecture maps configured uniquely for core target sectors.</p>
             </div>
         </div>
+
         <div class="row g-4">
-            <div class="col-xl-3 col-md-6 d-flex">
-                <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover w-100 d-flex flex-column">
-                    <div class="icon-wrapper-circle mb-3"><i class="bi bi-buildings"></i></div>
-                    <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom">Manufacturing</h5>
-                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0 flex-grow-1 justify-content-center">
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Production Planning Engines</li>
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Multi-Warehouse Optimization</li>
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Supply Chain Integrations</li>
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Enterprise Cost Management</li>
-                    </ul>
+            <?php 
+            $sectorsMap = [
+                ['title' => $vertical_title_1 ?? 'Manufacturing', 'icon' => 'bi-buildings', 'nodes' => $vertical_mfg_nodes ?? ''],
+                ['title' => $vertical_title_2 ?? 'Retail & Distribution', 'icon' => 'bi-cart3', 'nodes' => $vertical_retail_nodes ?? ''],
+                ['title' => $vertical_title_3 ?? 'Textile & Apparel', 'icon' => 'bi-tags', 'nodes' => $vertical_textile_nodes ?? ''],
+                ['title' => $vertical_title_4 ?? 'Food & Beverage', 'icon' => 'bi-cup-hot', 'nodes' => $vertical_fnb_nodes ?? '']
+            ];
+
+            foreach($sectorsMap as $sector):
+                $lines = !empty($sector['nodes']) ? explode("\n", trim($sector['nodes'])) : [];
+            ?>
+                <div class="col-xl-3 col-md-6 d-flex">
+                    <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover w-100 d-flex flex-column">
+                        <div class="icon-wrapper-circle mb-3"><i class="<?php echo $sector['icon']; ?>"></i></div>
+                        <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom"><?php echo htmlspecialchars($sector['title']); ?></h5>
+                        <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0 flex-grow-1 justify-content-start">
+                            <?php foreach($lines as $line): if(trim($line) == '') continue; ?>
+                                <li class="d-flex align-items-start"><i class="bi bi-circle-fill text-primary me-2 mt-1.5" style="font-size:0.4rem; flex-shrink:0;"></i> <span><?php echo htmlspecialchars(trim($line)); ?></span></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="col-xl-3 col-md-6 d-flex">
-                <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover w-100 d-flex flex-column">
-                    <div class="icon-wrapper-circle mb-3"><i class="bi bi-cart3"></i></div>
-                    <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom">Retail &amp; Distribution</h5>
-                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0 flex-grow-1 justify-content-center">
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Automated Omni-Channel Control</li>
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Dynamic Demand Forecasting</li>
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Modern Barcode System Flows</li>
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Integrated Customer Experience</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6 d-flex">
-                <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover w-100 d-flex flex-column">
-                    <div class="icon-wrapper-circle mb-3"><i class="bi bi-tags"></i></div>
-                    <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom">Textile &amp; Apparel</h5>
-                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0 flex-grow-1 justify-content-center">
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Advanced Production Tracking</li>
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Global Currency Trade Logic</li>
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Raw Inventory Management</li>
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Financial Consolidation</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6 d-flex">
-                <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover w-100 d-flex flex-column">
-                    <div class="icon-wrapper-circle mb-3"><i class="bi bi-cup-hot"></i></div>
-                    <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom">Food &amp; Beverage</h5>
-                    <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0 flex-grow-1 justify-content-center">
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Standard Batch Traceability</li>
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Compliance &amp; Regulation Matrix</li>
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Secure Vendor Management</li>
-                        <li class="d-flex align-items-center"><i class="bi bi-circle-fill text-primary me-2" style="font-size:0.4rem;"></i> Production Scaling Loops</li>
-                    </ul>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
 
+<!-- SECTION 8: ADVANTAGE PILLARS LAYOUT -->
 <section class="sec-vpad bg-white">
     <div class="container-xl">
         <div class="row justify-content-center mb-5">
             <div class="col-lg-8 text-center">
-                <span class="text-uppercase fw-bold small tracking-wider mb-2 d-block" style="color: var(--atna-secondary);">The ATNA Strategic Advantage</span>
-                <h2 class="h2 fw-bold text-dark mb-2">Why Our Strategic Alliances Matter</h2>
-                <p class="text-muted mb-0">Technology deployment requires rigorous engineering experience combined with verified frameworks to maximize architectural investments safely.</p>
+                <span class="text-uppercase fw-bold small tracking-wider mb-2 d-block" style="color: var(--atna-secondary);"><?php echo !empty($alliances_badge) ? htmlspecialchars($alliances_badge) : 'The ATNA Strategic Advantage'; ?></span>
+                <h2 class="h2 fw-bold text-dark mb-2"><?php echo !empty($alliances_title) ? htmlspecialchars($alliances_title) : 'Why Our Strategic Alliances Matter'; ?></h2>
+                <p class="text-muted mb-0"><?php echo !empty($alliances_description) ? htmlspecialchars($alliances_description) : ''; ?></p>
             </div>
         </div>
 
         <div class="row g-4 row-cols-2 row-cols-md-3 row-cols-xl-6 justify-content-center">
             <?php
             $pillars = [
-                ['icon' => 'fa-solid fa-user-shield',    'title' => 'Certified Expertise',    'desc' => 'Engineers carrying comprehensive technical certifications across cloud architectures.'],
-                ['icon' => 'fa-solid fa-gauge-high',       'title' => 'Faster Deployment',   'desc' => 'Accelerators and deployment code blueprints designed to scale cycles safely.'],
-                ['icon' => 'fa-solid fa-lightbulb',        'title' => 'Innovation Engines',   'desc' => 'Continuous functional integration of emerging artificial intelligence layers.'],
-                ['icon' => 'fa-solid fa-network-wired',    'title' => 'End-to-End Managed',     'desc' => 'Complete ecosystem oversight including system performance scaling audits.'],
-                ['icon' => 'fa-solid fa-lock',             'title' => 'Secure Compliance',     'desc' => 'Enterprise compliance structures built inside high-performance standards.'],
-                ['icon' => 'fa-solid fa-globe-americas',   'title' => 'Global Distribution', 'desc' => 'Multi-currency structures configured for complex cross-border trade layouts.']
+                ['icon' => 'fa-solid fa-user-shield',    'title' => $pillar_label_1 ?? 'Certified Expertise',    'desc' => $pillar_desc_1 ?? ''],
+                ['icon' => 'fa-solid fa-gauge-high',       'title' => $pillar_label_2 ?? 'Faster Deployment',   'desc' => $pillar_desc_2 ?? ''],
+                ['icon' => 'fa-solid fa-lightbulb',        'title' => $pillar_label_3 ?? 'Innovation Engines',   'desc' => $pillar_desc_3 ?? ''],
+                ['icon' => 'fa-solid fa-network-wired',    'title' => $pillar_label_4 ?? 'End-to-End Managed',     'desc' => $pillar_desc_4 ?? ''],
+                ['icon' => 'fa-solid fa-lock',             'title' => $pillar_label_5 ?? 'Secure Compliance',     'desc' => $pillar_desc_5 ?? ''],
+                ['icon' => 'fa-solid fa-globe-americas',   'title' => $pillar_label_6 ?? 'Global Distribution', 'desc' => $pillar_desc_6 ?? '']
             ];
             foreach ($pillars as $p): ?>
             <div class="col d-flex">
                 <div class="card h-100 border-0 p-2 w-100 premium-card-hover bg-transparent text-center d-flex flex-column align-items-center">
-                    <div class="icon-wrapper-circle mb-3">
-                        <i class="<?php echo $p['icon']; ?>"></i>
-                    </div>
-                    <h5 class="fw-bold text-dark mb-2" style="font-size: 0.85rem; min-height: 34px;"><?php echo $p['title']; ?></h5>
-                    <p class="text-muted mb-0 lh-sm" style="font-size: 0.75rem;"><?php echo $p['desc']; ?></p>
+                    <div class="icon-wrapper-circle mb-3"><i class="<?php echo $p['icon']; ?>"></i></div>
+                    <h5 class="fw-bold text-dark mb-2" style="font-size: 0.85rem; min-height: 34px;"><?php echo htmlspecialchars($p['title']); ?></h5>
+                    <p class="text-muted mb-0 lh-sm" style="font-size: 0.75rem;"><?php echo htmlspecialchars($p['desc']); ?></p>
                 </div>
             </div>
             <?php endforeach; ?>
@@ -507,6 +505,7 @@ $transparentHeader = true;
     </div>
 </section>
 
+<!-- SECTION 9: SOLUTIONS HUB METRIC BLOCK -->
 <section class="sec-vpad bg-light">
     <div class="container-xl">
         <div class="card border-0 rounded-4 shadow-lg overflow-hidden bg-enterprise-dark text-white">
@@ -516,38 +515,38 @@ $transparentHeader = true;
                     <div class="col-lg-7 text-center text-md-start">
                         <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-3 mb-4 pb-3 border-bottom border-light border-opacity-10">
                             <i class="fab fa-microsoft fs-1 text-info flex-shrink-0"></i>
-                            <h3 class="h2 fw-bold mb-0">Microsoft Solutions Center</h3>
+                            <h3 class="h2 fw-bold mb-0"><?php echo !empty($ms_center_title) ? htmlspecialchars($ms_center_title) : 'Microsoft Solutions Center'; ?></h3>
                         </div>
-                        <p class="text-white mb-3 fs-5 fw-medium">Helping Organizations Maximize Their Enterprise Solutions Investment</p>
-                        <p class="opacity-75 text-white-50 mb-4 small">ATNA Technologies delivers comprehensive business integrations designed to automate legacy operational structures securely. Our functional focal areas include:</p>
+                        <p class="text-white mb-3 fs-5 fw-medium"><?php echo !empty($ms_center_subtitle) ? htmlspecialchars($ms_center_subtitle) : ''; ?></p>
+                        <p class="opacity-75 text-white-50 mb-4 small"><?php echo !empty($ms_center_description) ? htmlspecialchars($ms_center_description) : ''; ?></p>
 
                         <div class="row g-4 text-start">
                             <div class="col-sm-6 d-flex align-items-start gap-3">
                                 <i class="bi bi-window-sidebar text-info fs-4 flex-shrink-0"></i>
                                 <div>
-                                    <h6 class="fw-bold mb-1">Business Frameworks</h6>
-                                    <p class="small text-white-50 mb-0">Transform finance operations via modern automated enterprise tracking setups.</p>
+                                    <h6 class="fw-bold mb-1"><?php echo !empty($ms_bullet_t1) ? htmlspecialchars($ms_bullet_t1) : 'Business Frameworks'; ?></h6>
+                                    <p class="small text-white-50 mb-0"><?php echo !empty($ms_bullet_d1) ? htmlspecialchars($ms_bullet_d1) : ''; ?></p>
                                 </div>
                             </div>
                             <div class="col-sm-6 d-flex align-items-start gap-3">
                                 <i class="bi bi-cloud-haze2 text-info fs-4 flex-shrink-0"></i>
                                 <div>
-                                    <h6 class="fw-bold mb-1">Cloud Architecture</h6>
-                                    <p class="small text-white-50 mb-0">Construct modern cloud spaces equipped with active threat compliance filters.</p>
+                                    <h6 class="fw-bold mb-1"><?php echo !empty($ms_bullet_t2) ? htmlspecialchars($ms_bullet_t2) : 'Cloud Architecture'; ?></h6>
+                                    <p class="small text-white-50 mb-0"><?php echo !empty($ms_bullet_d2) ? htmlspecialchars($ms_bullet_d2) : ''; ?></p>
                                 </div>
                             </div>
                             <div class="col-sm-6 d-flex align-items-start gap-3">
                                 <i class="bi bi-graph-up-arrow text-info fs-4 flex-shrink-0"></i>
                                 <div>
-                                    <h6 class="fw-bold mb-1">Data &amp; Analytics Hubs</h6>
-                                    <p class="small text-white-50 mb-0">Leverage system analytics data layers into automated real-time visualizations.</p>
+                                    <h6 class="fw-bold mb-1"><?php echo !empty($ms_bullet_t3) ? htmlspecialchars($ms_bullet_t3) : 'Data &amp; Analytics Hubs'; ?></h6>
+                                    <p class="small text-white-50 mb-0"><?php echo !empty($ms_bullet_d3) ? htmlspecialchars($ms_bullet_d3) : ''; ?></p>
                                 </div>
                             </div>
                             <div class="col-sm-6 d-flex align-items-start gap-3">
                                 <i class="bi bi-robot text-info fs-4 flex-shrink-0"></i>
                                 <div>
-                                    <h6 class="fw-bold mb-1">AI Workflow Automation</h6>
-                                    <p class="small text-white-50 mb-0">Deploy autonomous logic processors to eliminate manual application overhead.</p>
+                                    <h6 class="fw-bold mb-1"><?php echo !empty($ms_bullet_t4) ? htmlspecialchars($ms_bullet_t4) : 'AI Workflow Automation'; ?></h6>
+                                    <p class="small text-white-50 mb-0"><?php echo !empty($ms_bullet_d4) ? htmlspecialchars($ms_bullet_d4) : ''; ?></p>
                                 </div>
                             </div>
                         </div>
@@ -555,25 +554,23 @@ $transparentHeader = true;
 
                     <div class="col-lg-5">
                         <div class="bg-white text-dark p-4 rounded-4 shadow-lg text-center">
-                            <h4 class="h6 fw-bold mb-0 pb-3 border-bottom text-uppercase tracking-wider" style="color: var(--atna-primary);">
-                                Certified Ecosystem Footprint
-                            </h4>
+                            <h4 class="h6 fw-bold mb-0 pb-3 border-bottom text-uppercase tracking-wider" style="color: var(--atna-primary);">Certified Ecosystem Footprint</h4>
                             <div class="row g-0 ms-stat-grid">
                                 <div class="col-6 p-3 border-end border-bottom">
-                                    <p class="fw-bold mb-1 text-primary h2">250+</p>
-                                    <span class="small text-muted fw-semibold">Global Clients</span>
+                                    <p class="fw-bold mb-1 text-primary h2"><?php echo !empty($stat_val_1) ? htmlspecialchars($stat_val_1) : '250+'; ?></p>
+                                    <span class="small text-muted fw-semibold"><?php echo !empty($stat_lbl_1) ? htmlspecialchars($stat_lbl_1) : 'Global Clients'; ?></span>
                                 </div>
                                 <div class="col-6 p-3 border-bottom">
-                                    <p class="fw-bold mb-1 text-primary h2">100+</p>
-                                    <span class="small text-muted fw-semibold">Deployments</span>
+                                    <p class="fw-bold mb-1 text-primary h2"><?php echo !empty($stat_val_2) ? htmlspecialchars($stat_val_2) : '100+'; ?></p>
+                                    <span class="small text-muted fw-semibold"><?php echo !empty($stat_lbl_2) ? htmlspecialchars($stat_lbl_2) : 'Deployments'; ?></span>
                                 </div>
                                 <div class="col-6 p-3 border-end">
-                                    <p class="fw-bold mb-1 text-primary h2">20+</p>
-                                    <span class="small text-muted fw-semibold">Years Active</span>
+                                    <p class="fw-bold mb-1 text-primary h2"><?php echo !empty($stat_val_3) ? htmlspecialchars($stat_val_3) : '20+'; ?></p>
+                                    <span class="small text-muted fw-semibold"><?php echo !empty($stat_lbl_3) ? htmlspecialchars($stat_lbl_3) : 'Years Active'; ?></span>
                                 </div>
                                 <div class="col-6 p-3">
-                                    <p class="fw-bold mb-1 text-primary h2">20+</p>
-                                    <span class="small text-muted fw-semibold">Regions Served</span>
+                                    <p class="fw-bold mb-1 text-primary h2"><?php echo !empty($stat_val_4) ? htmlspecialchars($stat_val_4) : '20+'; ?></p>
+                                    <span class="small text-muted fw-semibold"><?php echo !empty($stat_lbl_4) ? htmlspecialchars($stat_lbl_4) : 'Regions Served'; ?></span>
                                 </div>
                             </div>
                         </div>
@@ -585,63 +582,37 @@ $transparentHeader = true;
     </div>
 </section>
 
+<!-- SECTION 10: ATNA SYSTEM ACCELERATORS -->
 <section class="sec-vpad bg-white">
     <div class="container-xl">
         <div class="row justify-content-center mb-5">
             <div class="col-lg-8 text-center">
-                <span class="text-uppercase fw-bold small tracking-wider mb-2 d-block" style="color: var(--atna-secondary);">Proprietary Business IP Modules</span>
-                <h2 class="h2 fw-bold text-dark mb-2">ATNA Accelerators &amp; Solutions</h2>
-                <p class="text-muted mb-0">Custom-engineered systems built directly on premium logic stacks to dramatically reduce integration timelines.</p>
+                <span class="text-uppercase fw-bold small tracking-wider mb-2 d-block" style="color: var(--atna-secondary);"><?php echo !empty($accelerators_badge) ? htmlspecialchars($accelerators_badge) : 'Proprietary Business IP Modules'; ?></span>
+                <h2 class="h2 fw-bold text-dark mb-2"><?php echo !empty($accelerators_title) ? htmlspecialchars($accelerators_title) : 'ATNA Accelerators &amp; Solutions'; ?></h2>
+                <p class="text-muted mb-0"><?php echo !empty($accelerators_description) ? htmlspecialchars($accelerators_description) : ''; ?></p>
             </div>
         </div>
 
         <div class="row g-4">
             <?php 
             $solutions = [
-                ['title' => 'Financial Consolidation Engine (FINCON)', 'icon' => 'bi-journal-check',  'desc' => 'Unify disparate fiscal data schemas across multiple subsidiaries automatically into singular operational ledgers.'],
-                ['title' => 'Accounts Payable Automation',               'icon' => 'bi-file-earmark-spreadsheet', 'desc' => 'Extract, validate, and bridge transaction receipts directly into backend registers without entry delays.'],
-                ['title' => 'Advance Shipping Notice Framework',               'icon' => 'bi-lightning-charge', 'desc' => 'Automate complex outbound logistics networks with real-time supply chain updates.'],
-                ['title' => 'Predictive Inventory Optimizer',                                         'icon' => 'bi-diagram-3',       'desc' => 'Forecast enterprise logistical needs utilizing advanced baseline statistical trend configurations.']
+                ['title' => $sol_title_1 ?? 'Financial Consolidation Engine', 'icon' => 'bi-journal-check',  'desc' => $sol_desc_1 ?? ''],
+                ['title' => $sol_title_2 ?? 'Accounts Payable Automation',        'icon' => 'bi-file-earmark-spreadsheet', 'desc' => $sol_desc_2 ?? ''],
+                ['title' => $sol_title_3 ?? 'Advance Shipping Notice Framework',       'icon' => 'bi-lightning-charge', 'desc' => $sol_desc_3 ?? ''],
+                ['title' => $sol_title_4 ?? 'Predictive Inventory Optimizer',                                         'icon' => 'bi-diagram-3',       'desc' => $sol_desc_4 ?? '']
             ];
             foreach($solutions as $sol): ?>
             <div class="col-12 col-md-6 col-lg-3 d-flex">
                 <div class="card h-100 border border-light-subtle p-4 w-100 shadow-sm premium-card-hover bg-white rounded-4 d-flex flex-column">
-                    <div class="icon-wrapper-circle mb-4">
-                        <i class="bi <?php echo $sol['icon']; ?>"></i>
-                    </div>
-                    <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom" style="font-size:0.95rem; min-height:44px;"><?php echo $sol['title']; ?></h5>
-                    <p class="text-muted small mb-0 lh-base flex-grow-1"><?php echo $sol['desc']; ?></p>
+                    <div class="icon-wrapper-circle mb-4"><i class="bi <?php echo $sol['icon']; ?>"></i></div>
+                    <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom" style="font-size:0.95rem; min-height:44px;"><?php echo htmlspecialchars($sol['title']); ?></h5>
+                    <p class="text-muted small mb-0 lh-base flex-grow-1"><?php echo htmlspecialchars($sol['desc']); ?></p>
                 </div>
             </div>
             <?php endforeach; ?>
         </div>
     </div>
 </section>
-
-<div class="bg-enterprise-dark text-white py-5 position-relative overflow-hidden">
-    <div class="container-xl position-relative" style="z-index: 2;">
-        <div class="row g-4 justify-content-center align-items-center text-center">
-            <div class="col-6 col-md-3">
-                <p class="display-5 fw-bold mb-1 text-info">250+</p>
-                <span class="small text-uppercase tracking-wider opacity-75 fw-semibold" style="font-size:0.75rem;">Global Customers</span>
-            </div>
-            <div class="col-6 col-md-3 border-start border-light border-opacity-20">
-                <p class="display-5 fw-bold mb-1 text-info">100+</p>
-                <span class="small text-uppercase tracking-wider opacity-75 fw-semibold" style="font-size:0.75rem;">Live Systems</span>
-            </div>
-            <div class="col-6 col-md-3 border-start border-light border-opacity-20">
-                <p class="display-5 fw-bold mb-1 text-info">20+</p>
-                <span class="small text-uppercase tracking-wider opacity-75 fw-semibold" style="font-size:0.75rem;">Countries Active</span>
-            </div>
-            <div class="col-6 col-md-3 border-start border-light border-opacity-20">
-                <p class="display-5 fw-bold mb-1 text-info">20+</p>
-                <span class="small text-uppercase tracking-wider opacity-75 fw-semibold" style="font-size:0.75rem;">Years Experience</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 
 </div>
 

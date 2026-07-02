@@ -46,7 +46,6 @@ $validation = \Config\Services::validation();
 
  <div class="tab-content">
    
-   <!-- TAB 1: GENERAL -->
    <div id="tab-general" class="tab-pane active">
       <fieldset>
           <div class="row mb-3 required">
@@ -94,23 +93,30 @@ $validation = \Config\Services::validation();
       </fieldset>
   </div>
 
-       <!-- TAB 2: DATA -->
        <div id="tab-authorize" class="tab-pane">
-            <div class="row mb-3">
-              <label for="input-email" class="col-sm-2 col-form-label">Category</label>
-              <div class="col-sm-10">       
-              <select name="category" class="form-control">
-                  <option value="">Select</option>
-                  <?php foreach ($blogCategoryList as $key => $value): ?>
-                      <option value="<?php echo $value->id; ?>" <?php echo $category==$value->id?'selected':''; ?>  ><?php echo $value->name; ?></option>
-                  <?php endforeach ?>
-              </select>
-              </div>
-          </div>
+     <div class="row mb-3">
+       <label class="col-sm-2 col-form-label">Category</label>
+       <div class="col-sm-10">        
+       <select name="category" class="form-control">
+           <option value="">Select</option>
+           <?php foreach ($blogCategoryList as $key => $value): ?>
+               <option value="<?php echo $value->id; ?>" <?php echo $category==$value->id?'selected':''; ?>  ><?php echo $value->name; ?></option>
+           <?php endforeach ?>
+       </select>
+       </div>
+   </div>
+
+   <div class="row mb-3">
+    <label for="input-author-name" class="col-sm-2 col-form-label">Author Name</label>
+    <div class="col-sm-10">        
+        <input type="text" name="author_name" value="<?php echo set_value('author_name', isset($author_name) ? $author_name : ''); ?>" placeholder="e.g., Editorial Team, Rohan, Pavandra Negi" id="input-author-name" class="form-control" />
+        <?php echo $validation->hasError('author_name') ? $validation->showError('author_name', 'my_single') : ''; ?>
+    </div>
+</div>
 
             <div class="row mb-3">
-              <label for="input-email" class="col-sm-2 col-form-label">Type</label>
-              <div class="col-sm-10">       
+              <label class="col-sm-2 col-form-label">Type</label>
+              <div class="col-sm-10">        
               <select name="type" class="form-control">
                   <option value="">Select</option>
                   <?php foreach ($typeList as $key => $value): ?>
@@ -121,8 +127,8 @@ $validation = \Config\Services::validation();
           </div>
 
            <div class="row mb-3">
-              <label for="input-email" class="col-sm-2 col-form-label">Image</label>
-              <div class="col-sm-10">       
+              <label class="col-sm-2 col-form-label">Image</label>
+              <div class="col-sm-10">        
                <?php if (!empty($image)){ $ext = pathinfo($image, PATHINFO_EXTENSION); if($ext=='mp4'){ ?>
                <video width="200" height="150" controls>
                   <source src="<?php echo base_url($image); ?>" type="video/mp4">
@@ -136,7 +142,7 @@ $validation = \Config\Services::validation();
 
           <div class="row mb-3">
               <label for="input-thumbnail" class="col-sm-2 col-form-label">Thumbnail</label>
-              <div class="col-sm-10">       
+              <div class="col-sm-10">        
                  <?php if (!empty($thumbnail)){ $ext = pathinfo($thumbnail, PATHINFO_EXTENSION); ?>
                <?php if ($ext=='mp4') {?>
                  <video muted autoplay loop playsinline class="future_media" width="200" height="200">
@@ -152,7 +158,7 @@ $validation = \Config\Services::validation();
           
             <div class="row mb-3">
               <label for="input-whitepaper" class="col-sm-2 col-form-label">Whitepaper /Case study Download</label>
-              <div class="col-sm-10">       
+              <div class="col-sm-10">        
                <?php if (!empty($whitepaper_download)): ?>
                 <a href="<?php echo base_url($whitepaper_download) ?>" target="_blank" ><i class="fa fa-file-pdf fa-2x"></i></a>
               <?php endif ?>
@@ -162,21 +168,21 @@ $validation = \Config\Services::validation();
 
             <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Feature</label>
-              <div class="col-sm-10">       
+              <div class="col-sm-10">        
               <input type="checkbox" name="feature" value="1" <?php echo $feature==1?'checked':''; ?> />
               </div>
           </div>
         
         <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Upcoming Events</label>
-              <div class="col-sm-10">       
+              <div class="col-sm-10">        
               <input type="checkbox" name="upcoming" value="1" <?php echo $upcoming==1?'checked':''; ?> />
               </div>
           </div>
             
            <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Location</label>
-              <div class="col-sm-10">       
+              <div class="col-sm-10">        
               <input type="text" name="location" value="<?php echo set_value('location',$location) ?>" class="form-control" />
               </div>
           </div>
@@ -190,21 +196,21 @@ $validation = \Config\Services::validation();
 
            <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Publish Date</label>
-              <div class="col-sm-10">       
+              <div class="col-sm-10">        
               <input type="date" name="publish" value="<?php echo set_value('publish',$publish) ?>" class="form-control" />
               </div>
           </div>
         
          <div class="row mb-3">
               <label class="col-sm-2 col-form-label">upcoming Date </label>
-              <div class="col-sm-10">       
+              <div class="col-sm-10">        
               <input type="text" name="upcomingDate" value="<?php echo set_value('upcomingDate',$upcomingDate) ?>" class="form-control" />
               </div>
           </div>
           
              <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Event Time </label>
-              <div class="col-sm-10">       
+              <div class="col-sm-10">        
               <input type="time" name="eventTime" value="<?php echo set_value('eventTime',$eventTime) ?>" class="form-control" />
               </div>
           </div>
@@ -227,11 +233,10 @@ $validation = \Config\Services::validation();
           </div>
   </div>
 
-   <!-- TAB 3: CUSTOMER SUCCESS -->
    <div id="tab-coustomer" class="tab-pane">
             <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Product</label>
-              <div class="col-sm-10">       
+              <div class="col-sm-10">        
               <select name="product" class="form-control">
                   <option value="">Select</option>
                   <?php foreach ($productList as $key => $value): ?>
@@ -243,7 +248,7 @@ $validation = \Config\Services::validation();
 
                  <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Service</label>
-              <div class="col-sm-10">       
+              <div class="col-sm-10">        
               <select name="service" class="form-control">
                   <option value="">Select</option>
                   <?php foreach ($serviceList as $key => $value): ?>
@@ -255,7 +260,7 @@ $validation = \Config\Services::validation();
 
                <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Industry</label>
-              <div class="col-sm-10">       
+              <div class="col-sm-10">        
               <select name="industry" class="form-control">
                   <option value="">Select</option>
                   <?php foreach ($industryList as $key => $value): ?>
@@ -287,12 +292,10 @@ $validation = \Config\Services::validation();
           </div>
   </div>
 
-  <!-- TAB 4: SPECIFIC FIELD MANAGEMENT COUPLINGS (FROM image_ef7643.png) -->
   <div id="tab-form-access" class="tab-pane">
        <div class="alert alert-info"><i class="fa-solid fa-circle-info"></i> Customize visibility metrics and placeholders for fields matching the frontend form framework block.</div>
        <fieldset>
            
-           <!-- FIELD 1: NAME -->
            <div class="row mb-4 align-items-center bg-light p-2 rounded">
                <label class="col-sm-2 col-form-label fw-bold text-primary">1. NAME *</label>
                <div class="col-sm-5">
@@ -306,7 +309,6 @@ $validation = \Config\Services::validation();
                </div>
            </div>
 
-           <!-- FIELD 2: COMPANY NAME -->
            <div class="row mb-4 align-items-center bg-light p-2 rounded">
                <label class="col-sm-2 col-form-label fw-bold text-primary">2. COMPANY NAME *</label>
                <div class="col-sm-5">
@@ -320,7 +322,6 @@ $validation = \Config\Services::validation();
                </div>
            </div>
 
-           <!-- FIELD 3: TITLE -->
            <div class="row mb-4 align-items-center bg-light p-2 rounded">
                <label class="col-sm-2 col-form-label fw-bold text-primary">3. TITLE *</label>
                <div class="col-sm-5">
@@ -334,7 +335,6 @@ $validation = \Config\Services::validation();
                </div>
            </div>
 
-           <!-- FIELD 4: BUSINESS EMAIL -->
            <div class="row mb-4 align-items-center bg-light p-2 rounded">
                <label class="col-sm-2 col-form-label fw-bold text-primary">4. BUSINESS EMAIL *</label>
                <div class="col-sm-5">
@@ -348,7 +348,6 @@ $validation = \Config\Services::validation();
                </div>
            </div>
 
-           <!-- FIELD 5: PHONE NUMBER -->
            <div class="row mb-4 align-items-center bg-light p-2 rounded">
                <label class="col-sm-2 col-form-label fw-bold text-primary">5. PHONE NUMBER *</label>
                <div class="col-sm-5">
@@ -362,7 +361,6 @@ $validation = \Config\Services::validation();
                </div>
            </div>
 
-           <!-- FIELD 6: EXPECTATION -->
            <div class="row mb-4 align-items-center bg-light p-2 rounded">
                <label class="col-sm-2 col-form-label fw-bold text-primary">6. EXPECTATION *</label>
                <div class="col-sm-5">
@@ -376,7 +374,6 @@ $validation = \Config\Services::validation();
                </div>
            </div>
 
-           <!-- FIELD 7: ERP SYSTEM DROPDOWN OPTIONS -->
            <div class="row mb-3 align-items-center bg-light p-2 rounded">
                <label class="col-sm-2 col-form-label fw-bold text-primary">7. ERP SYSTEM *</label>
                <div class="col-sm-10">

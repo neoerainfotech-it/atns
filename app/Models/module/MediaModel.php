@@ -12,11 +12,22 @@ class MediaModel extends Model
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
-    protected $allowedFields    = ['title','slug','audio','link','alt_tag2','alt_tag','category','description','description2','image','thumbnail','type','tags','publish','status','sort_order','create_date','modify_date','metaTitle','metaKeyword','metaDescription','shortDescription','feature','scope','location','author','trending','whitepaper_download','video','upcoming','industry','client','spotlight','readingTime','product','service','industry','challenge','solution','benefit','upcomingDate','eventTime'];
+    protected $useSoftDeletes    = false;
+    protected $protectFields     = true;
+    
+    // ADDED 'author_name' TO ALLOWED PARAMETERS MATRIX
+    protected $allowedFields    = [
+        'title', 'slug', 'audio', 'link', 'alt_tag2', 'alt_tag', 'category', 
+        'description', 'description2', 'image', 'thumbnail', 'type', 'tags', 
+        'publish', 'status', 'sort_order', 'create_date', 'modify_date', 
+        'metaTitle', 'metaKeyword', 'metaDescription', 'shortDescription', 
+        'feature', 'scope', 'location', 'author_name', 'trending', 
+        'whitepaper_download', 'video', 'upcoming', 'industry', 'client', 
+        'spotlight', 'readingTime', 'product', 'service', 'industry', 
+        'challenge', 'solution', 'benefit', 'upcomingDate', 'eventTime'
+    ];
 
-   // Dates
+    // Dates
     protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
@@ -39,19 +50,4 @@ class MediaModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

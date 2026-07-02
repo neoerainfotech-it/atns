@@ -9,11 +9,15 @@ $readingMinutes    = max(1, (int) ceil($readingWordCount / 200));
 
 // Process crisp fallback descriptive summaries from structural backend strings
 $cleanHeroDesc = isset($detail->description) ? mb_strimwidth(strip_tags($detail->description), 0, 180, '...') : '';
+
+// Resolve dynamic author name variables cleanly
+$displayAuthor = !empty($detail->author_name) ? esc($detail->author_name) : 'Editorial Team';
+$authorInitial = mb_substr($displayAuthor, 0, 1);
 ?>
 
 <style>
 /* ============================================================
-   BLOG DETAIL PAGE — LUXURY BLUE ENTERPRISE THEME
+    BLOG DETAIL PAGE — LUXURY BLUE ENTERPRISE THEME
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
@@ -28,8 +32,8 @@ $cleanHeroDesc = isset($detail->description) ? mb_strimwidth(strip_tags($detail-
   --clr-text:         #28415A;
   --clr-muted:        #65809B;
 
-  --font-display:     'Sora', system-ui, -apple-system, sans-serif;
-  --font-body:        'Inter', system-ui, -apple-system, sans-serif;
+  --font-display:      'Sora', system-ui, -apple-system, sans-serif;
+  --font-body:         'Inter', system-ui, -apple-system, sans-serif;
 
   --radius-card:       16px;
   --shadow-sm:         0 4px 16px rgba(22, 50, 79, 0.05);
@@ -136,340 +140,212 @@ $cleanHeroDesc = isset($detail->description) ? mb_strimwidth(strip_tags($detail-
   background: var(--clr-white);
   border-radius: var(--radius-card);
   border: 1px solid var(--clr-border);
-  box-shadow: var(--shadow-sm);
-  padding: 48px;
-}
-.blog-detail-article .article-body {
-  font-size: 1.05rem;
-  line-height: 1.85;
-  color: var(--clr-text);
-  word-wrap: break-word;
-}
-.blog-detail-article .article-body h2,
-.blog-detail-article .article-body h3 {
-  font-family: var(--font-display);
-  color: var(--clr-navy);
-  font-weight: 700;
-  margin-top: 1.8em;
-  margin-bottom: .8em;
-  letter-spacing: -.01em;
-}
-.blog-detail-article .article-body p { margin-bottom: 1.3em; }
-.blog-detail-article .article-body img {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  margin: 2.2em 0;
-  display: block;
-}
-.blog-detail-article .article-body blockquote {
-  border-left: 4px solid var(--clr-blue);
-  padding: 18px 24px;
-  margin: 2em 0;
-  background: var(--clr-sky);
-  border-radius: 0 12px 12px 0;
-  font-style: italic;
-  color: var(--clr-navy);
-}
-
-/* ---- Share Strip Component ---- */
-.blog-detail-share-strip {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding-top: 24px;
-  margin-top: 40px;
-  border-top: 1px solid var(--clr-border);
-  flex-wrap: wrap;
-}
-.blog-detail-share-strip .share-label {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--clr-muted);
-}
-
-/* ---- Sticky Sticky Sidebar System ---- */
-.blog-detail-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  position: sticky;
-  top: 110px;
-}
-.blog-sidebar-card {
-  background: var(--clr-white);
-  border: 1px solid var(--clr-border);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-sm);
-  padding: 28px;
-}
-.blog-sidebar-card__label {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--clr-blue);
-  margin-bottom: 18px;
-}
-.sidebar-fact {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-.sidebar-fact:last-child { margin-bottom: 0; }
-.sidebar-fact__icon {
-  width: 32px;
-  height: 32px;
-  flex-shrink: 0;
-  border-radius: 8px;
-  background: var(--clr-sky);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.sidebar-fact__text small {
-  display: block;
-  font-size: 11.5px;
-  font-weight: 500;
-  color: var(--clr-muted);
-  margin-bottom: 2px;
-}
-.sidebar-fact__text strong {
-  font-size: 14.5px;
-  color: var(--clr-navy);
-  font-weight: 700;
-}
-.blog-sidebar-cta {
-  background: var(--clr-navy);
-  border: none;
-}
-.blog-sidebar-cta p {
-  color: rgba(255,255,255,.78);
-  font-size: 13.5px;
-  line-height: 1.6;
-  margin: 0 0 18px;
-}
-.blog-sidebar-cta .sidebar-cta-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  background: var(--clr-blue);
-  color: var(--clr-white);
-  font-size: 14px;
-  font-weight: 700;
-  text-decoration: none;
-  padding: 12px 18px;
-  border-radius: 100px;
-  transition: background var(--ease);
-}
-.blog-sidebar-cta .sidebar-cta-link:hover { background: var(--clr-blue-deep); }
-
-/* ---- Action Buttons ---- */
-.blog-back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--clr-navy);
-  text-decoration: none;
-  border: 1px solid var(--clr-border);
-  background: var(--clr-white);
-  border-radius: 100px;
-  padding: 10px 24px;
-  transition: all var(--ease);
-  margin-bottom: 24px;
-  box-shadow: var(--shadow-sm);
-}
-.blog-back-link:hover {
-  background: var(--clr-blue);
-  border-color: var(--clr-blue);
-  color: var(--clr-white);
-}
-
-/* ---- Related Section Header Layout ---- */
-.blog-related-section {
-  padding: 80px 0 0;
-  border-top: 1px solid var(--clr-border);
-  margin-top: 80px;
-}
-.blog-section-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 36px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid var(--clr-border);
-}
-.blog-section-header .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--clr-blue);
-  margin-bottom: 8px;
-}
-.blog-section-header .eyebrow::before {
-  content: "";
-  width: 14px;
-  height: 2px;
-  background: var(--clr-blue);
-  display: inline-block;
-}
-.blog-section-header .section-title {
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: var(--clr-navy);
-  margin: 0;
-}
-
-/* ---- Premium Proportional Card Grid Architecture ---- */
-.blog-card {
-  background: var(--clr-white);
-  border-radius: var(--radius-card);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--clr-border);
   height: 100%;
   position: relative;
   transition: box-shadow var(--ease), transform var(--ease), border-color var(--ease);
 }
-.blog-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-5px);
-  border-color: var(--clr-blue);
+.blog-detail-article {
+  background: var(--clr-white);
+  border-radius: var(--radius-card);
+  padding: 40px;
+  box-shadow: 0 4px 16px rgba(22, 50, 79, 0.03);
 }
-.blog-card__img-wrap {
-  position: relative;
-  overflow: hidden;
-  background: var(--clr-sky);
-  width: 100%;
-  aspect-ratio: 16 / 10; /* Strictly locks proportional scaling context across rows */
+.article-body {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--clr-text);
 }
-.blog-card__img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover !important;
-  display: block;
-  transition: transform 0.6s var(--ease);
-}
-.blog-card:hover .blog-card__img-wrap img { transform: scale(1.05); }
-.blog-card__body {
-  padding: 24px;
+
+.blog-author-box {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background: var(--clr-sky);
+  padding: 24px;
+  border-radius: 12px;
+  margin: 40px 0;
+}
+.blog-author-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: var(--clr-blue);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  border-radius: 50%;
+  text-transform: uppercase;
+}
+.blog-author-details {
   flex: 1;
 }
-.blog-card__meta { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.blog-card__date {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: var(--clr-muted);
-}
-.blog-card__title {
+.blog-author-name {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  color: var(--clr-navy);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.blog-author-bio {
+  font-size: 14px;
+  color: var(--clr-muted);
+  margin: 0;
+}
+
+.blog-detail-share-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--clr-border);
+  padding-top: 24px;
+  margin-top: 24px;
+}
+.share-label {
   font-weight: 700;
   color: var(--clr-navy);
-  line-height: 1.45;
-  margin: 0 0 10px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: 3.2rem;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
-.blog-card__excerpt {
-  font-size: 13.5px;
-  line-height: 1.6;
-  color: var(--clr-muted);
-  margin-bottom: 20px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.blog-card__read-more {
+
+.blog-back-link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--clr-navy);
+  color: var(--clr-blue);
+  font-weight: 700;
   text-decoration: none;
-  margin-top: auto;
-  padding-top: 14px;
+  margin-bottom: 24px;
+  transition: color 0.2s;
+}
+.blog-back-link:hover {
+  color: var(--clr-blue-deep);
+}
+
+.blog-sidebar-card {
+  background: #fff;
+  border: 1px solid var(--clr-border);
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(22, 50, 79, 0.02);
+}
+.blog-sidebar-card__label {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--clr-blue-deep);
+  margin-bottom: 20px;
+}
+.sidebar-fact {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.sidebar-fact:last-child {
+  margin-bottom: 0;
+}
+.sidebar-fact__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--clr-sky);
+  border-radius: 8px;
+  color: var(--clr-blue);
+}
+.sidebar-fact__text {
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-fact__text small {
+  font-size: 11px;
+  color: var(--clr-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.sidebar-fact__text strong {
+  font-size: 14px;
+  color: var(--clr-navy);
+}
+
+.blog-sidebar-cta {
+  background: var(--clr-navy);
+  color: #fff;
+  border: none;
+}
+.blog-sidebar-cta p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.sidebar-cta-link {
+  display: block;
+  text-align: center;
+  background: var(--clr-blue);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.sidebar-cta-link:hover {
+  background: var(--clr-blue-deep);
+}
+
+.blog-related-section {
   border-top: 1px solid var(--clr-border);
-  transition: color var(--ease), gap var(--ease);
+  padding-top: 56px;
+  margin-top: 56px;
 }
-.blog-card__read-more:hover { color: var(--clr-blue); gap: 12px; }
-
-/* ---- Structural Responsive Layout Hooks ---- */
-@media (max-width: 1099px) {
-  .blog-detail-layout { grid-template-columns: 1fr; }
-  .blog-detail-sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-}
-
-@media (max-width: 991px) and (min-width: 768px) {
-  /* Enforces highly balanced proportional layouts explicitly for Medium Device Columns */
-  .blog-card__title { font-size: 1.05rem; min-height: 3.1rem; }
-  .blog-card__body { padding: 20px; }
+.eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--clr-blue);
+  margin-bottom: 8px;
 }
 
+@media (max-width: 1045px) {
+  .blog-detail-layout {
+    grid-template-columns: 1fr;
+  }
+}
 @media (max-width: 767px) {
-  .blog-detail-hero { min-height: 420px; }
-  .blog-detail-hero__content { padding: 90px 0 40px; }
-  .blog-detail-article { padding: 28px 20px; }
-  .blog-detail-sidebar { grid-template-columns: 1fr; }
-  .blog-detail-layout { padding-top: 32px; gap: 24px; }
-  .blog-card__title { min-height: auto; }
+  .blog-detail-article {
+    padding: 24px;
+  }
 }
 </style>
 
 <section class="blog-detail-hero">
-  <img
-    src="<?php echo $detail->image ? base_url($detail->image) : base_url($config_logo); ?>"
-    alt="<?php echo htmlspecialchars($detail->title); ?>"
-    class="blog-detail-hero__bg"
-    loading="eager"
-  />
-  <div class="blog-detail-hero__overlay"></div>
-
+  <div class="blog-detail-hero__bg" style="background-image: url('<?php echo base_url($detail->image); ?>');"></div>
   <div class="blog-detail-hero__content">
     <div class="container">
       <div class="row">
-        <div class="col-lg-10">
-          <span class="blog-detail-hero__tag">Article Publication</span>
-          <h1 class="blog-detail-hero__title"><?php echo $detail->title; ?></h1>
-          
-          <?php if (!empty($cleanHeroDesc)) { ?>
-            <p class="blog-detail-hero__lead"><?php echo $cleanHeroDesc; ?></p>
-          <?php } ?>
-
-          <div class="blog-detail-hero__meta">
-            <span class="blog-detail-hero__meta-item">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="3" width="14" height="12" rx="2" stroke="rgba(255,255,255,.8)" stroke-width="1.4"/><path d="M5 1v3M11 1v3M1 7h14" stroke="rgba(255,255,255,.8)" stroke-width="1.4" stroke-linecap="round"/></svg>
-              Published <?php echo $detail->publish ? date('d M Y', strtotime($detail->publish)) : date('d M Y'); ?>
-            </span>
-            <span class="blog-detail-hero__meta-item">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.3" stroke="rgba(255,255,255,.8)" stroke-width="1.4"/><path d="M8 4.5V8l2.6 1.5" stroke="rgba(255,255,255,.8)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <?php echo $readingMinutes; ?> min read
-            </span>
+        <div class="col-xl-4 col-lg-6 col-md-6 d-flex">
+          <div style="z-index:2; position:relative;">
+            <div class="blog-detail-hero__tag">Article Details</div>
+            <h1 class="blog-detail-hero__title" style="color: #fff; font-family: var(--font-display);"><?php echo $page_title; ?></h1>
+            <div class="blog-detail-hero__meta">
+              <span class="blog-detail-hero__meta-item">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="3" width="14" height="12" rx="2" stroke="rgba(255,255,255,.8)" stroke-width="1.4"/><path d="M5 1v3M11 1v3M1 7h14" stroke="rgba(255,255,255,.8)" stroke-width="1.4" stroke-linecap="round"/></svg>
+                Published <?php echo $detail->publish ? date('d M Y', strtotime($detail->publish)) : date('d M Y'); ?>
+              </span>
+              <span class="blog-detail-hero__meta-item">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.3" stroke="rgba(255,255,255,.8)" stroke-width="1.4"/><path d="M8 4.5V8l2.6 1.5" stroke="rgba(255,255,255,.8)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <?php echo $readingMinutes; ?> min read
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -490,6 +366,14 @@ $cleanHeroDesc = isset($detail->description) ? mb_strimwidth(strip_tags($detail-
         <article class="blog-detail-article">
           <div class="article-body">
             <?php echo $detail->description; ?>
+          </div>
+
+          <div class="blog-author-box">
+            <div class="blog-author-avatar"><?php echo $authorInitial; ?></div>
+            <div class="blog-author-details">
+              <h5 class="blog-author-name"><?php echo $displayAuthor; ?></h5>
+              <p class="blog-author-bio">Expert insights, market analysis, and technology strategies curated by our industry research specialists.</p>
+            </div>
           </div>
 
           <div class="blog-detail-share-strip">
@@ -544,7 +428,6 @@ $cleanHeroDesc = isset($detail->description) ? mb_strimwidth(strip_tags($detail-
 
       <div class="row g-4">
         <?php foreach ($relatedPost as $key => $value) { 
-          // Build string text summaries dynamically from relational data
           $cleanCardExcerpt = isset($value->description) ? mb_strimwidth(strip_tags($value->description), 0, 110, '...') : 'Explore deeper insights and strategy metrics from our latest structural updates...';
         ?>
         <div class="col-lg-4 col-md-6 d-flex">
@@ -561,6 +444,10 @@ $cleanHeroDesc = isset($detail->description) ? mb_strimwidth(strip_tags($detail-
                 <span class="blog-card__date">
                   <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="3" width="14" height="12" rx="2" stroke="#65809B" stroke-width="1.4"/><path d="M5 1v3M11 1v3M1 7h14" stroke="#65809B" stroke-width="1.4" stroke-linecap="round"/></svg>
                   <?php echo $value->publish ? date('d M Y', strtotime($value->publish)) : ''; ?>
+                </span>
+                <span class="blog-card__author">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="5" r="3.3" stroke="#65809B" stroke-width="1.4"/><path d="M2 14c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5" stroke="#65809B" stroke-width="1.4" stroke-linecap="round"/></svg>
+                  Author: <strong><?php echo !empty($value->author_name) ? esc($value->author_name) : 'Editorial Team'; ?></strong>
                 </span>
               </div>
               <h4 class="blog-card__title"><?php echo esc($value->title); ?></h4>
