@@ -169,24 +169,149 @@ $transparentHeader = true;
     }
     .partner-logo-card:hover .logo-greyscale { transform: scale(1.04); }
 
-    /* Swiper Controls Navigation Positioning Refinements */
-    .swiper-partner-wrapper { position: relative; width: 100%; }
-    .partner-next, .partner-prev {
-        color: var(--atna-secondary) !important; width: 44px !important; height: 44px !important;
-        background: #ffffff; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        top: 50%; transform: translateY(-50%); z-index: 10; transition: all 0.2s ease-in-out;
+    /* ==========================================================================
+       HIGH-TREND COLOR-CODED SECTORS DESIGN UTILITY TOKENS (SECTION 7 REARCHITECT)
+       ========================================================================== */
+    .vertical-app-card {
+        background: #ffffff;
+        border: 1px solid rgba(0,0,0,0.05);
+        border-radius: 1.5rem;
+        padding: 2.2rem 1.8rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.02);
     }
-    .partner-next:hover, .partner-prev:hover { background: var(--atna-secondary); color: #ffffff !important; }
-    .partner-next { right: -22px !important; }
-    .partner-prev { left: -22px !important; }
-    .partner-next:after, .partner-prev:after { font-size: 16px !important; font-weight: 700; }
+    .vertical-app-card:hover {
+        transform: translateY(-10px) rotate(1deg);
+        box-shadow: 0 25px 50px rgba(13, 44, 108, 0.08) !important;
+    }
+    .vertical-app-card .card-accent-strip {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+    }
+    .vertical-app-card .icon-header-box {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.35rem;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+        transition: transform 0.4s ease;
+    }
+    .vertical-app-card:hover .icon-header-box {
+        transform: scale(1.1) rotate(-8deg);
+    }
     
-    .hover-bg-light:hover { background-color: var(--atna-bg-light) !important; }
-    .hover-lift:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(47, 124, 255, 0.1); }
-    .transition-all { transition: all 0.2s ease-in-out; }
+    .v-card-blue { --accent-clr: #0052cc; --accent-bg: rgba(0,82,204,0.08); }
+    .v-card-green { --accent-clr: #2e7d32; --accent-bg: rgba(46,125,50,0.08); }
+    .v-card-orange { --accent-clr: #e65100; --accent-bg: rgba(230,81,0,0.08); }
+    .v-card-purple { --accent-clr: #6a1b9a; --accent-bg: rgba(106,27,154,0.08); }
 
-    /* Scoped layout padding source of truth rules */
-    .page-partners .sec-vpad {
+    .vertical-app-card.v-card-blue { border-top: 5px solid #0052cc; }
+    .vertical-app-card.v-card-green { border-top: 5px solid #2e7d32; }
+    .vertical-app-card.v-card-orange { border-top: 5px solid #e65100; }
+    .vertical-app-card.v-card-purple { border-top: 5px solid #6a1b9a; }
+
+    .vertical-app-card .icon-header-box { background: var(--accent-bg); color: var(--accent-clr); }
+    .vertical-app-card .node-bullet-check { color: var(--accent-clr); }
+
+    .vertical-title-text {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #111827;
+        margin-bottom: 1.2rem;
+        letter-spacing: -0.01em;
+    }
+    .vertical-app-node-line {
+        font-size: 0.92rem;
+        font-weight: 500;
+        color: #4b5563;
+        transition: color 0.2s ease;
+    }
+    .vertical-app-card:hover .vertical-app-node-line {
+        color: #1f2937;
+    }
+
+    /* ==========================================================================
+       ADVANCED HIGH-TREND ASYMMETRIC PILLARS DESIGN
+       ========================================================================== */
+    .modern-asymmetric-section {
+        background: radial-gradient(circle at 100% 0%, rgba(0, 131, 191, 0.05) 0%, transparent 40%), 
+                    radial-gradient(circle at 0% 100%, rgba(13, 44, 108, 0.03) 0%, transparent 45%), #ffffff;
+        position: relative;
+    }
+    .asymmetric-interactive-card {
+        background: #ffffff;
+        border: 1px solid rgba(13, 44, 108, 0.06);
+        border-radius: 1.5rem;
+        padding: 2.2rem 1.8rem;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.33, 1);
+        box-shadow: 0 12px 35px rgba(13, 44, 108, 0.03);
+    }
+    .asymmetric-interactive-card::before {
+        content: '';
+        position: absolute;
+        width: 160px;
+        height: 160px;
+        background: linear-gradient(135deg, rgba(0, 131, 191, 0.07) 0%, rgba(13, 44, 108, 0.03) 100%);
+        border-radius: 50%;
+        top: -60px;
+        right: -60px;
+        z-index: -1;
+        transition: transform 0.6s cubic-bezier(0.25, 1, 0.33, 1);
+    }
+    .asymmetric-interactive-card:hover {
+        transform: translateY(-8px) scale(1.02) rotate(0.5deg);
+        border-color: rgba(0, 131, 191, 0.35);
+        box-shadow: 0 25px 50px rgba(13, 44, 108, 0.09) !important;
+    }
+    .asymmetric-interactive-card:hover::before {
+        transform: scale(1.4) translate(-10px, 10px);
+    }
+    .asymmetric-interactive-card .icon-shield-frame {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, rgba(27, 71, 146, 0.06) 0%, rgba(0, 131, 191, 0.04) 100%);
+        color: var(--atna-secondary);
+        border: 1px solid rgba(27, 71, 146, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1rem;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.4s ease;
+    }
+    .asymmetric-interactive-card:hover .icon-shield-frame {
+        background: linear-gradient(135deg, var(--atna-secondary) 0%, #0083BF 100%);
+        color: #ffffff;
+        transform: scale(1.08) rotate(-4deg);
+        box-shadow: 0 8px 20px rgba(0, 131, 191, 0.25);
+    }
+    .asymmetric-card-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.015em;
+    }
+    .asymmetric-card-desc {
+        font-size: 0.88rem;
+        color: #4b5563;
+        line-height: 1.55;
+    }
+
+    .sec-vpad {
         padding-top: var(--section-py);
         padding-bottom: var(--section-py);
     }
@@ -219,10 +344,7 @@ $transparentHeader = true;
 
 <div class="page-partners">
 
-<!-- 
-  SECTION 2: DYNAMIC HERO BANNER WITH DYNAMIC BACKGROUND EXECUTION
-  Loads the Secondary Banner Image seamlessly with premium linear dark color overlays
--->
+<!-- SECTION 2: DYNAMIC HERO BANNER WITH DYNAMIC BACKGROUND EXECUTION -->
 <?php 
     $heroBgStyle = "background-image: radial-gradient(circle at 10% 20%, rgba(47, 124, 255, 0.15) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);";
     if(!empty($banner_image_secondary)) {
@@ -432,36 +554,42 @@ $transparentHeader = true;
     </div>
 </section>
 
-<!-- SECTION 7: DYNAMIC SECTORS MATRICES -->
+<!-- SECTION 7 REDESIGN: COLORFUL ASYMMETRIC VERTICAL MODULE APPLICATIONS MATRIX -->
 <section class="sec-vpad bg-white border-bottom">
     <div class="container-xl">
         <div class="row justify-content-center mb-5">
             <div class="col-lg-8 text-center">
-                <span class="text-uppercase fw-bold small tracking-wider mb-2 d-block" style="color: var(--atna-secondary);">Industry Solutions Framework</span>
-                <h2 class="h2 fw-bold text-dark mb-2">Targeted Vertical Applications</h2>
-                <p class="text-muted mb-0">Our partner ecosystem enables us to deliver specialized enterprise architecture maps configured uniquely for core target sectors.</p>
+                <span class="text-uppercase fw-bold small tracking-wider mb-2 d-block" style="color: var(--atna-secondary); font-size:0.75rem; font-weight:800;">Industry Solutions Framework</span>
+                <h2 class="h2 fw-bold text-dark mb-2" style="font-weight:800; letter-spacing:-0.015em;">Targeted Vertical Applications</h2>
+                <p class="text-muted mb-0 mx-auto" style="max-width:640px; font-size:0.95rem;">Our partner ecosystem enables us to deliver specialized enterprise architecture maps configured uniquely for core target sectors.</p>
             </div>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4 justify-content-center">
             <?php 
             $sectorsMap = [
-                ['title' => $vertical_title_1 ?? 'Manufacturing', 'icon' => 'bi-buildings', 'nodes' => $vertical_mfg_nodes ?? ''],
-                ['title' => $vertical_title_2 ?? 'Retail & Distribution', 'icon' => 'bi-cart3', 'nodes' => $vertical_retail_nodes ?? ''],
-                ['title' => $vertical_title_3 ?? 'Textile & Apparel', 'icon' => 'bi-tags', 'nodes' => $vertical_textile_nodes ?? ''],
-                ['title' => $vertical_title_4 ?? 'Food & Beverage', 'icon' => 'bi-cup-hot', 'nodes' => $vertical_fnb_nodes ?? '']
+                ['title' => $vertical_title_1 ?? 'Manufacturing', 'icon' => 'bi-buildings', 'class' => 'v-card-blue', 'nodes' => $vertical_mfg_nodes ?? ''],
+                ['title' => $vertical_title_2 ?? 'Retail & Distribution', 'icon' => 'bi-cart3', 'class' => 'v-card-green', 'nodes' => $vertical_retail_nodes ?? ''],
+                ['title' => $vertical_title_3 ?? 'Textile & Apparel', 'icon' => 'bi-tags', 'class' => 'v-card-orange', 'nodes' => $vertical_textile_nodes ?? ''],
+                ['title' => $vertical_title_4 ?? 'Food & Beverage', 'icon' => 'bi-cup-hot', 'class' => 'v-card-purple', 'nodes' => $vertical_fnb_nodes ?? '']
             ];
 
             foreach($sectorsMap as $sector):
                 $lines = !empty($sector['nodes']) ? explode("\n", trim($sector['nodes'])) : [];
             ?>
                 <div class="col-xl-3 col-md-6 d-flex">
-                    <div class="card h-100 border border-light-subtle p-4 shadow-sm bg-white rounded-4 premium-card-hover w-100 d-flex flex-column">
-                        <div class="icon-wrapper-circle mb-3"><i class="<?php echo $sector['icon']; ?>"></i></div>
-                        <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom"><?php echo htmlspecialchars($sector['title']); ?></h5>
-                        <ul class="list-unstyled d-flex flex-column gap-2 text-muted small mb-0 flex-grow-1 justify-content-start">
+                    <div class="vertical-app-card w-100 <?php echo $sector['class']; ?>">
+                        <div class="icon-header-box">
+                            <i class="<?php echo $sector['icon']; ?>"></i>
+                        </div>
+                        <h4 class="vertical-title-text"><?php echo htmlspecialchars($sector['title']); ?></h4>
+                        
+                        <ul class="list-unstyled d-flex flex-column gap-3 mb-0 justify-content-start">
                             <?php foreach($lines as $line): if(trim($line) == '') continue; ?>
-                                <li class="d-flex align-items-start"><i class="bi bi-circle-fill text-primary me-2 mt-1.5" style="font-size:0.4rem; flex-shrink:0;"></i> <span><?php echo htmlspecialchars(trim($line)); ?></span></li>
+                                <li class="d-flex align-items-start gap-2">
+                                    <i class="fas fa-circle-check node-bullet-check mt-1" style="font-size:0.95rem; flex-shrink:0;"></i> 
+                                    <span class="vertical-app-node-line"><?php echo htmlspecialchars(trim($line)); ?></span>
+                                </li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
@@ -471,35 +599,101 @@ $transparentHeader = true;
     </div>
 </section>
 
+<!-- ==========================================================================
+     DYNAMIC METRIC STRIP — Cleaned Ultra-Premium Layout (No Box Pattern)
+     ========================================================================== -->
+<section class="py-4 bg-white">
+    <div class="container-xl">
+        <div class="card border-0 rounded-4 shadow-sm bg-enterprise-dark position-relative overflow-hidden text-white py-4 px-3">
+            
+            <div class="position-absolute top-0 start-0 w-100 h-100 opacity-25" style="background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 60%); pointer-events: none;"></div>
+            
+            <div class="row align-items-center justify-content-center text-center g-4 position-relative" style="z-index: 2;">
+                
+                <!-- METRIC 1: GLOBAL CLIENTS -->
+                <div class="col-6 col-lg-3 position-relative">
+                    <div class="d-flex flex-column flex-sm-row align-items-center justify-content-center gap-3">
+                        <div class="fs-2 text-info"><i class="bi bi-people-fill"></i></div>
+                        <div class="text-center text-sm-start">
+                            <h3 class="display-6 fw-bold mb-0 text-white" style="font-size: 1.75rem; letter-spacing: -0.02em;"><?php echo !empty($stat_val_1) ? htmlspecialchars($stat_val_1) : '250+'; ?></h3>
+                            <p class="small text-uppercase tracking-wider opacity-75 fw-semibold mb-0" style="font-size: 0.72rem; color: #a5c7fe;"><?php echo !empty($stat_lbl_1) ? htmlspecialchars($stat_lbl_1) : 'Global Clients'; ?></p>
+                        </div>
+                    </div>
+                    <div class="d-none d-lg-block position-absolute end-0 top-50 translate-middle-y opacity-25" style="width: 1px; height: 35px; background-color: #fff;"></div>
+                </div>
+
+                <!-- METRIC 2: DEPLOYMENTS -->
+                <div class="col-6 col-lg-3 position-relative">
+                    <div class="d-flex flex-column flex-sm-row align-items-center justify-content-center gap-3">
+                        <div class="fs-2 text-info"><i class="bi bi-rocket-takeoff-fill"></i></div>
+                        <div class="text-center text-sm-start">
+                            <h3 class="display-6 fw-bold mb-0 text-white" style="font-size: 1.75rem; letter-spacing: -0.02em;"><?php echo !empty($stat_val_2) ? htmlspecialchars($stat_val_2) : '100+'; ?></h3>
+                            <p class="small text-uppercase tracking-wider opacity-75 fw-semibold mb-0" style="font-size: 0.72rem; color: #a5c7fe;"><?php echo !empty($stat_lbl_2) ? htmlspecialchars($stat_lbl_2) : 'Deployments'; ?></p>
+                        </div>
+                    </div>
+                    <div class="d-none d-lg-block position-absolute end-0 top-50 translate-middle-y opacity-25" style="width: 1px; height: 35px; background-color: #fff;"></div>
+                </div>
+
+                <!-- METRIC 3: YEARS ACTIVE -->
+                <div class="col-6 col-lg-3 position-relative">
+                    <div class="d-flex flex-column flex-sm-row align-items-center justify-content-center gap-3">
+                        <div class="fs-2 text-info"><i class="bi bi-globe-americas"></i></div>
+                        <div class="text-center text-sm-start">
+                            <h3 class="display-6 fw-bold mb-0 text-white" style="font-size: 1.75rem; letter-spacing: -0.02em;"><?php echo !empty($stat_val_3) ? htmlspecialchars($stat_val_3) : '20+'; ?></h3>
+                            <p class="small text-uppercase tracking-wider opacity-75 fw-semibold mb-0" style="font-size: 0.72rem; color: #a5c7fe;"><?php echo !empty($stat_lbl_3) ? htmlspecialchars($stat_lbl_3) : 'Years Active'; ?></p>
+                        </div>
+                    </div>
+                    <div class="d-none d-lg-block position-absolute end-0 top-50 translate-middle-y opacity-25" style="width: 1px; height: 35px; background-color: #fff;"></div>
+                </div>
+
+                <!-- METRIC 4: REGIONS SERVED -->
+                <div class="col-6 col-lg-3">
+                    <div class="d-flex flex-column flex-sm-row align-items-center justify-content-center gap-3">
+                        <div class="fs-2 text-info"><i class="bi bi-award-fill"></i></div>
+                        <div class="text-center text-sm-start">
+                            <h3 class="display-6 fw-bold mb-0 text-white" style="font-size: 1.75rem; letter-spacing: -0.02em;"><?php echo !empty($stat_val_4) ? htmlspecialchars($stat_val_4) : '20+'; ?></h3>
+                            <p class="small text-uppercase tracking-wider opacity-75 fw-semibold mb-0" style="font-size: 0.72rem; color: #a5c7fe;"><?php echo !empty($stat_lbl_4) ? htmlspecialchars($stat_lbl_4) : 'Regions Served'; ?></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- SECTION 8: ADVANTAGE PILLARS LAYOUT -->
-<section class="sec-vpad bg-white">
+<section class="sec-vpad modern-asymmetric-section border-bottom">
     <div class="container-xl">
         <div class="row justify-content-center mb-5">
-            <div class="col-lg-8 text-center">
-                <span class="text-uppercase fw-bold small tracking-wider mb-2 d-block" style="color: var(--atna-secondary);"><?php echo !empty($alliances_badge) ? htmlspecialchars($alliances_badge) : 'The ATNA Strategic Advantage'; ?></span>
-                <h2 class="h2 fw-bold text-dark mb-2"><?php echo !empty($alliances_title) ? htmlspecialchars($alliances_title) : 'Why Our Strategic Alliances Matter'; ?></h2>
-                <p class="text-muted mb-0"><?php echo !empty($alliances_description) ? htmlspecialchars($alliances_description) : ''; ?></p>
+            <div class="col-lg-9 col-xl-8 text-center">
+                <span class="text-uppercase fw-bold small tracking-wider mb-2 d-block" style="color: var(--atna-secondary); font-size: 0.8rem; font-weight: 800;"><?php echo !empty($alliances_badge) ? htmlspecialchars($alliances_badge) : 'The ATNA Strategic Advantage'; ?></span>
+                <h2 class="display-6 fw-extrabold text-dark mb-3" style="font-weight: 800; letter-spacing: -0.02em;"><?php echo !empty($alliances_title) ? htmlspecialchars($alliances_title) : 'Why Our Strategic Alliances Matter'; ?></h2>
+                <p class="fs-6 text-muted lh-base mx-auto" style="max-width: 720px; font-weight: 400;"><?php echo !empty($alliances_description) ? htmlspecialchars($alliances_description) : ''; ?></p>
             </div>
         </div>
 
-        <div class="row g-4 row-cols-2 row-cols-md-3 row-cols-xl-6 justify-content-center">
+        <div class="row g-4 justify-content-center">
             <?php
             $pillars = [
-                ['icon' => 'fa-solid fa-user-shield',    'title' => $pillar_label_1 ?? 'Certified Expertise',    'desc' => $pillar_desc_1 ?? ''],
-                ['icon' => 'fa-solid fa-gauge-high',       'title' => $pillar_label_2 ?? 'Faster Deployment',   'desc' => $pillar_desc_2 ?? ''],
-                ['icon' => 'fa-solid fa-lightbulb',        'title' => $pillar_label_3 ?? 'Innovation Engines',   'desc' => $pillar_desc_3 ?? ''],
-                ['icon' => 'fa-solid fa-network-wired',    'title' => $pillar_label_4 ?? 'End-to-End Managed',     'desc' => $pillar_desc_4 ?? ''],
-                ['icon' => 'fa-solid fa-lock',             'title' => $pillar_label_5 ?? 'Secure Compliance',     'desc' => $pillar_desc_5 ?? ''],
-                ['icon' => 'fa-solid fa-globe-americas',   'title' => $pillar_label_6 ?? 'Global Distribution', 'desc' => $pillar_desc_6 ?? '']
+                ['icon' => 'fa-solid fa-user-shield',    'title' => $pillar_label_1 ?? 'Certified Expertise',    'desc' => $pillar_desc_1 ?? 'Engineers carrying comprehensive technical certifications.'],
+                ['icon' => 'fa-solid fa-gauge-high',       'title' => $pillar_label_2 ?? 'Faster Deployment',   'desc' => $pillar_desc_2 ?? 'Accelerators and blueprints designed to scale cycles safely.'],
+                ['icon' => 'fa-solid fa-lightbulb',        'title' => $pillar_label_3 ?? 'Innovation Engines',   'desc' => $pillar_desc_3 ?? 'Continuous integration of emerging artificial intelligence layers.'],
+                ['icon' => 'fa-solid fa-network-wired',    'title' => $pillar_label_4 ?? 'End-to-End Managed',     'desc' => $pillar_desc_4 ?? 'Complete ecosystem oversight including performance scaling audits.'],
+                ['icon' => 'fa-solid fa-lock',             'title' => $pillar_label_5 ?? 'Secure Compliance',     'desc' => $pillar_desc_5 ?? 'Enterprise compliance structures built inside high-performance standards.'],
+                ['icon' => 'fa-solid fa-globe-americas',   'title' => $pillar_label_6 ?? 'Global Distribution', 'desc' => $pillar_desc_6 ?? 'Multi-currency structures configured for complex cross-border trade layouts.']
             ];
-            foreach ($pillars as $p): ?>
-            <div class="col d-flex">
-                <div class="card h-100 border-0 p-2 w-100 premium-card-hover bg-transparent text-center d-flex flex-column align-items-center">
-                    <div class="icon-wrapper-circle mb-3"><i class="<?php echo $p['icon']; ?>"></i></div>
-                    <h5 class="fw-bold text-dark mb-2" style="font-size: 0.85rem; min-height: 34px;"><?php echo htmlspecialchars($p['title']); ?></h5>
-                    <p class="text-muted mb-0 lh-sm" style="font-size: 0.75rem;"><?php echo htmlspecialchars($p['desc']); ?></p>
+            foreach ($pillars as $p): 
+            ?>
+                <div class="col-xl-4 col-md-6 d-flex">
+                    <div class="asymmetric-interactive-card w-100">
+                        <div class="icon-shield-frame">
+                            <i class="<?php echo $p['icon']; ?>"></i>
+                        </div>
+                        <h4 class="asymmetric-card-title"><?php echo htmlspecialchars($p['title']); ?></h4>
+                        <p class="asymmetric-card-desc mb-0"><?php echo htmlspecialchars($p['desc']); ?></p>
+                    </div>
                 </div>
-            </div>
             <?php endforeach; ?>
         </div>
     </div>
@@ -613,6 +807,146 @@ $transparentHeader = true;
         </div>
     </div>
 </section>
+
+<!-- ==========================================================================
+     PREMIUM SECURE ENQUIRY WORKSPACE (WITH GOOGLE reCAPTCHA v3)
+     ========================================================================== 
+-->
+<section id="partner-enquiry-section" class="sec-vpad bg-light">
+    <div class="container-xl">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden bg-white">
+                    <div class="card-body p-4 p-md-5">
+                        
+                        <div class="text-center mb-4">
+                            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 small fw-bold mb-2">Connect Ecosystem</span>
+                            <h3 class="fw-extrabold text-dark tracking-tight">Initiate Partnership Request</h3>
+                            <p class="text-muted small">Submit your operational constraints to map an alliance architectural profile safely.</p>
+                        </div>
+
+                        <!-- Feedback Alert Message Boxes -->
+                        <div id="enquiry-alert-msg" class="alert d-none" role="alert"></div>
+
+                        <form id="form-secure-enquiry" autocomplete="off" novalidate>
+                            <?= csrf_field() ?>
+                            
+                            <div class="row g-3">
+                                <!-- Name -->
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-secondary">Full Name <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white text-muted"><i class="bi bi-person"></i></span>
+                                        <input type="text" name="enq_name" class="form-control" placeholder="Abishek V" required />
+                                    </div>
+                                </div>
+
+                                <!-- Work Email -->
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-secondary">Work Email <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white text-muted"><i class="bi bi-envelope-at"></i></span>
+                                        <input type="email" name="enq_email" class="form-control" placeholder="name@company.com" required />
+                                    </div>
+                                </div>
+
+                                <!-- Phone Number -->
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-secondary">Phone Number <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white text-muted"><i class="bi bi-telephone"></i></span>
+                                        <input type="tel" name="enq_phone" class="form-control" placeholder="9876543210" required />
+                                    </div>
+                                </div>
+
+                                <!-- Physical/Corporate Address -->
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-secondary">Corporate Address <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white text-muted"><i class="bi bi-geo-alt"></i></span>
+                                        <input type="text" name="enq_address" class="form-control" placeholder="Tiruppur, Tamil Nadu" required />
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="col-12 text-center mt-4">
+                                    <button type="submit" id="btn-submit-enquiry" class="btn btn-atna-primary w-100 rounded-pill-custom py-2.5 fw-bold text-uppercase tracking-wider small">
+                                        <i class="fa-solid fa-paper-plane me-1"></i> Dispatch Security Request
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Google reCAPTCHA v3 API Core Engine Execution -->
+<script src="https://www.google.com/recaptcha/api.js?render=6Ld7DEMtAAAAALvAMGN3banyiNeleFPIoDdtxgUx"></script>
+
+<script>
+document.getElementById('form-secure-enquiry').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    var formNode = this;
+    var submitBtn = document.getElementById('btn-submit-enquiry');
+    var alertBox = document.getElementById('enquiry-alert-msg');
+    
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = "<i class='fa-solid fa-circle-notch fa-spin me-1'></i> Encrypting Data Stream...";
+
+    // Trigger invisible verification execution anchor
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6Ld7DEMtAAAAALvAMGN3banyiNeleFPIoDdtxgUx', {action: 'submit'}).then(function(token) {
+            
+            var formData = new FormData(formNode);
+            // Append the invisible token programmatically to match backend requirements
+            formData.append('g-recaptcha-response', token);
+
+            fetch("<?php echo base_url('frontend/save_partner_enquiry'); ?>", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(response => response.json())
+            .then(res => {
+                alertBox.classList.remove('d-none');
+                
+                // CRUCIAL: Dynamically refresh CodeIgniter's hidden CSRF form input field token instantly
+                if (res.tokenHash) {
+                    var csrfInput = formNode.querySelector('input[type="hidden"][name^="csrf_"]');
+                    if (csrfInput) {
+                        csrfInput.value = res.tokenHash;
+                    }
+                }
+
+                if (res.status === 1) {
+                    alertBox.className = "alert alert-success small fw-bold";
+                    alertBox.innerHTML = "<i class='fa-solid fa-circle-check me-2'></i> " + res.msg;
+                    formNode.reset();
+                } else {
+                    alertBox.className = "alert alert-danger small fw-bold";
+                    alertBox.innerHTML = "<i class='fa-solid fa-circle-xmark me-2'></i> " + res.msg;
+                }
+            })
+            .catch(err => {
+                alertBox.className = "alert alert-danger small fw-bold";
+                alertBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation me-2'></i> Technical infrastructure bottleneck detected.";
+                alertBox.classList.remove('d-none');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = "<i class='fa-solid fa-paper-plane me-1'></i> Dispatch Security Request";
+            });
+        });
+    });
+});
+</script>
 
 </div>
 

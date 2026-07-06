@@ -226,11 +226,16 @@ $authorInitial = mb_substr($displayAuthor, 0, 1);
 
 .blog-sidebar-card {
   background: #fff;
-  border: 1px solid var(--clr-border);
+  border: 1px solid rgba(45, 125, 210, 0.3); /* ✅ HIGHLIGHTED SIDEBAR BORDER */
   padding: 24px;
   border-radius: 12px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 12px rgba(22, 50, 79, 0.02);
+  box-shadow: 0 4px 16px rgba(22, 50, 79, 0.06);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.blog-sidebar-card:hover {
+  border-color: rgba(45, 125, 210, 0.6); /* Highlights slightly when users interact with the sidebar */
+  box-shadow: 0 8px 24px rgba(22, 50, 79, 0.1);
 }
 .blog-sidebar-card__label {
   font-family: var(--font-display);

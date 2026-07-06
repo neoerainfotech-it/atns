@@ -112,16 +112,16 @@ $this->section('page');
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--clr-border);
+  box-shadow: 0 4px 16px rgba(22, 50, 79, 0.08); /* Slightly stronger default shadow */
+  border: 1px solid rgba(21, 70, 122, 0.3); /* ✅ HIGHLIGHTED DEFAULT BORDER */
   height: 100%;
   position: relative;
   transition: box-shadow var(--ease), transform var(--ease), border-color var(--ease);
 }
 .blog-card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 16px 40px rgba(22, 50, 79, 0.15);
   transform: translateY(-5px);
-  border-color: var(--clr-blue);
+  border-color: var(--clr-blue); /* ✅ STRONG BLUE HIGHLIGHT ON HOVER */
 }
 
 .blog-card__img-wrap {
