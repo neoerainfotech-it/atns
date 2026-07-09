@@ -1,6 +1,28 @@
 <?php 
 $this->extend('layouts/master_admin');
 $this->section('page');
+
+// =================================================================
+// DIRECT VIEW DATABASE FETCH BYPASS ENGINE (Step 1 Master Dashboard)
+// =================================================================
+$db = \Config\Database::connect();
+
+// FIXED: Querying 'cyb_blogs' table for 'EVENT' matching your exact SQL dump rows
+$events = $db->table('cyb_blogs')
+             ->where('type', 'EVENT') 
+             ->orderBy('id', 'DESC')
+             ->get()
+             ->getResult();
+
+// Calculate the total registered attendee lead count for each unique event row
+foreach ($events as $event) {
+    $event->total_leads = $db->table('cyb_webinar_registration')
+                             ->where('event_id', $event->id)
+                             ->countAllResults();
+}
+
+$page_title = 'Webinar Management Dashboard';
+// =================================================================
 ?>
 <div id="content">
     <div class="page-header">
@@ -49,6 +71,7 @@ $this->section('page');
                                             </span>
                                         </td>
                                         <td class="text-center">
+                                            <!-- Drill down link to navigate directly to the filtered leads page -->
                                             <a href="<?php echo base_url('admin/webinar-leads/' . $event->id); ?>" class="btn btn-primary btn-sm fw-bold shadow-sm">
                                                 <i class="fa-solid fa-folder-open me-1"></i> View Registrations
                                             </a>

@@ -679,3 +679,8 @@ $routes->get('admin/testimonial', 'Admin\Testimonial::index');
 $routes->match(['get', 'post'], 'admin/testimonial/add', 'Admin\Testimonial::add');
 $routes->match(['get', 'post'], 'admin/testimonial/add/(:num)', 'Admin\Testimonial::add/$1');
 $routes->post('admin/testimonial/delete', 'Admin\Testimonial::delete');
+// Step 1 Route: Main Dashboard Event Indexing Directory
+$routes->get('admin/webinar-events', 'admin\WebinarController::events');
+
+// Step 2 Route: Dynamic Lead Ledger Isolated by Event ID Index
+$routes->get('admin/webinar-leads/(:num)', 'admin\WebinarController::registrations/$1');

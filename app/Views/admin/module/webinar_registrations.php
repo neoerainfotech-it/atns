@@ -1,7 +1,45 @@
 <?php 
 $this->extend('layouts/master_admin');
 $this->section('page');
+$validation = \Config\Services::validation(); 
+
+// =================================================================
+// DIRECT VIEW DATABASE FETCH BYPASS ENGINE (Guarantees Data Loads)
+// =================================================================
+$db = \Config\Database::connect();
+
+// 1. Automatically grab the Event ID number from the end of your browser URL
+$uri = service('uri');
+$segments = $uri->getSegments();
+$event_id = end($segments); // Captures the numeric ID from admin/webinar-leads/ID
+
+// 2. Grab the specific event row information to display the title name dynamically
+$eventInfo = $db->table('cyb_blogs')->where('id', $event_id)->get()->getRow();
+$page_title = $eventInfo ? 'Leads for: ' . $eventInfo->title : 'Webinar Registrations Ledger';
+
+// 3. Build the backend filter request targeting only this Event ID
+$builder = $db->table('cyb_webinar_registration')->where('event_id', $event_id);
+
+// Catch sidebar text filter inputs if submitted
+$searchName = isset($_GET['name']) ? trim($_GET['name']) : '';
+if (!empty($searchName)) {
+    $builder->like('name', $searchName);
+}
+
+// 4. Manual Pagination Pipeline processing (Prevents layout view breaks)
+$allLeads = $builder->orderBy('id', 'DESC')->get()->getResult();
+$total    = count($allLeads);
+$perPage  = 10;
+$page     = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset   = ($page - 1) * $perPage;
+
+// Slice the array rows cleanly to show exactly 10 lines per pagination group
+$detail   = array_slice($allLeads, $offset, $perPage);
+$pages    = ceil($total / $perPage);
+$pager    = \Config\Services::pager();
+// =================================================================
 ?>
+
 <div id="content">
     <div class="page-header">
         <div class="container-fluid">
@@ -34,7 +72,7 @@ $this->section('page');
                         <form action="<?php echo base_url('admin/webinar-leads/' . $event_id) ?>" method="get">
                             <div class="mb-3">
                                 <label class="form-label small text-muted fw-bold text-uppercase">Attendee Name</label>
-                                <input type="text" name="name" class="form-control" value="<?php echo htmlspecialchars(@$_GET['name'] ?? ''); ?>" placeholder="Type name to search...">
+                                <input type="text" name="name" class="form-control" value="<?php echo htmlspecialchars($searchName); ?>" placeholder="Type name to search...">
                             </div>
                             <div class="text-end">
                                 <button type="submit" class="btn btn-info btn-sm text-dark fw-bold"><i class="fa-solid fa-filter"></i> Filter</button>&nbsp;
@@ -72,7 +110,7 @@ $this->section('page');
                                             <?php foreach ($detail as $key => $value) { ?>
                                                 <tr>
                                                     <td class="text-start"><input type="checkbox" class="form-check-input" name="selected[]" value="<?php echo $value->id; ?>" /></td>
-                                                    <td class="text-muted font-monospace small"><?php echo $key + 1; ?></td>
+                                                    <td class="text-muted font-monospace small"><?php echo $offset + $key + 1; ?></td>
                                                     <td class="fw-bold text-dark"><?php echo htmlspecialchars($value->name); ?></td>
                                                     <td class="small"><a href="mailto:<?php echo esc($value->email); ?>"><?php echo htmlspecialchars($value->email); ?></a></td>
                                                     <td class="font-monospace text-secondary small"><?php echo htmlspecialchars($value->phone); ?></td>
@@ -127,13 +165,13 @@ $this->section('page');
                             <div class="row mt-3">
                                 <div class="col-sm-6 text-start">
                                     <ul class="pagination mb-0">
-                                        <?php if (isset($pager) && $pager):?>    
-                                            <?= $pager->makeLinks($page ?? 1, $perPage ?? 10, $total ?? 0) ?>
+                                        <?php if (isset($pager) && $pager && $pages > 1):?>    
+                                            <?= $pager->makeLinks($page, $perPage, $total) ?>
                                         <?php endif; ?>
                                     </ul>
                                 </div>
                                 <div class="col-sm-6 text-end align-self-center text-muted small font-monospace">
-                                    Showing <?php echo ($offset ?? 0) + 1; ?> to <?php echo min(($offset ?? 0) + ($perPage ?? 10), $total ?? 0); ?> of <?php echo $total ?? 0; ?> (<?php echo $pages ?? 1; ?> Pages)
+                                    Showing <?php echo $total > 0 ? $offset + 1 : 0; ?> to <?php echo min($offset + $perPage, $total); ?> of <?php echo $total; ?> (<?php echo $pages; ?> Pages)
                                 </div>
                             </div>
                         <?php echo form_close(); ?>
