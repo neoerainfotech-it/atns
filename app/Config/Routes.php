@@ -50,7 +50,7 @@ $routes->post('get_service_ajax', 'Frontend::get_service_ajax');
 $routes->post('save_blog_enquiry', 'Frontend::save_blog_enquiry');
 $routes->post('save_downlaod_enquiry', 'Frontend::save_downlaod_enquiry');
 
-
+$routes->post('frontend/save_partner_enquiry', 'Frontend::save_partner_enquiry');
 
 
 

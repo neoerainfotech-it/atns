@@ -812,6 +812,14 @@ $transparentHeader = true;
      PREMIUM SECURE ENQUIRY WORKSPACE (WITH GOOGLE reCAPTCHA v3)
      ========================================================================== 
 -->
+<!-- Inline CSS to hide the default floating v3 reCAPTCHA badge from the corner -->
+<style>
+.grecaptcha-badge { 
+    visibility: hidden !important; 
+}
+</style>
+
+<!-- Form UI Section Container -->
 <section id="partner-enquiry-section" class="sec-vpad bg-light">
     <div class="container-xl">
         <div class="row justify-content-center">
@@ -822,7 +830,7 @@ $transparentHeader = true;
                         <div class="text-center mb-4">
                             <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 small fw-bold mb-2">Connect Ecosystem</span>
                             <h3 class="fw-extrabold text-dark tracking-tight">Initiate Partnership Request</h3>
-                            <p class="text-muted small">Submit your operational constraints to map an alliance architectural profile safely.</p>
+                            <p class="text-muted small">Submit your operational parameters to map an alliance architectural profile safely.</p>
                         </div>
 
                         <!-- Feedback Alert Message Boxes -->
@@ -832,7 +840,7 @@ $transparentHeader = true;
                             <?= csrf_field() ?>
                             
                             <div class="row g-3">
-                                <!-- Name -->
+                                <!-- 1. Name -->
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-secondary">Full Name <span class="text-danger">*</span></label>
                                     <div class="input-group">
@@ -841,30 +849,39 @@ $transparentHeader = true;
                                     </div>
                                 </div>
 
-                                <!-- Work Email -->
+                                <!-- 2. Company Name -->
                                 <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-secondary">Work Email <span class="text-danger">*</span></label>
+                                    <label class="form-label small fw-bold text-secondary">Company Name <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white text-muted"><i class="bi bi-building"></i></span>
+                                        <input type="text" name="enq_company" class="form-control" placeholder="Atna Technologies" required />
+                                    </div>
+                                </div>
+
+                                <!-- 3. Title -->
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-secondary">Title / Designation <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white text-muted"><i class="bi bi-briefcase"></i></span>
+                                        <input type="text" name="enq_title" class="form-control" placeholder="e.g., Chief Financial Officer" required />
+                                    </div>
+                                </div>
+
+                                <!-- 4. Business Email Address -->
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-secondary">Business Email Address <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-white text-muted"><i class="bi bi-envelope-at"></i></span>
                                         <input type="email" name="enq_email" class="form-control" placeholder="name@company.com" required />
                                     </div>
                                 </div>
 
-                                <!-- Phone Number -->
-                                <div class="col-md-6">
+                                <!-- 5. Phone Number -->
+                                <div class="col-md-12">
                                     <label class="form-label small fw-bold text-secondary">Phone Number <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-white text-muted"><i class="bi bi-telephone"></i></span>
                                         <input type="tel" name="enq_phone" class="form-control" placeholder="9876543210" required />
-                                    </div>
-                                </div>
-
-                                <!-- Physical/Corporate Address -->
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-secondary">Corporate Address <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-white text-muted"><i class="bi bi-geo-alt"></i></span>
-                                        <input type="text" name="enq_address" class="form-control" placeholder="Tiruppur, Tamil Nadu" required />
                                     </div>
                                 </div>
 
@@ -874,80 +891,123 @@ $transparentHeader = true;
                                         <i class="fa-solid fa-paper-plane me-1"></i> Dispatch Security Request
                                     </button>
                                 </div>
+                                <div class="col-12 text-center mt-2">
+    <small class="text-muted" style="font-size: 0.72rem;">
+        This site is protected by reCAPTCHA and the Google 
+        <a href="https://policies.google.com/privacy" target="_blank" class="text-decoration-none">Privacy Policy</a> and 
+        <a href="https://policies.google.com/terms" target="_blank" class="text-decoration-none">Terms of Service</a> apply.
+    </small>
+</div>
                             </div>
                         </form>
 
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>
 </section>
 
-<!-- Google reCAPTCHA v3 API Core Engine Execution -->
 <script src="https://www.google.com/recaptcha/api.js?render=6Ld7DEMtAAAAALvAMGN3banyiNeleFPIoDdtxgUx"></script>
 
 <script>
-document.getElementById('form-secure-enquiry').addEventListener('submit', function(e) {
+(function () {
+  'use strict';
+
+  /* ---- FAQ Accordion Event Toggler ---- */
+  var faqBlocks = document.querySelectorAll('.fc-faq__item');
+  faqBlocks.forEach(function(blk) {
+    var trigger = blk.querySelector('.fc-faq__hdr');
+    trigger.addEventListener('click', function() {
+      var state = blk.classList.contains('active');
+      faqBlocks.forEach(function(el) { el.classList.remove('active'); });
+      if (!state) { blk.classList.add('active'); }
+    });
+  });
+
+  // =================================================================
+  // DOUBLE SUBMISSION GUARD FLAG
+  // =================================================================
+  var isSubmitting = false; 
+
+  /* ---- Submissions Form Engine Asynchronous Handler ---- */
+  document.getElementById('form-secure-enquiry').addEventListener('submit', function(e) {
     e.preventDefault();
+    
+    // If a request is already running, block any secondary double-clicks right here
+    if (isSubmitting) {
+        return false;
+    }
     
     var formNode = this;
     var submitBtn = document.getElementById('btn-submit-enquiry');
     var alertBox = document.getElementById('enquiry-alert-msg');
     
+    // Turn on the lock flag instantly to close the door on double submissions
+    isSubmitting = true;
+    
     submitBtn.disabled = true;
     submitBtn.innerHTML = "<i class='fa-solid fa-circle-notch fa-spin me-1'></i> Encrypting Data Stream...";
 
-    // Trigger invisible verification execution anchor
     grecaptcha.ready(function() {
-        grecaptcha.execute('6Ld7DEMtAAAAALvAMGN3banyiNeleFPIoDdtxgUx', {action: 'submit'}).then(function(token) {
-            
+        grecaptcha.execute('6Ld7DEMtAAAAALvAMGN3banyiNeleFPIoDdtxgUx', {action: 'submit'})
+        .then(function(token) {
             var formData = new FormData(formNode);
-            // Append the invisible token programmatically to match backend requirements
             formData.append('g-recaptcha-response', token);
 
-            fetch("<?php echo base_url('frontend/save_partner_enquiry'); ?>", {
+            return fetch("/ATNA/public/frontend/save_partner_enquiry", {
                 method: "POST",
                 body: formData,
                 headers: {
                     "X-Requested-With": "XMLHttpRequest"
                 }
-            })
-            .then(response => response.json())
-            .then(res => {
-                alertBox.classList.remove('d-none');
-                
-                // CRUCIAL: Dynamically refresh CodeIgniter's hidden CSRF form input field token instantly
-                if (res.tokenHash) {
-                    var csrfInput = formNode.querySelector('input[type="hidden"][name^="csrf_"]');
-                    if (csrfInput) {
-                        csrfInput.value = res.tokenHash;
-                    }
-                }
-
-                if (res.status === 1) {
-                    alertBox.className = "alert alert-success small fw-bold";
-                    alertBox.innerHTML = "<i class='fa-solid fa-circle-check me-2'></i> " + res.msg;
-                    formNode.reset();
-                } else {
-                    alertBox.className = "alert alert-danger small fw-bold";
-                    alertBox.innerHTML = "<i class='fa-solid fa-circle-xmark me-2'></i> " + res.msg;
-                }
-            })
-            .catch(err => {
-                alertBox.className = "alert alert-danger small fw-bold";
-                alertBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation me-2'></i> Technical infrastructure bottleneck detected.";
-                alertBox.classList.remove('d-none');
-            })
-            .finally(() => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = "<i class='fa-solid fa-paper-plane me-1'></i> Dispatch Security Request";
             });
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text) });
+            }
+            return response.json();
+        })
+        .then(res => {
+            alertBox.classList.remove('d-none');
+            
+            if (res.tokenHash) {
+                var csrfInput = formNode.querySelector('input[type="hidden"][name^="csrf_"]');
+                if (csrfInput) { csrfInput.value = res.tokenHash; }
+            }
+
+            if (res.status === 1) {
+                alertBox.className = "alert alert-success small fw-bold";
+                alertBox.innerHTML = "<i class='fa-solid fa-circle-check me-2'></i> " + res.msg;
+                formNode.reset();
+            } else {
+                alertBox.className = "alert alert-danger small fw-bold";
+                alertBox.innerHTML = "<i class='fa-solid fa-circle-xmark me-2'></i> " + res.msg;
+            }
+            
+            // Release the lock when the database successfully finishes writing the data
+            isSubmitting = false;
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = "<i class='fa-solid fa-paper-plane me-1'></i> Dispatch Security Request";
+        })
+        .catch(err => {
+            console.error("Pipeline Exception Detailed Log:", err);
+            alertBox.className = "alert alert-danger small fw-bold";
+            alertBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation me-2'></i> Technical infrastructure bottleneck detected.";
+            alertBox.classList.remove('d-none');
+            
+            // Release the lock if a system failure occurs so the user can try again
+            isSubmitting = false;
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = "<i class='fa-solid fa-paper-plane me-1'></i> Dispatch Security Request";
         });
     });
-});
-</script>
+  });
 
+})();
+</script>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>

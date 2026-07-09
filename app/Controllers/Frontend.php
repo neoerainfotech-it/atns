@@ -2144,47 +2144,148 @@ public function registration(){
 }
 public function webinar_registration()
 {
-    if ($this->request->getMethod() !== 'post') {
+    if (strtolower($this->request->getMethod()) !== 'post') {
         return redirect()->to(base_url());
     }
 
     date_default_timezone_set('Asia/Kolkata');
-    
-    // Capture our hidden tracking destination URL (fallback to home if empty)
-    $redirectUrl = $this->request->getPost('redirect_url') ?? base_url();
 
     try {
         $save = [
-            'name'         => $this->request->getPost('name'),
-            'company_name' => $this->request->getPost('lastName'), 
-            'title'        => $this->request->getPost('title'),
-            'email'        => $this->request->getPost('email'),
-            'phone'        => $this->request->getPost('phone'),
-            'expectation'  => $this->request->getPost('expectation'),
-            'erp_system'   => $this->request->getPost('erp_system'),
+            // NEW: Capturing the dynamic tracking context from the active event page
+            'event_id'     => $this->request->getPost('event_id'),
+            'event_title'  => trim($this->request->getPost('event_title') ?? 'Unknown Event Instance'),
+            
+            // Your existing data mappings remain completely identical
+            'name'         => trim($this->request->getPost('name') ?? ''),
+            'company_name' => trim($this->request->getPost('company') ?? ''), 
+            'title'        => trim($this->request->getPost('title') ?? ''),
+            'email'        => trim($this->request->getPost('email') ?? ''),
+            'phone'        => trim($this->request->getPost('phone') ?? ''),
+            'expectation'  => trim($this->request->getPost('expectation') ?? ''),
+            'erp_system'   => trim($this->request->getPost('erp_system') ?? ''),
             'create_date'  => date('Y-m-d H:i:s')
         ];
 
-        if (empty($save['name']) || empty($save['email']) || empty($save['phone'])) {
-            return redirect()->to($redirectUrl)->withInput()->with('webinar_error', 'Please fill out all mandatory registration fields.');
+        if (empty($save['name']) || empty($save['email']) || empty($save['phone']) || empty($save['company_name'])) {
+            return redirect()->back()->withInput()->with('webinar_error', 'Please fill out all mandatory registration fields.');
         }
 
-        // Write to your dedicated webinar table database log
+        // BACKEND ANTI-DUPLICATION GUARD (Scoped to the SPECIFIC event now!)
+        $db = \Config\Database::connect();
+        $lastRecord = $db->table('cyb_webinar_registration')
+                         ->where('email', $save['email'])
+                         ->where('event_id', $save['event_id']) // Confirms duplicate check remains event-isolated
+                         ->orderBy('id', 'DESC')
+                         ->get(1)
+                         ->getRow();
+
+        if ($lastRecord && !empty($lastRecord->create_date)) {
+            if ((time() - strtotime($lastRecord->create_date)) < 10) {
+                return redirect()->back()->with('webinar_success', 'Your reservation request is already secured safely!');
+            }
+        }
+
+        // Write submission data array into the database table execution stack
         $result = $this->AdminModel->insertData('webinar_registration', $save);
 
         if ($result) {
-            // CRUCIAL: Forces the browser to route straight back to the event detail page layout
-            return redirect()->to($redirectUrl)->with('webinar_success', 'Thanks for submitting!');
+            return redirect()->back()->with('webinar_success', 'Registration successful! Your corporate access credentials have been provisioned.');
         } else {
-            return redirect()->to($redirectUrl)->withInput()->with('webinar_error', 'Database write error. Please try again.');
+            return redirect()->back()->withInput()->with('webinar_error', 'Database write error. Please try again.');
         }
 
     } catch (\Throwable $e) {
-        log_message('critical', 'Webinar Absolute Redirection Failure Exception: ' . $e->getMessage());
-        return redirect()->to($redirectUrl)->withInput()->with('webinar_error', 'An internal processing error occurred. Please retry.');
+        log_message('critical', 'Webinar Registration Context Failure Exception: ' . $e->getMessage());
+        return redirect()->back()->withInput()->with('webinar_error', 'An internal processing error occurred. Please retry.');
     }
 }
+public function save_partner_enquiry()
+{
+    // 1. Ensure the request is coming via our JavaScript fetch engine safely
+    if ($this->request->isAJAX()) {
+        
+        // 2. Extract form data fields from the POST payload
+        $name        = trim($this->request->getPost('enq_name') ?? '');
+        $companyName = trim($this->request->getPost('enq_company') ?? '');
+        $title       = trim($this->request->getPost('enq_title') ?? '');
+        $email       = trim($this->request->getPost('enq_email') ?? '');
+        $phone       = trim($this->request->getPost('enq_phone') ?? '');
 
+        // Validation Check: Make sure mandatory fields are not completely empty
+        if (empty($name) || empty($companyName) || empty($title) || empty($email) || empty($phone)) {
+            return $this->response
+                        ->setContentType('application/json')
+                        ->setBody(json_encode([
+                            'status'    => 0,
+                            'msg'       => 'Please fill up all required fields completely.',
+                            'tokenHash' => csrf_hash()
+                        ]));
+        }
 
+        // 3. Connect to CodeIgniter's default database service directly
+        $db = \Config\Database::connect();
+        $builder = $db->table('cyb_partners');
+
+        // =================================================================
+        // BACKEND IDEMPOTENCY GUARD (Prevents Double Entries)
+        // =================================================================
+        // Look for an entry with the exact same name and email sent recently
+        $lastEntry = $builder->where('email', $email)
+                             ->where('name', $name)
+                             ->orderBy('id', 'DESC')
+                             ->get(1)
+                             ->getRow();
+
+        if ($lastEntry && !empty($lastEntry->create_date)) {
+            $lastEntryTime = strtotime($lastEntry->create_date);
+            $currentTime   = time();
+            
+            // If the last identical entry was created within the last 10 seconds, block it!
+            if (($currentTime - $lastEntryTime) < 10) {
+                return $this->response
+                            ->setContentType('application/json')
+                            ->setBody(json_encode([
+                                'status'    => 1,
+                                'msg'       => 'Partnership request dispatched and stored successfully!',
+                                'tokenHash' => csrf_hash()
+                            ]));
+            }
+        }
+        // =================================================================
+
+        // 4. Prepare the row structure matching your database columns
+        $insertData = [
+            'name'         => $name,
+            'company_name' => $companyName,
+            'title'        => $title,
+            'email'        => $email,
+            'phone'        => $phone,
+            'status'       => 1,
+            'create_date'  => date('Y-m-d H:i:s')
+        ];
+
+        // 5. Execute the database insertion process
+        if ($builder->insert($insertData)) {
+            return $this->response
+                        ->setContentType('application/json')
+                        ->setBody(json_encode([
+                            'status'    => 1,
+                            'msg'       => 'Partnership request dispatched and stored successfully!',
+                            'tokenHash' => csrf_hash()
+                        ]));
+        } else {
+            return $this->response
+                        ->setContentType('application/json')
+                        ->setBody(json_encode([
+                            'status'    => 0,
+                            'msg'       => 'Database transaction error. Could not write row entry.',
+                            'tokenHash' => csrf_hash()
+                        ]));
+        }
+    }
+    
+    return redirect()->to(base_url());
+}
     
 }
