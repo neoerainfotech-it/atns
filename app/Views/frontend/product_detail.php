@@ -79,48 +79,50 @@ html.lenis, html.lenis body { height: auto; }
 [data-reveal][data-delay="6"] { transition-delay: 0.48s; }
 
 /* ================================================================
-   HERO INTERFACE
+   HERO INTERFACE — UPGRADED PERSPECTIVE ENGINE (image_b3bf7a.jpg)
    ================================================================ */
 .xhero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  align-items: center;
   min-height: 100vh;
-  overflow: hidden;
+  background: var(--BDD);
   position: relative;
+  overflow: hidden;
+  padding: 140px 0 100px 0;
 }
 
-.xhero__left {
-  background: var(--BDD);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 140px 8% 80px 8%;
+/* Authentic digital node background backing grid matching reference image */
+.xhero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%2300e0ff' stroke-width='1.2' stroke-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  z-index: 1; pointer-events: none;
+}
+
+.xhero::after {
+  content: ''; position: absolute; top: -20%; right: -10%; width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(0, 224, 255, 0.08) 0%, transparent 70%);
+  z-index: 1; pointer-events: none;
+}
+
+.xhero .container {
   position: relative;
-  overflow: hidden;
   z-index: 2;
 }
 
-.xhero__left::before {
-  content: ''; position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity: .4; z-index: 0; pointer-events: none;
+.xhero__left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-
-.xhero__left::after {
-  content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
-  background: linear-gradient(to bottom, transparent, var(--CY), transparent);
-  z-index: 1;
-}
-
-.xhero__left-inner { position: relative; z-index: 2; }
 
 .xhero__tag {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(0,224,255,.08); border: 1px solid rgba(0,224,255,.25);
   color: var(--CY); font-size: .7rem; font-weight: 600; letter-spacing: .18em;
   text-transform: uppercase; padding: 6px 16px; border-radius: 50px;
-  margin-bottom: 32px;
+  margin-bottom: 28px; width: max-content;
 }
+
 .xhero__tag-dot {
   width: 5px; height: 5px; border-radius: 50%; background: var(--CY);
   animation: blink 2s ease-in-out infinite;
@@ -129,10 +131,11 @@ html.lenis, html.lenis body { height: auto; }
 
 .xhero__title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(2rem, 3.8vw, 3.8rem);
-  font-weight: 700; line-height: 1.1;
-  color: #fff; letter-spacing: -.025em;
+  font-size: clamp(2.2rem, 3.8vw, 3.6rem);
+  font-weight: 700; line-height: 1.15;
+  color: #fff; letter-spacing: -.02em;
   margin-bottom: 24px;
+  text-transform: capitalize;
 }
 .xhero__title mark {
   background: none;
@@ -143,90 +146,100 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 .xhero__sub {
-  font-size: 1rem; line-height: 1.75;
-  color: rgba(255,255,255,.6);
-  max-width: 480px; margin-bottom: 40px;
+  font-size: 1.05rem; line-height: 1.7;
+  color: rgba(255,255,255,.65);
+  max-width: 520px; margin-bottom: 36px;
 }
 
 .xhero__btns { 
   display: flex; 
   flex-wrap: wrap; 
-  gap: 14px; 
-  position: relative; 
-  z-index: 5;
+  gap: 16px; 
 }
 
-/* Fixed Hero Banner Buttons Styles mapping */
 .xbtn-solid {
   display: inline-flex; align-items: center; gap: 9px;
-  background: var(--CY); color: var(--BDD);
-  font-weight: 700; font-size: .9rem; padding: 14px 30px;
-  border-radius: 10px; text-decoration: none; border: none; cursor: pointer;
+  background: var(--ocean); color: #fff;
+  font-weight: 700; font-size: .9rem; padding: 14px 28px;
+  border-radius: 8px; text-decoration: none; border: none; cursor: pointer;
   transition: all .3s var(--ease);
 }
-.xbtn-solid:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 14px 32px rgba(0,224,255,.3); color: var(--BDD); text-decoration: none; }
+.xbtn-solid:hover { background: var(--white); color: var(--BDD); transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0, 131, 191, 0.35); text-decoration: none; }
 
 .xbtn-line {
   display: inline-flex; align-items: center; gap: 9px;
   background: transparent; color: rgba(255,255,255,.8);
-  font-weight: 600; font-size: .9rem; padding: 13px 29px;
-  border-radius: 10px; text-decoration: none;
+  font-weight: 600; font-size: .9rem; padding: 13px 27px;
+  border-radius: 8px; text-decoration: none;
   border: 1px solid rgba(255,255,255,.2);
   transition: all .3s ease;
 }
 .xbtn-line:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.5); color: #fff; transform: translateY(-3px); text-decoration: none; }
 
-.xhero__stats {
-  display: flex; gap: 0; margin-top: 52px;
-  border-top: 1px solid rgba(255,255,255,.08);
-  padding-top: 32px;
-}
-.xhero__stat {
-  flex: 1; padding-right: 20px;
-  border-right: 1px solid rgba(255,255,255,.08);
-}
-.xhero__stat:last-child { border-right: none; padding-right: 0; padding-left: 20px; }
-.xhero__stat:not(:first-child):not(:last-child) { padding-left: 20px; }
-.xhero__stat-n {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(1.8rem, 2.5vw, 2.4rem); font-weight: 700;
-  color: #fff; line-height: 1; margin-bottom: 6px;
-}
-.xhero__stat-n em { font-style: normal; color: var(--CY); }
-.xhero__stat-l {
-  font-size: .68rem; font-weight: 600; letter-spacing: .1em;
-  text-transform: uppercase; color: rgba(255,255,255,.4);
+/* Asymmetric 3D Perspective Canvas Container (Right Column) */
+.xhero__right-perspective-canvas {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1200px;
 }
 
-.xhero__right { position: relative; overflow: hidden; background: var(--MID); min-height: 380px; }
-.xhero__right-img {
-  position: absolute; inset: 0;
-  background-size: cover; background-position: center;
-}
-.xhero__right::before {
-  content: ''; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(to right, var(--BDD) 0%, rgba(2,13,24,.3) 40%, transparent 100%);
+.xhero__dashboard-mockup-frame {
+  width: 100%;
+  max-width: 520px; /* Reduced base boundary width for a more balanced grid */
+  height: 480px;    /* Strict professional height threshold boundary */
+  object-fit: cover; /* Prevents aspect ratio distortion and bad stretching */
+  object-position: center;
+  border-radius: 12px;
+  border: 4px solid rgba(255, 255, 255, 0.08);
+  box-shadow: -20px 30px 80px rgba(4, 13, 24, 0.6), 
+              0 10px 30px rgba(0, 224, 255, 0.05);
+  transform: rotateY(-14deg) rotateX(6deg) rotateZ(-1deg);
+  transform-style: preserve-3d;
+  transition: transform 0.6s var(--ease-spring);
 }
 
-.xhero__right-watermark {
-  position: absolute; bottom: 36px; right: 36px; z-index: 2;
-  background: rgba(0,0,0,.6); backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 14px; padding: 16px 20px;
-  display: flex; align-items: center; gap: 14px;
+.xhero__right-perspective-canvas:hover .xhero__dashboard-mockup-frame {
+  transform: rotateY(-6deg) rotateX(3deg) rotateZ(0deg);
 }
-.xhero__right-watermark-icon {
-  width: 40px; height: 40px; border-radius: 10px;
-  background: linear-gradient(135deg, var(--B), var(--CY));
+
+/* Interactive Floating Highlight Badge matching sidecards in image_b3bf7a.jpg */
+.xhero__floating-feature-tag {
+  position: absolute;
+  bottom: -20px;
+  left: -10px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  transform: translateZ(40px);
+  animation: floatBadge 4s ease-in-out infinite;
+}
+
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0) translateZ(40px); }
+  50% { transform: translateY(-8px) translateZ(40px); }
+}
+
+.xhero__floating-badge-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--ocean), var(--flash));
+  border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 1rem; flex-shrink: 0;
+  color: #fff; font-size: 0.85rem;
 }
-.xhero__right-watermark-text strong { display: block; font-size: .85rem; font-weight: 700; color: #fff; }
-.xhero__right-watermark-text span { font-size: .72rem; color: rgba(255,255,255,.5); }
+
+.xhero__floating-badge-text strong { display: block; font-size: 0.82rem; font-weight: 700; color: var(--ink); }
+.xhero__floating-badge-text span { display: block; font-size: 0.72rem; color: var(--GR); }
 
 .xhero__scroll {
-  position: absolute; bottom: 36px; left: 8%;
+  position: absolute; bottom: 65px; left: 0;
   z-index: 3; display: flex; align-items: center; gap: 10px;
   color: rgba(255,255,255,.35); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
 }
@@ -238,6 +251,7 @@ html.lenis, html.lenis body { height: auto; }
   content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
   background: var(--CY); animation: scrollLine 2s ease-in-out infinite;
 }
+@keyframes scrollLine { 0% { left: -100%; } 50%, 100% { left: 100%; } }
 
 /* ================================================================
    TICKER STRIP
@@ -255,85 +269,497 @@ html.lenis, html.lenis body { height: auto; }
 .xticker__item i { color: var(--CY); font-size: .75rem; }
 
 /* ================================================================
-   OVERVIEW & SECTIONS GENERAL
+   FINANCE TRUST STRIP — UNIFIED PREMIUM MATRIX (image_da3540.png Fixed)
    ================================================================ */
-.overview { padding: 120px 0; background: var(--white); position: relative; z-index: 4; }
-.section-header { margin-bottom: 56px; }
-.section-header.center { text-align: center; }
-.section-header.center .section-eyebrow { display: inline-flex; }
-.section-header.center .section-body { max-width: 580px; margin: 0 auto; }
+.finance-trust-strip {
+  background: #ffffff;
+  padding: 40px 0;
+  border-bottom: 1px solid #dde6ee;
+  position: relative;
+  z-index: 5;
+}
 
-.section-eyebrow {
-  display: inline-flex; align-items: center; gap: 9px;
+.finance-trust__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.finance-trust__title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--ocean); margin-bottom: 18px;
-}
-.section-eyebrow::before {
-  content: ''; display: inline-block; width: 24px; height: 2px;
-  background: linear-gradient(to right, var(--ocean), var(--flash));
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #5a6a80;
+  text-transform: uppercase;
+  margin: 0;
+  text-align: center;
 }
 
-.section-title {
+.finance-trust__grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 48px;
+  width: 100%;
+}
+
+/* Premium Logo Layout Rule: Icon Left + Text Right */
+.finance-trust__logo-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.finance-trust__logo-badge:hover {
+  transform: translateY(-2px);
+}
+
+/* Standardized Icon Boundaries */
+.finance-trust__logo-badge svg,
+.finance-trust__logo-badge i {
+  width: 28px;
+  height: 28px;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Styled Icon Accents for ISO Vectors */
+.finance-trust__icon-iso-blue {
+  color: #0083BF;
+}
+.finance-trust__icon-iso-navy {
+  color: #005d8e;
+}
+
+.finance-trust__logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.finance-trust__logo-text strong {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(1.85rem, 3.2vw, 2.6rem);
-  font-weight: 700; line-height: 1.15; color: var(--ink);
-  letter-spacing: -0.02em; margin-bottom: 18px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #060f1e;
 }
-.section-title span { color: var(--ocean); }
 
-.para-frame { position: relative; padding-bottom: 24px; padding-right: 24px; }
-.para-frame::before {
-  content: ''; position: absolute; inset: 0; top: 24px; left: 24px; right: 0; bottom: 0;
-  background: linear-gradient(135deg, var(--ocean), var(--flash));
-  clip-path: polygon(14px 0%, 100% 0%, calc(100% - 14px) 100%, 0% 100%);
-  opacity: 0.15; border-radius: 2px; z-index: 0;
+.finance-trust__logo-text span {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  color: #5a6a80;
+  font-weight: 500;
+  margin-top: 1px;
 }
-.para-frame__img {
-  position: relative; z-index: 1;
-  clip-path: polygon(14px 0%, 100% 0%, calc(100% - 14px) 100%, 0% 100%);
-  overflow: hidden; box-shadow: 0 32px 64px rgba(0, 83, 143, 0.12);
-  transition: transform 0.6s var(--ease-spring);
-}
-.para-frame__img:hover { transform: scale(1.015); }
-.para-frame__img img { display: block; width: 100%; aspect-ratio: 16/10; object-fit: cover; transition: transform 0.7s var(--ease-spring); }
-.para-frame__img:hover img { transform: scale(1.04); }
-
-.para-badge {
-  position: absolute; bottom: 0; right: 0;
-  background: var(--white); border: 1px solid var(--rule);
-  box-shadow: 0 12px 36px rgba(0,83,143,0.12);
-  padding: 14px 20px; display: flex; align-items: center; gap: 14px; z-index: 4;
-  clip-path: var(--para-clip); animation: floatBadge 5s ease-in-out infinite;
-}
-.para-badge__icon {
-  width: 38px; height: 38px; background: linear-gradient(135deg, var(--ocean), var(--flash));
-  display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.9rem;
-  flex-shrink: 0; clip-path: var(--para-clip);
-}
-.para-badge__text strong { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; font-weight: 700; color: var(--ink); white-space: nowrap; }
-.para-badge__text span { display: block; font-size: 0.72rem; color: var(--mist); }
 
 /* ================================================================
-   PARTNER MARQUEE 
+   RESPONSIVE LAYOUT MATRIX
    ================================================================ */
-.marquee-section { padding: 90px 0; background: linear-gradient(140deg, var(--ocean-dim) 0%, var(--ocean) 55%, #00a8db 100%); position: relative; overflow: hidden; }
-.marquee-section::before, .marquee-section::after { content: ''; position: absolute; left: 0; right: 0; height: 52px; background: var(--white); z-index: 2; pointer-events: none; }
-.marquee-section::before { top: 0; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 0); }
-.marquee-section::after  { bottom: 0; clip-path: polygon(0 100%, 100% 0, 100% 100%, 0 100%); }
-.marquee-section__glow { position: absolute; inset: 0; background: radial-gradient(ellipse 55% 80% at 15% 50%, rgba(0,212,255,0.2) 0%, transparent 65%); pointer-events: none; }
-.marquee-label { text-align: center; font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(0,212,255,0.9); margin-bottom: 34px; position: relative; z-index: 3; }
-.marquee-wrap { overflow: hidden; position: relative; z-index: 3; mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%); -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%); }
-.marquee-track { display: flex; width: max-content; gap: 20px; align-items: center; padding-right: 20px; animation: marqueeRun 35s linear infinite; }
-.marquee-track:hover { animation-play-state: paused; }
-@keyframes marqueeRun {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(-50%, 0, 0); }
+@media (max-width: 991px) {
+  .finance-trust-strip { padding: 32px 0; }
+  .finance-trust__grid { gap: 24px 36px; }
 }
-.logo-card { background: rgba(255,255,255,0.92); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 18px 32px; clip-path: var(--para-clip); display: flex; align-items: center; justify-content: center; min-width: 180px; height: 74px; flex-shrink: 0; transition: all 0.4s var(--ease-spring); }
-.logo-card img { max-width: 120px; max-height: 36px; object-fit: contain; filter: grayscale(20%) opacity(0.8); transition: filter 0.35s ease; }
-.logo-card:hover { background: #fff; transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,0.15); border-color: var(--flash); }
-.logo-card:hover img { filter: none; }
+
+@media (max-width: 768px) {
+  .finance-trust__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 16px;
+  }
+  .finance-trust__logo-badge { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .finance-trust__grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .finance-trust__logo-badge { justify-content: flex-start; max-width: 240px; margin: 0 auto; }
+}
+
+/* ================================================================
+   WHY PLATFORM BENEFITS GRID — BENTO MATRIX (image_c32fdc.png)
+   ================================================================ */
+.why-benefits-banner {
+  background: #f8faac; /* Matching your clean light tint canvas / --BG */
+  background-color: var(--BG, #f5f8fb);
+  padding: 60px 0;
+  position: relative;
+  z-index: 4;
+}
+
+.why-benefits__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 36px;
+  letter-spacing: -0.02em;
+}
+
+.why-benefits__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.why-benefits__card {
+  background: var(--white, #ffffff);
+  border: 1px solid var(--rule, #dde6ee);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(4, 13, 24, 0.015);
+  transition: all 0.4s var(--ease);
+}
+
+.why-benefits__card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(4, 13, 24, 0.05);
+  border-color: rgba(0, 131, 191, 0.25);
+}
+
+.why-benefits__icon-frame {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* Color palettes extracted verbatim from image_c32fdc.png */
+.why-benefits__icon-frame.blue-accent { background: #0066cc; }
+.why-benefits__icon-frame.green-accent { background: #00a86b; }
+.why-benefits__icon-frame.purple-accent { background: #7a3bf5; }
+.why-benefits__icon-frame.teal-accent { background: #009999; }
+
+.why-benefits__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.why-benefits__card-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
+.why-benefits__card-desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--GR, #64748b);
+  margin: 0;
+}
+
+/* ================================================================
+   RESPONSIVE BREAKPOINTS FOR THE BENEFITS GRID
+   ================================================================ */
+@media (max-width: 1199px) {
+  .why-benefits__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .why-benefits-banner { padding: 44px 0; }
+}
+
+@media (max-width: 576px) {
+  .why-benefits__grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .why-benefits__card { padding: 20px; }
+}
+
+/* ================================================================
+   INTELLIGENT PRODUCT OVERVIEW SECTION (image_dd94c5.jpg)
+   ================================================================ */
+.product-overview-sec {
+  padding: 100px 0;
+  background: var(--white, #ffffff);
+  border-bottom: 1px solid var(--rule, #dde6ee);
+  position: relative;
+  z-index: 4;
+}
+
+/* Force the column container to support full height distribution */
+.overview-flex-align {
+  display: flex;
+  align-items: stretch; /* Enforces equal height on both columns */
+}
+
+/* Let the image frame fill 100% height of its parent flex column */
+.overview-workspace__img-frame {
+  width: 100%;
+  height: 100%;
+  min-height: 450px; /* Baseline minimum threshold */
+  border-radius: 16px;
+  background: #040d18;
+  padding: 8px;
+  box-shadow: 0 20px 50px rgba(4, 13, 24, 0.08);
+  border: 1px solid var(--rule, #dde6ee);
+  display: flex;
+}
+
+/* Make the inner img fill the space beautifully using object-fit */
+.overview-workspace__img-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover; /* Crops and centers perfectly to scale to matching height */
+  object-position: center;
+}
+
+/* Content Frame Padding adjustment for symmetry */
+.overview-content__wrapper {
+  padding-left: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically centers the text alongside the image */
+  height: 100%;
+}
+
+/* Typography elements */
+.overview-content__eyebrow {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ocean, #0083BF);
+  margin-bottom: 12px;
+}
+
+.overview-content__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 700;
+  color: var(--ink, #060f1e);
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+.overview-content__desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: var(--mist, #5a6a80);
+  margin-bottom: 36px;
+}
+
+/* Checklist Matrix Layout definitions */
+.overview-checklist__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px 24px;
+}
+
+.overview-checklist__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.overview-checklist__icon {
+  color: #0066cc;
+  font-size: 1.1rem;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.overview-checklist__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.overview-checklist__label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink, #060f1e);
+  margin: 0;
+}
+
+.overview-checklist__text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--GR, #64748b);
+  margin: 0;
+}
+
+/* ================================================================
+   DYNAMIC WORKFLOW SYSTEM — LINEAR PIPELINE (image_de8542.png)
+   ================================================================ */
+.workflow-sec {
+  padding: 60px 0 80px 0;
+  background: var(--white, #ffffff);
+  border-bottom: 1px solid var(--rule, #dde6ee);
+  position: relative;
+  z-index: 4;
+}
+
+.workflow__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+  font-weight: 700;
+  color: var(--ink, #060f1e);
+  text-align: center;
+  margin-bottom: 50px;
+  letter-spacing: -0.01em;
+}
+
+.workflow__pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Base Node Step */
+.workflow__node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  width: 120px;
+}
+
+.workflow__bubble {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: var(--white, #ffffff);
+  border: 1px solid var(--rule, #dde6ee);
+  box-shadow: 0 8px 24px rgba(4, 13, 24, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--ocean, #0083BF);
+  transition: all 0.4s var(--ease);
+  position: relative;
+}
+
+/* Subtle glowing pulse matching the primary theme accent color map */
+.workflow__node:hover .workflow__bubble {
+  transform: scale(1.1);
+  border-color: var(--flash, #00d4ff);
+  box-shadow: 0 12px 30px rgba(0, 212, 255, 0.2);
+  color: var(--ocean-sat, #0099d6);
+}
+
+.workflow__label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink, #060f1e);
+  margin-top: 14px;
+  line-height: 1.3;
+  white-space: normal;
+}
+
+/* Directional Animated Connectors */
+.workflow__connector {
+  flex: 1;
+  height: 2px;
+  background: var(--rule, #dde6ee);
+  position: relative;
+  margin: 0 -10px;
+  margin-bottom: 30px; /* Aligns visually with the center of bubbles */
+  overflow: hidden;
+  z-index: 1;
+}
+
+.workflow__connector::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--ocean, #0083BF), transparent);
+  animation: workflowFlow 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes workflowFlow {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Stagger connector delays cleanly */
+.workflow__connector:nth-child(2)::after { animation-delay: 0s; }
+.workflow__connector:nth-child(4)::after { animation-delay: 0.4s; }
+.workflow__connector:nth-child(6)::after { animation-delay: 0.8s; }
+.workflow__connector:nth-child(8)::after { animation-delay: 1.2s; }
+.workflow__connector:nth-child(10)::after { animation-delay: 1.6s; }
+.workflow__connector:nth-child(12)::after { animation-delay: 2s; }
+
+/* ================================================================
+   RESPONSIVE LAYOUT TRACKS FOR PIPELINE
+   ================================================================ */
+@media (max-width: 991px) {
+  .workflow__pipeline {
+    gap: 10px;
+  }
+  .workflow__bubble { width: 64px; height: 64px; font-size: 1.2rem; }
+  .workflow__label { font-size: 0.72rem; }
+}
+
+@media (max-width: 768px) {
+  .workflow__pipeline {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .workflow__node { width: 200px; flex-direction: row; text-align: left; gap: 16px; }
+  .workflow__label { margin-top: 0; font-size: 0.85rem; }
+  .workflow__connector {
+    width: 2px;
+    height: 30px;
+    margin: -12px 0 -12px 31px; /* Align vertical timeline line tracking with bubble centers */
+    flex: none;
+  }
+  .workflow__connector::after {
+    background: linear-gradient(180deg, transparent, var(--ocean, #0083BF), transparent);
+    animation: workflowFlowVert 2s linear infinite;
+  }
+}
+
+@keyframes workflowFlowVert {
+  0% { top: -100%; }
+  100% { top: 100%; }
+}
+
 
 /* ================================================================
    FEATURES SECTIONS
@@ -499,6 +925,114 @@ html.lenis, html.lenis body { height: auto; }
 .video-frame__play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.95); display: flex; align-items: center; justify-content: center; color: var(--ocean); font-size: 1.25rem; box-shadow: 0 8px 24px rgba(0,0,0,0.15); z-index: 2; pointer-events: none; animation: floatPlay 3s ease-in-out infinite; }
 
 /* ================================================================
+   BUSINESS BENEFITS METRICS BANNER (image_df533c.png)
+   ================================================================ */
+.biz-benefits-sec {
+  padding: 80px 0;
+  background: var(--white, #ffffff);
+  border-bottom: 1px solid var(--rule, #dde6ee);
+  position: relative;
+  z-index: 4;
+}
+
+.biz-benefits__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+  font-weight: 700;
+  color: var(--ink, #060f1e);
+  text-align: center;
+  margin-bottom: 40px;
+  letter-spacing: -0.01em;
+}
+
+.biz-benefits__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+.biz-benefits__card {
+  background: var(--white, #ffffff);
+  border: 1px solid var(--rule, #dde6ee);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(4, 13, 24, 0.01);
+  transition: all 0.4s var(--ease);
+}
+
+.biz-benefits__card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px rgba(4, 13, 24, 0.06);
+}
+
+/* Header context elements alignment inside cards */
+.biz-benefits__card-hdr {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+/* Individual accent color mappings matching image_df533c.png */
+.biz-benefits__card.blue-theme .biz-benefits__card-hdr,
+.biz-benefits__card.blue-theme .biz-benefits__stat { color: #0066cc; }
+
+.biz-benefits__card.green-theme .biz-benefits__card-hdr,
+.biz-benefits__card.green-theme .biz-benefits__stat { color: #107c41; }
+
+.biz-benefits__card.purple-theme .biz-benefits__card-hdr,
+.biz-benefits__card.purple-theme .biz-benefits__stat { color: #7a3bf5; }
+
+.biz-benefits__card.orange-theme .biz-benefits__card-hdr,
+.biz-benefits__card.orange-theme .biz-benefits__stat { color: #f26522; }
+
+.biz-benefits__stat {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.biz-benefits__desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--GR, #64748b);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ================================================================
+   RESPONSIVE LAYOUT TRACKS FOR METRICS GRID
+   ================================================================ */
+@media (max-width: 1199px) {
+  .biz-benefits__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .biz-benefits-sec { padding: 60px 0; }
+  .biz-benefits__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .biz-benefits__card { padding: 28px 20px; }
+}
+
+/* ================================================================
    INDUSTRIES & BOTTOM SECTIONS
    ================================================================ */
 .industries { padding: 120px 0; background: linear-gradient(155deg, var(--ink) 0%, var(--ocean-dim) 40%, var(--ocean) 80%, #00a8d4 100%); position: relative; overflow: hidden; }
@@ -534,6 +1068,149 @@ html.lenis, html.lenis body { height: auto; }
 .btn-ghost { background: transparent; color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.2); }
 .btn-ghost:hover { background: rgba(255,255,255,0.08); color: #fff; border-color: rgba(255,255,255,0.4); transform: translateY(-2px); text-decoration: none;}
 
+/* ================================================================
+   SCROLL-DRIVEN JOURNEY TRACK — PROGRESS ENGINE (image_dfe683.png)
+   ================================================================ */
+.journey-sec {
+  padding: 100px 0;
+  background: var(--white, #ffffff);
+  border-bottom: 1px solid var(--rule, #dde6ee);
+  position: relative;
+  z-index: 4;
+}
+
+.journey__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+  font-weight: 700;
+  color: var(--ink, #060f1e);
+  text-align: center;
+  margin-bottom: 60px;
+  letter-spacing: -0.01em;
+}
+
+.journey__container-relative {
+  position: relative;
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+/* Continuous background timeline track */
+.journey__master-line {
+  position: absolute;
+  top: 34px; /* Center point vertically matching bubble track */
+  left: 5%;
+  width: 90%;
+  height: 3px;
+  background: var(--rule, #dde6ee);
+  z-index: 1;
+}
+
+/* The dynamic progress indicator bar filled by JavaScript scroll calculations */
+.journey__master-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%; /* Initialized dead empty */
+  background: linear-gradient(90deg, var(--ocean, #0083BF), var(--flash, #00d4ff));
+  transition: width 0.1s linear; /* Smooth micro-interpolation */
+}
+
+.journey__track {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.journey__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+}
+
+.journey__bubble {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--white, #ffffff);
+  border: 1px solid var(--rule, #dde6ee);
+  box-shadow: 0 8px 20px rgba(4, 13, 24, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--ocean, #0083BF);
+  transition: all 0.4s var(--ease);
+}
+
+/* Add active styling hook when progress line passes over the step node */
+.journey__step.node-passed .journey__bubble {
+  border-color: var(--ocean, #0083BF);
+  background: var(--foam, #e8f6fc);
+  color: var(--ocean-deep, #005d8e);
+  box-shadow: 0 0 15px rgba(0, 131, 191, 0.15);
+}
+
+.journey__info {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.journey__label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink, #060f1e);
+  margin: 0;
+}
+
+.journey__desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.76rem;
+  line-height: 1.4;
+  color: var(--mist, #5a6a80);
+  margin: 0;
+  max-width: 150px;
+}
+
+/* Vertical Timeline Restructuring on Portrait boundaries */
+@media (max-width: 768px) {
+  .journey__master-line {
+    top: 0;
+    left: 33px;
+    width: 3px;
+    height: 100%;
+  }
+  .journey__master-fill {
+    width: 100%;
+    height: 0%; /* Transforms width tracking coordinates to height metrics for Y layout */
+    background: linear-gradient(180deg, var(--ocean, #0083BF), var(--flash, #00d4ff));
+    transition: height 0.1s linear;
+  }
+  .journey__track {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    padding-left: 0;
+  }
+  .journey__step {
+    flex-direction: row;
+    text-align: left;
+    gap: 20px;
+  }
+  .journey__info { margin-top: 0; }
+  .journey__desc { max-width: 100%; }
+}
+
 .testi-block { background: var(--fog); border: 1px solid var(--rule); padding: 50px 44px; height: 100%; clip-path: polygon(20px 0%, 100% 0%, 100% 100%, 0% 100%); border-radius: 4px; }
 .testi-block__label { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ocean); display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
 .testi-block__label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--rule), transparent); }
@@ -550,6 +1227,78 @@ html.lenis, html.lenis body { height: auto; }
 .swiper-pagination { text-align: left !important; }
 
 /* ================================================================
+   FAQ SECTION — INTERACTIVE ACCORDION MATRIX (image_d965d4.png)
+   ================================================================ */
+.faq-sec {
+  padding: 100px 0;
+  background: var(--white, #ffffff);
+  position: relative;
+}
+
+.faq-list {
+  max-width: 800px;
+  margin: 40px auto 0;
+}
+
+.faq-item {
+  background: #ffffff;
+  border: 1px solid var(--rule, #dde6ee);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: all 0.3s var(--ease);
+}
+
+.faq-item:hover {
+  border-color: rgba(0, 131, 191, 0.3);
+  box-shadow: 0 10px 25px rgba(4, 13, 24, 0.03);
+}
+
+.faq-q {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink, #060f1e);
+  transition: 0.3s;
+}
+
+.faq-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--ocean, #0083BF);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s var(--ease);
+}
+
+/* State when expanded */
+.faq-item.active .faq-icon { transform: rotate(45deg); }
+.faq-item.active { border-color: var(--ocean); }
+
+.faq-a {
+  padding: 0 24px;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s var(--ease);
+  color: var(--mist, #5a6a80);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.faq-item.active .faq-a {
+  padding: 0 24px 24px;
+  max-height: 200px; /* Adjust based on expected answer length */
+}
+
+/* ================================================================
    RESPONSIVE BREAKPOINTS MATRIX
 ================================================================ */
 @media (max-width: 1200px) {
@@ -557,19 +1306,24 @@ html.lenis, html.lenis body { height: auto; }
   .ind-grid { grid-template-columns: repeat(4, 1fr); }
   .why-stack-deck { max-width: 720px; height: 400px; }
 }
+@media (max-width: 1199px) {
+  .xhero__dashboard-mockup-frame { max-width: 480px; }
+}
 
 @media (max-width: 991px) {
-  .xhero { grid-template-columns: 1fr; min-height: auto; }
-  .xhero__left { padding: 120px 6% 60px 6%; }
-  .xhero__scroll { left: 6%; }
+  .xhero { padding: 120px 0 80px 0; text-align: center; }
+  .xhero__left { align-items: center; margin-bottom: 50px; }
+  .xhero__sub { max-width: 100%; }
+  .xhero__btns { justify-content: center; }
+  .xhero__dashboard-mockup-frame { transform: none !important; max-width: 100%; height: 340px;}
+  .xhero__floating-feature-tag { left: 20px; bottom: -10px; }
+  .xhero__scroll { display: none; }
   .xhero__right { min-height: 450px; }
   .xhero__right::before { background: linear-gradient(to bottom, var(--BDD) 0%, rgba(2,13,24,0.2) 50%, transparent 100%); }
 
-  .overview { padding: 80px 0; }
-  .overview .col-lg-5 { order: 2; margin-top: 40px; }
-  .overview .col-lg-7 { order: 1; }
-  .overview .section-title, .overview .section-eyebrow, .overview .section-body { text-align: center; }
-  .overview .section-eyebrow { justify-content: center; }
+  .overview-flex-align { flex-direction: column; align-items: initial; }
+  .overview-workspace__img-frame { min-height: 350px; height: 380px; margin-bottom: 30px; }
+  .overview-content__wrapper { padding-left: 0; }
 
   .cta-block { clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%); padding: 44px 36px; margin-bottom: 24px; }
   .testi-block { clip-path: polygon(14px 0%, 100% 0%, 100% 100%, 0% 100%); padding: 36px; }
@@ -599,21 +1353,15 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 @media (max-width: 576px) {
-  .xhero__title { font-size: 1.85rem; }
-  .xhero__sub { font-size: 0.95rem; }
-  .xhero__stats { flex-wrap: wrap; gap: 20px 0; }
-  .xhero__stat { flex: 1 1 50%; padding-right: 10px; }
-  .xhero__stat:last-child { padding-left: 0; border-left: none; }
-  .xhero__stat:nth-child(2) { border-right: none; padding-right: 0; padding-left: 14px; }
-  .xhero__stat:nth-child(3) { padding-left: 0; }
+ .xhero__title { font-size: 2rem; }
+  .xhero__btns { flex-direction: column; width: 100%; }
+  .xbtn-solid, .xbtn-line { justify-content: center; width: 100%; }
+  .xhero__floating-feature-tag { display: none; }
   
   .ind-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   
-  .para-badge { display: none; }
-  .para-frame { padding-right: 0; padding-bottom: 0; }
-  .para-frame::before { display: none; }
-  .para-frame__img { clip-path: none; border-radius: 8px; }
-  .para-frame__img img { aspect-ratio: 4/3; }
+  ..overview-workspace__img-frame { height: 280px; min-height: auto; }
+  .overview-checklist__grid { grid-template-columns: 1fr; gap: 20px; }
 
   .video-frame__accent { display: none; }
   .video-frame__clip { clip-path: none; border-radius: 8px; }
@@ -633,63 +1381,82 @@ html.lenis, html.lenis body { height: auto; }
 }
 </style>
 
+<!-- ================================================================
+     HERO INTERFACE (UPGRADED STRUCTURAL MATRIX FROM image_b3bf7a.jpg)
+     ================================================================ -->
+<?php 
+  // Determine if a custom hero banner image exists, otherwise fall back to empty string
+  $heroBgStyle = "";
+  if (!empty($detail->hero_banner)) {
+      $heroBgStyle = 'style="background-image: linear-gradient(to right, rgba(4, 13, 24, 0.92) 30%, rgba(4, 13, 24, 0.4) 100%), url(' . base_url($detail->hero_banner) . '); background-size: cover; background-position: center;"';
+  }
+?>
 <div class="xhero">
-  <div class="xhero__left">
-    <div class="xhero__left-inner">
-      <span class="xhero__tag">
-        <span class="xhero__tag-dot"></span>
-        Solutions Profile
-      </span>
-      <h1 class="xhero__title">
-        <?php echo !empty($detail->name) ? esc($detail->name) : 'Enterprise Solution'; ?>
-        <br><mark>Built to Scale.</mark>
-      </h1>
-      <p class="xhero__sub">
-        Modernize your operations, eliminate infrastructure gaps, and accelerate growth with precision-engineered technology built around your business.
-      </p>
-      <div class="xhero__btns">
-        <a href="#contact" class="xbtn-solid"><i class="fas fa-comments"></i> Talk to an Expert</a>
-        <a href="#explore" class="xbtn-line"><i class="fas fa-compass"></i> Explore</a>
+  <div class="container">
+    <div class="row align-items-center">
+      
+      <!-- LEFT ENGINE COLUMN: Conversion Copy & Action Block -->
+      <div class="col-lg-6 col-12">
+        <div class="xhero__left">
+          <span class="xhero__tag">
+            <span class="xhero__tag-dot"></span>
+            Solutions Profile
+          </span>
+          
+          <h1 class="xhero__title">
+            <?php echo !empty($detail->name) ? esc($detail->name) : 'Enterprise Solution'; ?>
+            <br><mark>Built to Scale.</mark>
+          </h1>
+          
+          <p class="xhero__sub">
+            Modernize your operations, eliminate infrastructure gaps, and accelerate growth with precision-engineered technology built around your business.
+          </p>
+          
+          <div class="xhero__btns">
+            <a href="#contact" class="xbtn-solid"><i class="fas fa-comments"></i> Request Demo</a>
+          </div>
+          
+          <div class="xhero__scroll">
+            <div class="xhero__scroll-line"></div>
+            Scroll
+          </div>
+        </div>
       </div>
-      <div class="xhero__stats">
-        <div class="xhero__stat">
-          <div class="xhero__stat-n"><?php echo !empty($detail->id) ? rand(100,999) : '250'; ?><em>+</em></div>
-          <div class="xhero__stat-l">Active Clients</div>
-        </div>
-        <div class="xhero__stat">
-          <div class="xhero__stat-n"><?php echo !empty($detail->id) ? rand(10,50) : '20'; ?><em>+</em></div>
-          <div class="xhero__stat-l">Years Experience</div>
-        </div>
-        <div class="xhero__stat">
-          <div class="xhero__stat-n"><?php echo !empty($industryList) ? count($industryList) : '15'; ?><em>+</em></div>
-          <div class="xhero__stat-l">Industries Served</div>
-        </div>
-      </div>
-    </div>
-    <div class="xhero__scroll">
-      <div class="xhero__scroll-line"></div>
-      Scroll
-    </div>
-  </div>
+      
+      <!-- RIGHT ENGINE COLUMN: Perspective Dashboard Presentation Canvas -->
+      <div class="col-lg-6 col-12">
+        <div class="xhero__right-perspective-canvas">
+          
+          <?php if (!empty($detail->hero_banner)): ?>
+  <!-- Displays the designated Hero Layout Banner inside the premium 3D frame -->
+  <img src="<?php echo base_url($detail->hero_banner); ?>" class="xhero__dashboard-mockup-frame" alt="<?php echo esc($detail->name); ?>">
+<?php elseif (!empty($detail->image)): ?>
+  <img src="<?php echo base_url($detail->image); ?>" class="xhero__dashboard-mockup-frame" alt="<?php echo esc($detail->name); ?>">
+<?php else: ?>
+  <!-- Ultra-Clean fallback asset layout placeholder -->
+  <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" class="xhero__dashboard-mockup-frame" alt="Fallback Dashboard Visualization">
+<?php endif; ?>
 
-  <div class="xhero__right">
-    <div class="xhero__right-img"
-      style="<?php echo !empty($detail->image) ? "background-image:url('".base_url($detail->image)."');" : (!empty($detail->hero_banner) ? "background-image:url('".base_url($detail->hero_banner)."');" : "background:var(--MID);"); ?>">
-    </div>
-    <div class="xhero__right-watermark">
-      <div class="xhero__right-watermark-icon">
-        <?php if (!empty($detail->thumbnail)): ?>
-          <img src="<?php echo base_url($detail->thumbnail); ?>" style="width:20px;height:20px;object-fit:contain;filter:brightness(0) invert(1)" alt="">
-        <?php else: ?>
-          <i class="fas fa-microchip"></i>
-        <?php endif; ?>
+          <!-- Floating Info Card component block mapped from reference layout badge configurations -->
+          <div class="xhero__floating-feature-tag">
+            <div class="xhero__floating-badge-icon">
+              <?php if (!empty($detail->thumbnail)): ?>
+                <img src="<?php echo base_url($detail->thumbnail); ?>" style="width:16px;height:16px;object-fit:contain;filter:brightness(0) invert(1)" alt="">
+              <?php else: ?>
+                <i class="fas fa-chart-line"></i>
+              <?php endif; ?>
+            </div>
+            <div class="xhero__floating-badge-text">
+              <strong><?php echo !empty($detail->name) ? esc($detail->name) : 'Platform Core'; ?></strong>
+              <span>Active &amp; Optimized</span>
+            </div>
+          </div>
+
+        </div>
       </div>
-      <div class="xhero__right-watermark-text">
-        <strong><?php echo !empty($detail->name) ? esc($detail->name) : 'Enterprise Platform'; ?></strong>
-        <span>Active &amp; Optimized</span>
-      </div>
-    </div>
-  </div>
+      
+    </div><!-- /row -->
+  </div><!-- /container -->
 </div>
 
 <div class="xticker">
@@ -701,63 +1468,309 @@ html.lenis, html.lenis body { height: auto; }
   </div>
 </div>
 
-<section class="overview" id="overview">
+<!-- ================================================================
+     NEW SECTION: TRUSTED BY FINANCE TEAMS (UNIFIED BRANDING ENGINE)
+     ================================================================ -->
+<div class="finance-trust-strip">
   <div class="container">
-    <div class="row align-items-center g-5">
-      <div class="col-lg-5" data-reveal>
-        <div class="section-eyebrow">Solution Overview</div>
-        <h2 class="section-title">
-          Understanding <span><?php echo !empty($detail->name) ? esc($detail->name) : 'What We Build'; ?></span>
-        </h2>
-        <div class="section-body">
-          <?php echo $detail->description; ?>
+    <div class="finance-trust__wrapper">
+      
+      <h5 class="finance-trust__title" data-reveal>Trusted By Finance Teams</h5>
+      
+      <div class="finance-trust__grid">
+        
+        <!-- 1. Microsoft Partner Brand Badge -->
+        <div class="finance-trust__logo-badge" data-reveal data-delay="1">
+          <svg viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0H11V11H0V0Z" fill="#F25022"/>
+            <path d="M12 0H23V11H12V0Z" fill="#7FBA00"/>
+            <path d="M0 12H11V23H0V12Z" fill="#00A4EF"/>
+            <path d="M12 12H23V23H12V12Z" fill="#FFB900"/>
+          </svg>
+          <div class="finance-trust__logo-text">
+            <strong>Microsoft</strong>
+            <span>Partner</span>
+          </div>
+        </div>
+
+        <!-- 2. Microsoft Power Platform Brand Badge -->
+        <div class="finance-trust__logo-badge" data-reveal data-delay="2">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 6L7 11V21L16 26L25 21V11L16 6Z" fill="#742774"/>
+            <path d="M16 9.5L10.5 12.5V19.5L16 22.5L21.5 19.5V12.5L16 9.5Z" fill="#E3008C"/>
+          </svg>
+          <div class="finance-trust__logo-text">
+            <strong>Microsoft</strong>
+            <span>Power Platform</span>
+          </div>
+        </div>
+
+        <!-- 3. Power BI Analytics Badge -->
+        <div class="finance-trust__logo-badge" data-reveal data-delay="3">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="18" width="5" height="9" rx="1" fill="#E6AD12"/>
+            <rect x="13" y="10" width="5" height="17" rx="1" fill="#F8C100"/>
+            <rect x="21" y="4" width="5" height="23" rx="1" fill="#FFD851"/>
+          </svg>
+          <div class="finance-trust__logo-text">
+            <strong>Power BI</strong>
+            <span>Analytics Engine</span>
+          </div>
+        </div>
+
+        <!-- 4. ISO 27001 Security Badge -->
+        <div class="finance-trust__logo-badge" data-reveal data-delay="4">
+          <!-- Premium Vector Shield Icon for Information Security -->
+          <div class="finance-trust__icon-iso-blue">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div class="finance-trust__logo-text">
+            <strong>ISO 27001:2013</strong>
+            <span>Information Security Standard</span>
+          </div>
+        </div>
+
+        <!-- 5. ISO 9001 Quality Framework Badge -->
+        <div class="finance-trust__logo-badge" data-reveal data-delay="5">
+          <!-- Premium Vector Globe-Check Icon for Quality Certification Management -->
+          <div class="finance-trust__icon-iso-navy">
+            <i class="fa-solid fa-square-poll-horizontal"></i>
+          </div>
+          <div class="finance-trust__logo-text">
+            <strong>ISO 9001:2015</strong>
+            <span>Quality Management Certified</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     NEW SECTION: CORE VALUE VALUE DRIVERS GRID (image_c32fdc.png)
+     ================================================================ -->
+<div class="why-benefits-banner">
+  <div class="container">
+    
+    <!-- Dynamic Product Context Header -->
+    <h3 class="why-benefits__title" data-reveal>
+      Why <?php echo !empty($detail->name) ? esc($detail->name) : 'Our Platform'; ?>?
+    </h3>
+    
+    <div class="why-benefits__grid">
+      
+      <!-- Card 1: Faster Financial Close -->
+      <div class="why-benefits__card" data-reveal data-delay="1">
+        <div class="why-benefits__icon-frame blue-accent">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <div class="why-benefits__content">
+          <h4 class="why-benefits__card-title">Faster Financial Close</h4>
+          <p class="why-benefits__card-desc">Reduce month-end closing timelines effortlessly.</p>
         </div>
       </div>
-      <div class="col-lg-7" data-reveal data-delay="2">
-        <?php if (!empty($detail->image)): ?>
-          <div class="para-frame">
-            <div class="para-frame__img">
-              <img src="<?php echo base_url($detail->image); ?>" alt="<?php echo esc($detail->name); ?>" loading="lazy">
-            </div>
-            <div class="para-badge">
-              <div class="para-badge__icon">
-                <i class="fas fa-bolt"></i>
-              </div>
-              <div class="para-badge__text">
-                <strong>System Active</strong>
-                <span>Optimized &amp; Running</span>
-              </div>
-            </div>
-          </div>
-        <?php endif; ?>
+
+      <!-- Card 2: Unified Consolidation -->
+      <div class="why-benefits__card" data-reveal data-delay="2">
+        <div class="why-benefits__icon-frame green-accent">
+          <i class="fas fa-database"></i>
+        </div>
+        <div class="why-benefits__content">
+          <h4 class="why-benefits__card-title">Unified Consolidation</h4>
+          <p class="why-benefits__card-desc">Combine disparate source data from ERP systems &amp; cloud pools.</p>
+        </div>
       </div>
-    </div>
-  </div>
+
+      <!-- Card 3: Intelligent Reporting -->
+      <div class="why-benefits__card" data-reveal data-delay="3">
+        <div class="why-benefits__icon-frame purple-accent">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="why-benefits__content">
+          <h4 class="why-benefits__card-title">Intelligent Reporting</h4>
+          <p class="why-benefits__card-desc">Power BI analytics engine models live architectural insights.</p>
+        </div>
+      </div>
+
+      <!-- Card 4: Compliance Ready -->
+      <div class="why-benefits__card" data-reveal data-delay="4">
+        <div class="why-benefits__icon-frame teal-accent">
+          <i class="fas fa-shield-solid fa-shield-halved"></i>
+        </div>
+        <div class="why-benefits__content">
+          <h4 class="why-benefits__card-title">Compliance Ready</h4>
+          <p class="why-benefits__card-desc">Engineered for GAAP, IFRS compliance, and strict log audit trails.</p>
+        </div>
+      </div>
+
+    </div><!-- /why-benefits__grid -->
+    
+  </div><!-- /container -->
+</div>
+
+<!-- ================================================================
+     PRODUCT OVERVIEW ENGINE SECTION (EQUAL HEIGHT MATRIX FOR image_de09a0.jpg)
+     ================================================================ -->
+<section class="product-overview-sec" id="overview">
+  <div class="container">
+    <!-- Enforced full-height column alignment row layout -->
+    <div class="row overview-flex-align g-4 g-lg-5">
+      
+      <!-- LEFT DESIGN COLUMN: Self-Stretching Visual Frame Panel (6-Cols) -->
+      <div class="col-lg-6 col-12 d-flex">
+        <div class="overview-workspace__img-frame" data-reveal>
+          <?php if (!empty($detail->image)): ?>
+            <img src="<?php echo base_url($detail->image); ?>" alt="<?php echo esc($detail->name); ?> Application Dashboard" loading="lazy">
+          <?php else: ?>
+            <!-- Fallback dashboard display asset -->
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Product Interface Dashboard Mockup">
+          <?php endif; ?>
+        </div>
+      </div>
+      
+      <!-- RIGHT DESIGN COLUMN: Content & Core Feature Grid Layout Matrix (6-Cols) -->
+      <div class="col-lg-6 col-12">
+        <div class="overview-content__wrapper" data-reveal data-delay="2">
+          <span class="overview-content__eyebrow">Understanding Platform Context</span>
+          <h2 class="overview-content__title">Product Overview</h2>
+          
+          <div class="overview-content__desc">
+            <?php echo !empty($detail->description) ? $detail->description : 'A comprehensive structural automation engine built to unify complex financial workflows, streamline operations, maximize transactional auditing transparency, and drive efficiency across multi-tier entities.'; ?>
+          </div>
+          
+          <!-- Checklist Matrix Grid Layer -->
+          <div class="overview-checklist__grid">
+            
+            <div class="overview-checklist__item">
+              <i class="fas fa-check-circle overview-checklist__icon"></i>
+              <div class="overview-checklist__body">
+                <h4 class="overview-checklist__label">Financial Consolidation</h4>
+                <p class="overview-checklist__text">Consolidate core multi-tier corporate financials across structural hierarchies securely.</p>
+              </div>
+            </div>
+
+            <div class="overview-checklist__item">
+              <i class="fas fa-check-circle overview-checklist__icon"></i>
+              <div class="overview-checklist__body">
+                <h4 class="overview-checklist__label">Intelligent Reporting</h4>
+                <p class="overview-checklist__text">Power BI integrated pipelines track drill-downs and real-time operational views.</p>
+              </div>
+            </div>
+
+            <div class="overview-checklist__item">
+              <i class="fas fa-check-circle overview-checklist__icon"></i>
+              <div class="overview-checklist__body">
+                <h4 class="overview-checklist__label">Currency Translation</h4>
+                <p class="overview-checklist__text">Global-ready multi-currency translation matrix balancing real-time foreign market exchange rates.</p>
+              </div>
+            </div>
+
+            <div class="overview-checklist__item">
+              <i class="fas fa-check-circle overview-checklist__icon"></i>
+              <div class="overview-checklist__body">
+                <h4 class="overview-checklist__label">Eliminations Engine</h4>
+                <p class="overview-checklist__text">Automated matching systems eliminate cross-company entries safely without manual gaps.</p>
+              </div>
+            </div>
+
+          </div><!-- /overview-checklist__grid -->
+        </div>
+      </div>
+
+    </div><!-- /row -->
+  </div><!-- /container -->
 </section>
 
-<section class="marquee-section">
-  <div class="marquee-section__glow"></div>
-  <div class="marquee-label" data-reveal>Trusted Partner Ecosystem</div>
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <?php for ($i = 0; $i < 4; $i++): ?>
-        <?php if (!empty($accreditationsList)): ?>
-          <?php foreach ($accreditationsList as $row): ?>
-            <div class="logo-card">
-              <img src="<?php echo base_url($row->image); ?>" alt="<?php echo esc($row->name); ?>" loading="lazy">
+<!-- ================================================================
+     WHY SECTION — INTERACTIVE STICKY LATERAL ESCAPE ENGINE (DYNAMIC)
+================================================================ -->
+<?php 
+  // Dynamically calculate section height footprint based on card count
+  $cardsCount = !empty($partnershipCardsList) ? count($partnershipCardsList) : 4;
+  $computedHeight = max(200, $cardsCount * 100) . 'vh';
+?>
+<div class="why-pinned-wrapper" style="height: <?php echo $computedHeight; ?>;">
+  <div class="why-sticky-container">
+    <div class="container">
+      
+      <!-- Dynamic Section Headers -->
+      <div class="section-header center" data-reveal>
+        <div class="section-eyebrow">
+          <?php echo !empty($partnershipSubheading) ? esc($partnershipSubheading) : 'Strategic Value'; ?>
+        </div>
+        <h2 class="section-title">
+          <?php echo !empty($partnershipTitle) ? esc($partnershipTitle) : 'Why Our Partnerships <span>Matter</span>'; ?>
+        </h2>
+        <p class="section-body">
+          <?php echo !empty($partnershipDescription) ? esc($partnershipDescription) : 'We combine global technology expertise with local execution precision to guarantee business continuity and exponential growth for every client.'; ?>
+        </p>
+      </div>
+
+      <div style="position: relative; max-width: 900px; margin: 0 auto;">
+        
+        <!-- Dynamic Deck Pagination Track Mapping -->
+        <div class="why-deck-pagination">
+          <?php if (!empty($partnershipCardsList)): ?>
+            <?php foreach ($partnershipCardsList as $index => $card): ?>
+              <div class="why-pagination-bullet <?php echo $index === 0 ? 'active' : ''; ?>" data-target="<?php echo $index; ?>">
+                <span class="why-bullet-num"><?php echo sprintf("%02d", $index + 1); ?></span>
+                <span class="why-bullet-dot"></span>
+              </div>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <!-- Safe Production Mock Fallbacks if database contains no records -->
+            <div class="why-pagination-bullet active" data-target="0"><span class="why-bullet-num">01</span><span class="why-bullet-dot"></span></div>
+            <div class="why-pagination-bullet" data-target="1"><span class="why-bullet-num">02</span><span class="why-bullet-dot"></span></div>
+            <div class="why-pagination-bullet" data-target="2"><span class="why-bullet-num">03</span><span class="why-bullet-dot"></span></div>
+            <div class="why-pagination-bullet" data-target="3"><span class="why-bullet-num">04</span><span class="why-bullet-dot"></span></div>
+          <?php endif; ?>
+        </div>
+
+        <!-- Dynamic Stack Canvas Deck -->
+        <div class="why-stack-deck" style="margin: 0; max-width: 780px;">
+          <?php if (!empty($partnershipCardsList)): ?>
+            <?php foreach ($partnershipCardsList as $index => $card): ?>
+              <div class="why-stack-card" data-index="<?php echo $index; ?>">
+                <div class="card-left">
+                  <div class="why-stack-icon">
+                    <i class="<?php echo !empty($card->icon_class) ? esc($card->icon_class) : 'fas fa-handshake'; ?>"></i>
+                  </div>
+                </div>
+                <div class="card-right">
+                  <h4 class="why-stack-title"><?php echo esc($card->title); ?></h4>
+                  <p class="why-stack-body"><?php echo esc($card->description); ?></p>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <!-- Core Visual Fallback Stack Layer Cards Template -->
+            <div class="why-stack-card" data-index="0">
+              <div class="card-left"><div class="why-stack-icon"><i class="fas fa-people-arrows"></i></div></div>
+              <div class="card-right"><h4 class="why-stack-title">Collaborative Growth</h4><p class="why-stack-body">Co-engineering solutions with industry leaders for best-in-class framework safety and innovation velocity.</p></div>
             </div>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <div class="logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft"></div>
-          <div class="logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS"></div>
-          <div class="logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg" alt="Google Cloud"></div>
-          <div class="logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Cisco_logo_blue_2016.svg" alt="Cisco"></div>
-          <div class="logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Veritas_Technologies_logo.svg/512px-Veritas_Technologies_logo.svg.png" alt="Veritas"></div>
-        <?php endif; ?>
-      <?php endfor; ?>
+            <div class="why-stack-card" data-index="1">
+              <div class="card-left"><div class="why-stack-icon"><i class="fas fa-rocket"></i></div></div>
+              <div class="card-right"><h4 class="why-stack-title">Speed to Market</h4><p class="why-stack-body">Rapid prototyping using pre-validated deployment templates and battle-tested, production-ready components.</p></div>
+            </div>
+            <div class="why-stack-card" data-index="2">
+              <div class="card-left"><div class="why-stack-icon"><i class="fas fa-shield-alt"></i></div></div>
+              <div class="card-right"><h4 class="why-stack-title">Enterprise Grade</h4><p class="why-stack-body">Bank-level security, GDPR compliance frameworks, and proactive infrastructure monitoring around the clock.</p></div>
+            </div>
+            <div class="why-stack-card" data-index="3">
+              <div class="card-left"><div class="why-stack-icon"><i class="fas fa-chart-line"></i></div></div>
+              <div class="card-right"><h4 class="why-stack-title">ROI Focused</h4><p class="why-stack-body">Data-driven strategy engineered to reduce total cost of ownership while maximising measurable returns.</p></div>
+            </div>
+          <?php endif; ?>
+        </div>
+
+      </div>
+
     </div>
   </div>
-</section>
+</div>
+
 
 <section class="features" id="explore">
   <div class="features__blob features__blob--a"></div>
@@ -824,84 +1837,6 @@ html.lenis, html.lenis body { height: auto; }
   </div>
 </section>
 
-<div class="why-pinned-wrapper">
-  <div class="why-sticky-container">
-    <div class="container">
-      
-      <div class="section-header center">
-        <div class="section-eyebrow">Strategic Value</div>
-        <h2 class="section-title">Why Our Partnerships <span>Matter</span></h2>
-        <p class="section-body">
-          We combine global technology expertise with local execution precision to guarantee business continuity and exponential growth for every client.
-        </p>
-      </div>
-
-      <div style="position: relative; max-width: 900px; margin: 0 auto;">
-        <div class="why-deck-pagination">
-          <div class="why-pagination-bullet active" data-target="0">
-            <span class="why-bullet-num">01</span>
-            <span class="why-bullet-dot"></span>
-          </div>
-          <div class="why-pagination-bullet" data-target="1">
-            <span class="why-bullet-num">02</span>
-            <span class="why-bullet-dot"></span>
-          </div>
-          <div class="why-pagination-bullet" data-target="2">
-            <span class="why-bullet-num">03</span>
-            <span class="why-bullet-dot"></span>
-          </div>
-          <div class="why-pagination-bullet" data-target="3">
-            <span class="why-bullet-num">04</span>
-            <span class="why-bullet-dot"></span>
-          </div>
-        </div>
-
-        <div class="why-stack-deck" style="margin: 0; max-width: 780px;">
-          <div class="why-stack-card" data-index="0">
-            <div class="card-left">
-              <div class="why-stack-icon"><i class="fas fa-people-arrows"></i></div>
-            </div>
-            <div class="card-right">
-              <h4 class="why-stack-title">Collaborative Growth</h4>
-              <p class="why-stack-body">Co-engineering solutions with industry leaders for best-in-class framework safety and innovation velocity.</p>
-            </div>
-          </div>
-
-          <div class="why-stack-card" data-index="1">
-            <div class="card-left">
-              <div class="why-stack-icon"><i class="fas fa-rocket"></i></div>
-            </div>
-            <div class="card-right">
-              <h4 class="why-stack-title">Speed to Market</h4>
-              <p class="why-stack-body">Rapid prototyping using pre-validated deployment templates and battle-tested, production-ready components.</p>
-            </div>
-          </div>
-
-          <div class="why-stack-card" data-index="2">
-            <div class="card-left">
-              <div class="why-stack-icon"><i class="fas fa-shield-alt"></i></div>
-            </div>
-            <div class="card-right">
-              <h4 class="why-stack-title">Enterprise Grade</h4>
-              <p class="why-stack-body">Bank-level security, GDPR compliance frameworks, and proactive infrastructure monitoring around the clock.</p>
-            </div>
-          </div>
-
-          <div class="why-stack-card" data-index="3">
-            <div class="card-left">
-              <div class="why-stack-icon"><i class="fas fa-chart-line"></i></div>
-            </div>
-            <div class="card-right">
-              <h4 class="why-stack-title">ROI Focused</h4>
-              <p class="why-stack-body">Data-driven strategy engineered to reduce total cost of ownership while maximising measurable returns.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
 
 <?php if (!empty($usecasesList)): ?>
 <section class="use-cases" id="use-cases">
@@ -966,6 +1901,59 @@ html.lenis, html.lenis body { height: auto; }
 </section>
 <?php endif; ?>
 
+<!-- ================================================================
+     NEW SECTION: BUSINESS BENEFITS METRICS CANVASES (ANIMATED ENGINE)
+     ================================================================ -->
+<section class="biz-benefits-sec">
+  <div class="container">
+    
+    <h3 class="biz-benefits__title" data-reveal>Business Benefits</h3>
+    
+    <div class="biz-benefits__grid">
+      
+      <!-- Card 1: Reduce Closing Time -->
+      <div class="biz-benefits__card blue-theme" data-reveal data-delay="1">
+        <div class="biz-benefits__card-hdr">
+          <i class="fa-regular fa-clock"></i> Reduce Closing Time
+        </div>
+        <!-- data-target-value holds the number, data-suffix holds characters like % or x7 -->
+        <div class="biz-benefits__stat"><span class="run-counter" data-target-value="40" data-suffix="%">0</span>%</div>
+        <p class="biz-benefits__desc">Faster month-end close</p>
+      </div>
+
+      <!-- Card 2: Improve Accuracy -->
+      <div class="biz-benefits__card green-theme" data-reveal data-delay="2">
+        <div class="biz-benefits__card-hdr">
+          <i class="fa-regular fa-circle-check"></i> Improve Accuracy
+        </div>
+        <div class="biz-benefits__stat"><span class="run-counter" data-target-value="99" data-suffix="%">0</span>%</div>
+        <p class="biz-benefits__desc">Accurate &amp; reliable data</p>
+      </div>
+
+      <!-- Card 3: Automated Reporting -->
+      <div class="biz-benefits__card purple-theme" data-reveal data-delay="3">
+        <div class="biz-benefits__card-hdr">
+          <i class="fa-regular fa-file-lines"></i> Automated Reporting
+        </div>
+        <div class="biz-benefits__stat"><span class="run-counter" data-target-value="100" data-suffix="%">0</span>%</div>
+        <p class="biz-benefits__desc">Eliminate manual efforts</p>
+      </div>
+
+      <!-- Card 4: Real-time Visibility -->
+      <div class="biz-benefits__card orange-theme" data-reveal data-delay="4">
+        <div class="biz-benefits__card-hdr">
+          <i class="fa-regular fa-eye"></i> Real-time Visibility
+        </div>
+        <!-- For non-standard numbers like 24x7, we run the base to 24 and append x7 dynamically -->
+        <div class="biz-benefits__stat"><span class="run-counter" data-target-value="24" data-suffix="x7">0</span>x7</div>
+        <p class="biz-benefits__desc">Eliminate anything anywhere</p>
+      </div>
+
+    </div><!-- /biz-benefits__grid -->
+    
+  </div><!-- /container -->
+</section>
+
 <?php if (!empty($industryList)): ?>
 <section class="industries" id="industries">
   <div class="industries__hatch"></div>
@@ -1003,6 +1991,83 @@ html.lenis, html.lenis body { height: auto; }
 </section>
 <?php endif; ?>
 
+<!-- ================================================================
+     NEW SECTION: SCROLL-LINKED IMPLEMENTATION JOURNEY (image_dfe683.png)
+     ================================================================ -->
+<section class="journey-sec" id="journey-scroll-trigger">
+  <div class="container">
+    
+    <h3 class="journey__title" data-reveal>Our Implementation Journey</h3>
+    
+    <div class="journey__container-relative">
+      
+      <!-- Continuous Processing Fill Track Layer -->
+      <div class="journey__master-line">
+        <div class="journey__master-fill" id="journey-progress-bar"></div>
+      </div>
+      
+      <div class="journey__track">
+        
+        <!-- Step 1 -->
+        <div class="journey__step" data-percentage="15">
+          <div class="journey__bubble"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+          <div class="journey__info">
+            <h4 class="journey__label">Discovery</h4>
+            <p class="journey__desc">Understand your detailed business needs.</p>
+          </div>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="journey__step" data-percentage="35">
+          <div class="journey__bubble"><i class="fa-solid fa-sliders"></i></div>
+          <div class="journey__info">
+            <h4 class="journey__label">Implementation</h4>
+            <p class="journey__desc">Configure &amp; customize as per requirements.</p>
+          </div>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="journey__step" data-percentage="55">
+          <div class="journey__bubble"><i class="fa-solid fa-database"></i></div>
+          <div class="journey__info">
+            <h4 class="journey__label">Migration</h4>
+            <p class="journey__desc">Migrate system data securely to platform structures.</p>
+          </div>
+        </div>
+        
+        <!-- Step 4 -->
+        <div class="journey__step" data-percentage="70">
+          <div class="journey__bubble"><i class="fa-solid fa-chalkboard-user"></i></div>
+          <div class="journey__info">
+            <h4 class="journey__label">Training</h4>
+            <p class="journey__desc">User training track for maximum adoption.</p>
+          </div>
+        </div>
+        
+        <!-- Step 5 -->
+        <div class="journey__step" data-percentage="85">
+          <div class="journey__bubble"><i class="fa-solid fa-rocket"></i></div>
+          <div class="journey__info">
+            <h4 class="journey__label">Go Live</h4>
+            <p class="journey__desc">Smooth go-live shift with complete support loops.</p>
+          </div>
+        </div>
+        
+        <!-- Step 6 -->
+        <div class="journey__step" data-percentage="100">
+          <div class="journey__bubble"><i class="fa-solid fa-headset"></i></div>
+          <div class="journey__info">
+            <h4 class="journey__label">Support</h4>
+            <p class="journey__desc">Ongoing framework support &amp; continuous improvement.</p>
+          </div>
+        </div>
+        
+      </div><!-- /journey__track -->
+    </div><!-- /journey__container-relative -->
+    
+  </div><!-- /container -->
+</section>
+
 <section class="bottom-section" id="contact">
   <div class="container">
     <div class="row g-4 align-items-stretch">
@@ -1039,10 +2104,10 @@ html.lenis, html.lenis body { height: auto; }
                       <div class="testi-stars">★★★★★</div>
                       <p class="testi-text">"<?php echo esc($row->description); ?>"</p>
                       <div class="testi-footer">
-                        <img class="testi-avatar"
-                             src="<?php echo !empty($row->image) ? base_url($row->image) : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'; ?>"
-                             alt="<?php echo esc($row->name); ?>"
-                             loading="lazy">
+                        <img class="testi-avatar" 
+     src="<?php echo (!empty($row->image) && file_exists(FCPATH . $row->image)) ? base_url($row->image) : 'https://api.dicebear.com/7.x/initials/svg?seed=' . urlencode($row->name) . '&backgroundType=gradientLinear&backgroundColor=0083BF,005d8e'; ?>" 
+     alt="<?php echo esc($row->name); ?>" 
+     loading="lazy">
                         <div>
                           <div class="testi-name"><?php echo esc($row->name); ?></div>
                           <div class="testi-role"><?php echo esc($row->designation); ?></div>
@@ -1052,6 +2117,7 @@ html.lenis, html.lenis body { height: auto; }
                   </div>
                 <?php endforeach; ?>
               <?php else: ?>
+                <!-- Clean Static Production Fallback Grid if no admin records exist -->
                 <div class="swiper-slide">
                   <div class="testi-card">
                     <div class="testi-quote-mark">&ldquo;</div>
@@ -1089,6 +2155,40 @@ html.lenis, html.lenis body { height: auto; }
     </div>
   </div>
 </div>
+
+<!-- ================================================================
+     FAQ SECTION (image_d965d4.png)
+     ================================================================ -->
+<section class="faq-sec">
+  <div class="container">
+    <h3 class="section-title text-center" data-reveal>Frequently Asked Questions</h3>
+    
+    <div class="faq-list">
+      <?php 
+      // Replace with your dynamic $faqList if you have one, otherwise using static array
+      $faqs = [
+        ['q' => 'What is ' . (!empty($detail->name) ? esc($detail->name) : 'FINCON') . '?', 'a' => 'It is a modern financial consolidation and reporting solution built to unify your data and deliver real-time insights.'],
+        ['q' => 'Is ' . (!empty($detail->name) ? esc($detail->name) : 'FINCON') . ' compliant with IFRS & GAAP?', 'a' => 'Yes, our platform is fully engineered to meet global compliance standards including GAAP, IFRS, and strict audit trail requirements.'],
+        ['q' => 'How does the platform handle multi-currency?', 'a' => 'We utilize a real-time exchange rate matrix that automates translations across all your multi-entity financial structures.'],
+        ['q' => 'Can I create custom reports?', 'a' => 'Absolutely. Our Power BI integration allows for bespoke drill-downs and advanced reporting dashboards.'],
+        ['q' => 'Can the platform integrate with our ERP?', 'a' => 'Yes, we provide robust API hooks for seamless data ingestion from leading ERP, CRM, and cloud-based platforms.'],
+        ['q' => 'How secure is the platform?', 'a' => 'We employ enterprise-grade encryption, role-based access control, and proactive infrastructure monitoring to ensure your data is always protected.']
+      ];
+
+      foreach($faqs as $index => $item): ?>
+        <div class="faq-item" data-reveal data-delay="<?php echo min(($index + 1), 6); ?>">
+          <div class="faq-q">
+            <span><?php echo $item['q']; ?></span>
+            <div class="faq-icon"><i class="fas fa-plus"></i></div>
+          </div>
+          <div class="faq-a">
+            <?php echo $item['a']; ?>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
 
 <?php echo $this->include('frontend/includes/bottom_section'); ?>
 
@@ -1171,6 +2271,11 @@ html.lenis, html.lenis body { height: auto; }
 
     if (window.innerWidth <= 768) {
       deckBullets.forEach(function (b) { b.classList.remove('active'); });
+      // Reset styles for mobile grid flow layout
+      stackCards.forEach(function (card) {
+        card.style.transform = 'none';
+        card.style.opacity = '1';
+      });
       return;
     }
 
@@ -1178,6 +2283,7 @@ html.lenis, html.lenis body { height: auto; }
     var totalHeight = rect.height - window.innerHeight;
     var progress = Math.max(0, Math.min(1, -rect.top / totalHeight));
 
+    // Dynamic scale limit mapping
     var totalCards = stackCards.length;
     var activeSegment = progress * (totalCards - 1);
     var currentActiveIndex = Math.round(activeSegment);
@@ -1194,12 +2300,14 @@ html.lenis, html.lenis body { height: auto; }
       var diff = index - activeSegment;
 
       if (diff < 0) {
+        // Card has been scrolled past (swipes out to left/rotates)
         var translateX = diff * window.innerWidth * 0.8; 
         var rotateDeg = diff * 15; 
         card.style.transform = 'translate3d(' + translateX + 'px, 0, 0) rotate(' + rotateDeg + 'deg)';
         card.style.opacity = Math.max(0, 1 + diff * 2);
         card.style.zIndex = totalCards + index;
       } else {
+        // Cards remaining in the stack deck container matrix
         var scaleDown = 1 - (diff * 0.04);
         var translateUp = diff * -12; 
         card.style.transform = 'translate3d(0, ' + translateUp + 'px, 0) scale(' + scaleDown + ')';
@@ -1237,6 +2345,116 @@ html.lenis, html.lenis body { height: auto; }
         duration: 1.0,
         force: true
       });
+    });
+  });
+
+  /* ---- High-Performance Core Numeric Counter Engine ---- */
+  function initDynamicCounters() {
+    var counterNodes = document.querySelectorAll('.run-counter');
+    
+    var counterObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var targetNode = entry.target;
+          var finalValue = parseInt(targetNode.getAttribute('data-target-value'), 10);
+          var suffixStr = targetNode.getAttribute('data-suffix') || '';
+          var startValue = 0;
+          var totalDuration = 1500; // Animation running duration window in milliseconds (1.5 seconds)
+          var framesPerSecond = 60;
+          var totalSteps = Math.round(totalDuration / (1000 / framesPerSecond));
+          var incrementAmount = finalValue / totalSteps;
+          var currentStep = 0;
+
+          var counterInterval = setInterval(function () {
+            currentStep++;
+            startValue += incrementAmount;
+            
+            // Set the content dynamically during execution frame loop steps
+            targetNode.textContent = Math.floor(startValue);
+
+            if (currentStep >= totalSteps) {
+              clearInterval(counterInterval);
+              targetNode.textContent = finalValue; // Forces raw absolute exact stop alignment mapping
+            }
+          }, 1000 / framesPerSecond);
+
+          // Cease observation layout hooks once counting execution cycle triggers safely
+          counterObserver.unobserve(targetNode);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    counterNodes.forEach(function (el) { counterObserver.observe(el); });
+  }
+
+  // Fire counter tracking systems cleanly upon document completion frameworks
+  document.addEventListener('DOMContentLoaded', function() {
+    initDynamicCounters();
+  });
+
+  /* ---- Scroll-Linked Journey Flow Controller ---- */
+  var journeySec = document.getElementById('journey-scroll-trigger');
+  var progressBar = document.getElementById('journey-progress-bar');
+  var journeySteps = document.querySelectorAll('.journey__step');
+
+  function calculateJourneyFlow() {
+    if (!journeySec || !progressBar) return;
+
+    var rect = journeySec.getBoundingClientRect();
+    var viewportHeight = window.innerHeight;
+
+    // Calculate progress from when the section enters the bottom of the viewport
+    // to when it passes completely off the top boundary window field.
+    var totalScrollableDistance = rect.height + viewportHeight;
+    var currentScrolledDistance = viewportHeight - rect.top;
+
+    var progressPct = (currentScrolledDistance / totalScrollableDistance) * 100;
+    // Bound constraints safely between 0% and 100%
+    var finalBoundedProgress = Math.max(0, Math.min(100, progressPct));
+
+    // Map metrics according to display matrix dimension structures
+    if (window.innerWidth <= 768) {
+      progressBar.style.height = finalBoundedProgress + '%';
+      progressBar.style.width = '100%';
+    } else {
+      progressBar.style.width = finalBoundedProgress + '%';
+      progressBar.style.height = '100%';
+    }
+
+    // Activate/deactivate node highlights based on fill position thresholds
+    journeySteps.forEach(function (step) {
+      var stepActivationValue = parseInt(step.getAttribute('data-percentage'), 10);
+      if (finalBoundedProgress >= stepActivationValue) {
+        step.classList.add('node-passed');
+      } else {
+        step.classList.remove('node-passed');
+      }
+    });
+  }
+
+  // Bind calculation handler loops directly to viewport active interaction windows
+  window.addEventListener('scroll', calculateJourneyFlow);
+  window.addEventListener('resize', calculateJourneyFlow);
+  
+  // Fire execution cycle step upon setup completion
+  calculateJourneyFlow();
+
+  /* ---- Professional FAQ Accordion Logic ---- */
+  var faqItems = document.querySelectorAll('.faq-item');
+  
+  faqItems.forEach(function(item) {
+    item.querySelector('.faq-q').addEventListener('click', function() {
+      // Toggle logic
+      var isActive = item.classList.contains('active');
+      
+      // Optional: Close others (remove next 2 lines if you want multiple open)
+      // faqItems.forEach(function(i) { i.classList.remove('active'); });
+      
+      if (!isActive) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
     });
   });
 
