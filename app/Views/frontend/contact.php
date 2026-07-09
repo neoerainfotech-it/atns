@@ -59,85 +59,130 @@ $transparentHeader = true
                     <p><?php echo $wconfig['config_email']; ?></p>
                 </div>
             </div> 
-            <div class="col-md-6">
-                <form id="enquiry_form">
-                    <div class="form-floating">
-                      <input type="text" class="form-control txtOnly required" id="floatingInput" placeholder="Name" name="name">
-                      <label for="floatingInput">Name *</label>
-                    </div>
-                    <div class="form-floating">
-                      <input type="email" class="form-control required "  id="floatingemail" placeholder="Email" name="email">
-                      <label for="floatingemail">Work Email *</label>
-                    </div>
-                    <div class="form-floating">
-                      <input type="text" class="form-control inumber required isnumber" maxlength="11" id="floatingmobile" placeholder="Mobile" name="phone">
-                      <label for="floatingmobile">Mobile *</label>
-                    </div>
+            <style>
+.grecaptcha-badge { visibility: hidden !important; }
+</style>
 
+<div class="col-md-6">
+    <form id="enquiry_form" action="" method="POST">
+        <div class="form-floating">
+          <input type="text" class="form-control txtOnly required" id="floatingInput" placeholder="Name" name="name">
+          <label for="floatingInput">Name *</label>
+        </div>
+        <div class="form-floating">
+          <input type="email" class="form-control required" id="floatingemail" placeholder="Email" name="email">
+          <label for="floatingemail">Work Email *</label>
+        </div>
+        <div class="form-floating">
+          <input type="text" class="form-control inumber required isnumber" maxlength="11" id="floatingmobile" placeholder="Mobile" name="phone">
+          <label for="floatingmobile">Mobile *</label>
+        </div>
 
-                    <div class="form-floating">
-                      <input type="radio" class="option" name="option" value="1"> Service
-                      <!-- <label for="floatingmobile">Service *</label> -->
+        <div class="form-floating">
+          <input type="radio" class="option" name="option" value="1"> Service
+          <input type="radio" class="option" name="option" value="2"> Product
+        </div>
 
-                      <input type="radio" class="option" name="option" value="2"> Product
-                      <!-- <label for="floatingmobile">Product *</label> -->
-                    </div>
+        <div class="form-floating" id="service1" style="display:none;">
+          <select class="form-select" name="service" aria-label="Floating label select example">
+            <option value="">Service You are Looking for</option>
+            <?php if (!empty($serviceList)){foreach ($serviceList as $key => $value) {?>
+                <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
+            <?php } } ?>
+          </select>
+          <label for="floatingSelect">Select Service</label>
+        </div>
 
+        <div class="form-floating" id="product" style="display:none;">
+          <select class="form-select" name="product" id="floatingSelect" aria-label="Floating label select example">
+            <option value="">Product You are Looking for</option>
+            <?php if (!empty($categoryList)){foreach ($categoryList as $key => $value) { if(!empty($value['list'])){ foreach ($value['list'] as $key => $row) {?>
+                <option value="<?php echo $row->id; ?>"><?php echo $value['name'] .' -> '. $row->name; ?></option>
+            <?php } } } } ?>
+          </select>
+          <label for="floatingSelect">Select Product</label>
+        </div>
+        
+        <div class="form-floating">
+          <select class="form-select required" name="country" id="floatingSelect" aria-label="Floating label select example">
+            <option selected disabled value="">Select</option>
+            <?php if (!empty($countryList)){foreach ($countryList as $key => $value) {?>
+                <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
+            <?php } } ?>
+          </select>
+          <label for="floatingSelect">Country *</label>
+        </div>
+        <div class="form-floating">
+          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" name="message" style="height: 100px"></textarea>
+          <label for="floatingTextarea">Message</label>
+        </div>
 
+        <button type="submit" class="btn btn-theme btn-icon border-0" id="btn_enq">
+            Submit 
+            <svg width="18" height="12" viewBox="0 0 25 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24.581 6.827a.75.75 0 0 0 0-1.06L19.808.994a.75.75 0 0 0-1.06 1.06l4.242 4.243-4.242 4.243a.75.75 0 0 0 1.06 1.06zM.21 7.047h23.841v-1.5H.21z" fill="#fff"></path>
+            </svg>
+        </button>
 
-                    <div class="form-floating" id="service1" style="display:none;">
-                      <select class="form-select" name="service" aria-label="Floating label select example">
-                        <option value="">Service You are Looking for</option>
-                        <?php if (!empty($serviceList)){foreach ($serviceList as $key => $value) {?>
-                      
-                        <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
+        <div style="margin-top: 12px; font-size: 0.72rem; color: #64748b; line-height: 1.4; text-align: left;">
+            This site is protected by reCAPTCHA and the Google 
+            <a href="https://policies.google.com/privacy" target="_blank" style="color: #2b6df6; text-decoration: none;">Privacy Policy</a> and 
+            <a href="https://policies.google.com/terms" target="_blank" style="color: #2b6df6; text-decoration: none;">Terms of Service</a> apply.
+        </div>
+    </form>
+</div> 
 
-                    <?php } } ?>
-                      
-                      </select>
-                      <label for="floatingSelect">Select Service</label>
-                    </div>
+<script src="https://www.google.com/recaptcha/api.js?render=6Ld7DEMtAAAAALvAMGN3banyiNeleFPIoDdtxgUx"></script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var enquiryForm = document.getElementById('enquiry_form');
+    var isFormSubmitting = false; // Double submission guard flag
 
+    if (enquiryForm) {
+        enquiryForm.addEventListener('submit', function (e) {
+            // Stop the form immediately to fetch the background security token safely first
+            e.preventDefault();
 
-                  <div class="form-floating"  id="product" style="display:none;">
-                      <select class="form-select" name="product" id="floatingSelect" aria-label="Floating label select example">
-                        <option value="">Product You are Looking for</option>
-                        <?php if (!empty($categoryList)){foreach ($categoryList as $key => $value) {  if(!empty($value['list'])){  foreach ($value['list'] as $key => $row) {?>
-                       
-                        <option value="<?php echo $row->id; ?>"><?php echo $value['name'] .' -> '. $row->name; ?></option>
+            // Prevent multiple clicks if user clicked twice quickly
+            if (isFormSubmitting) {
+                return false;
+            }
+            
+            var formNode = this;
+            var submitBtn = document.getElementById('btn_enq');
+            
+            // Activate the lock flag and visually update the interface button
+            isFormSubmitting = true;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = "0.7";
+                submitBtn.innerHTML = 'Processing Securing Link...';
+            }
 
-                    <?php } } } } ?>
-                      
-                      </select>
-                      <label for="floatingSelect">Select Product</label>
-                    </div>
+            grecaptcha.ready(function () {
+                grecaptcha.execute('6Ld7DEMtAAAAALvAMGN3banyiNeleFPIoDdtxgUx', { action: 'submit' })
+                .then(function (token) {
+                    // Strip out any previously generated reCAPTCHA input nodes if present
+                    var oldToken = formNode.querySelector('input[name="g-recaptcha-response"]');
+                    if (oldToken) { oldToken.remove(); }
 
-                    
-                    <!--<div class="form-floating">-->
-                    <!--  <input type="text" class="form-control required" name="job" id="floatingjob" placeholder="job">-->
-                    <!--  <label for="floatingjob">Job Title *</label>-->
-                    <!--</div>-->
-                    
-                    <div class="form-floating">
-                      <select class="form-select required" name="country" id="floatingSelect" aria-label="Floating label select example">
-                        <option selected>Select</option>
-                     <?php if (!empty($countryList)){foreach ($countryList as $key => $value) {?>
-                      
-                        <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option>
+                    // Inject the secure token value entry dynamically as a hidden input column
+                    var tokenInput = document.createElement('input');
+                    tokenInput.type = 'hidden';
+                    tokenInput.name = 'g-recaptcha-response';
+                    tokenInput.value = token;
+                    formNode.appendChild(tokenInput);
 
-                    <?php } } ?>
-                      </select>
-                      <label for="floatingSelect">Country *</label>
-                    </div>
-                    <div class="form-floating">
-                      <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" name="message" style="height: 100px"></textarea>
-                      <label for="floatingTextarea">Message</label>
-                    </div>
-                    <button class="btn btn-theme btn-icon border-0" id="btn_enq">Submit <svg width="18" height="12" viewBox="0 0 25 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M24.581 6.827a.75.75 0 0 0 0-1.06L19.808.994a.75.75 0 0 0-1.06 1.06l4.242 4.243-4.242 4.243a.75.75 0 0 0 1.06 1.06zM.21 7.047h23.841v-1.5H.21z" fill="#fff"></path></svg></button>
-                </form>
-            </div> 
+                    // Note: If you use a custom jQuery AJAX handler elsewhere for this form, 
+                    // remove "formNode.submit();" and replace it with your AJAX submit logic trigger here.
+                    formNode.submit();
+                });
+            });
+        });
+    }
+});
+</script>
         </div> 
     </div>
     
