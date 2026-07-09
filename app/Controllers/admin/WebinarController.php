@@ -7,140 +7,163 @@ use App\Controllers\BaseController;
 class WebinarController extends BaseController
 {
     /**
-     * 1. View all Customer Webinar Registration Enquiries (Leads List)
+     * STEP 1: View All Created Webinar Events (Main Landing Dashboard Panel)
+     * Displays a clean summary row listing of events with total lead counts.
      */
-    public function registrations()
+    public function events()
     {
         $db = \Config\Database::connect();
-        $builder = $db->table('cyb_webinar_registration'); 
+        
+        // Fetch only records from blogs table that are classified as webinar events
+        $events = $db->table('cyb_blogs')
+                     ->where('type', 'webinar')
+                     ->orderBy('id', 'DESC')
+                     ->get()
+                     ->getResult();
 
-        // Search by attendee Name instead of webinar title
+        // Count how many total registrations exist for each event dynamically
+        foreach ($events as $event) {
+            $event->total_leads = $db->table('cyb_webinar_registration')
+                                     ->where('event_id', $event->id)
+                                     ->countAllResults();
+        }
+
+        $data = [
+            'page_title' => 'Webinar Management Dashboard',
+            'events'     => $events
+        ];
+
+        return view('admin/module/webinar_events_list', $data);
+    }
+
+    /**
+     * STEP 2: View Registration Leads for ONE Specific Event Only (Drilled down list)
+     * Triggered natively when clicking "View Registrations" on an event row.
+     */
+    public function registrations($eventId = null)
+    {
+        if (empty($eventId)) {
+            return redirect()->to(base_url('admin/webinar-events'))->with('error', 'Please select a valid event context.');
+        }
+
+        $db = \Config\Database::connect();
+        
+        // Fetch the event details to display its title dynamically in the layout header
+        $eventInfo = $db->table('cyb_blogs')->where('id', $eventId)->get()->getRow();
+        if (!$eventInfo) {
+            return redirect()->to(base_url('admin/webinar-events'))->with('error', 'Target event execution context not found.');
+        }
+
+        $builder = $db->table('cyb_webinar_registration')->where('event_id', $eventId); 
+
+        // Handle optional attendee search name query inside this isolated event page layout
         $searchName = $this->request->getGet('name');
         if (!empty($searchName)) {
             $builder->like('name', $searchName);
         }
 
+        // Framework Manual Pagination Configuration Engine
         $perPage = 10; 
         $page = $this->request->getGet('page') ? (int)$this->request->getGet('page') : 1;
-        
         $totalBuilder = clone $builder;
         $total = $totalBuilder->countAllResults(false);
-
         $offset = ($page - 1) * $perPage;
         
-        // Order by latest lead registration first
         $detail = $builder->limit($perPage, $offset)->orderBy('id', 'DESC')->get()->getResult();
-
         $pager = \Config\Services::pager();
 
         $data = [
-            'page_title' => 'Webinar Enquiries',
-            'detail'     => $detail,
-            'pager'      => $pager,
-            'page'       => $page,
-            'perPage'    => $perPage,
-            'total'      => $total,
-            'offset'     => $offset,
-            'pages'      => ceil($total / $perPage)
+            'page_title'  => 'Leads for: ' . $eventInfo->title,
+            'event_id'    => $eventId,
+            'detail'      => $detail,
+            'pager'       => $pager,
+            'page'        => $page,
+            'perPage'     => $perPage,
+            'total'       => $total,
+            'offset'      => $offset,
+            'pages'       => ceil($total / $perPage)
         ];
 
         return view('admin/module/webinar_registrations', $data);
     }
 
     /**
-     * ADDED: 2. Processes Selected Checked Rows and Streams an Excel-Compatible CSV Document
-     * This downloads the file instantly and keeps you on the same admin list page.
+     * STEP 3: Export Function Isolated and Grouped Safely by Event Context 
      */
     public function export()
     {
         $db = \Config\Database::connect();
         $builder = $db->table('cyb_webinar_registration');
 
-        // Collect form data selection checked item indices array
-        $selectedIds = $this->request->getPost('selected');
-
-        if (empty($selectedIds)) {
-            // If no checkboxes are marked, automatically pull all records
-            $records = $builder->orderBy('id', 'DESC')->get()->getResult();
-        } else {
-            // Extract elements matching only the selected checkboxes
-            $records = $builder->whereIn('id', $selectedIds)->orderBy('id', 'DESC')->get()->getResult();
+        // Filter output context based on current event page
+        $eventId = $this->request->getPost('event_id');
+        if (!empty($eventId)) {
+            $builder->where('event_id', $eventId);
         }
 
+        // Apply filters if checkboxes are checked
+        $selectedIds = $this->request->getPost('selected');
+        if (!empty($selectedIds)) {
+            $builder->whereIn('id', $selectedIds);
+        }
+
+        $records = $builder->orderBy('id', 'DESC')->get()->getResult();
         if (empty($records)) {
             return redirect()->back()->with('error', 'No registration entries available for export.');
         }
 
-        $fileName = "Webinar_Registrations_" . date('Ymd_His') . ".csv";
+        $fileName = "Webinar_Leads_Export_" . date('Ymd_His') . ".csv";
 
-        // Configure direct file system response download streams headers
+        // Stream binary download headers out to user browser natively
         header("Content-Type: text/csv; charset=utf-8");
         header("Content-Disposition: attachment; filename=\"$fileName\"");
         header("Expires: 0");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Pragma: public");
-
-        // Open direct output buffer stream
+        
         $output = fopen("php://output", "w");
+        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF)); // Excel UTF-8 BOM Lang Fix
 
-        // Add UTF-8 BOM so Excel opens local languages and special text characters correctly
-        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+        // Output column row array mapping
+        fputcsv($output, ['ID', 'Event Title', 'Attendee Name', 'Email', 'Phone', 'Company', 'Designation', 'ERP System', 'Registration Date']);
 
-        // Define spreadsheet header columns rows mapping
-        fputcsv($output, [
-            'ID', 
-            'Attendee Name', 
-            'Email Address', 
-            'Phone Number', 
-            'Company Name', 
-            'Job Title', 
-            'ERP System', 
-            'Expectations', 
-            'Registration Date'
-        ]);
-
-        // Loop over database rows and write directly into the CSV download stream
         foreach ($records as $row) {
             fputcsv($output, [
                 $row->id,
+                $row->event_title ?? 'Unified Webinar',
                 $row->name,
                 $row->email,
                 $row->phone ?? '',
                 $row->company_name ?? '',
                 $row->title ?? '',
                 $row->erp_system ?? '',
-                strip_tags($row->expectation ?? ''),
                 $row->create_date ?? ''
             ]);
         }
 
         fclose($output);
-        exit; // Halts standard rendering engine to push raw document streams safely
+        exit; // Safe termination block
     }
 
     /**
-     * 3. Edit Webinar Event Page Content & Form Configurations (CMS Tab Editor)
+     * 4. Edit Webinar Event Page Content & Form Configurations (CMS Tab Editor)
      */
     public function edit_webinar($id)
     {
         $db = \Config\Database::connect();
         
-        // FIXED: Querying 'cyb_blogs' table to extract the Webinar Event configuration setup
         $webinar = $db->table('cyb_blogs')->where('id', $id)->get()->getRow();
 
         if (!$webinar) {
             return redirect()->to(base_url('admin/blogs'))->with('error', 'Webinar Event item not found!');
         }
 
-        // Fetch support lists to cleanly populate dashboard dropdowns
-        $blogCategoryList = $db->table('cyb_about_heading')->get()->getResult(); // Example list source placeholder
+        $blogCategoryList = $db->table('cyb_about_heading')->get()->getResult(); 
 
-        // Compile and map all row values directly into the view array
         $data = [
             'page_title'       => 'Edit Webinar Page: ' . ($webinar->title ?? 'Event'),
             'form_action'      => base_url('admin/update_webinar/' . $id),
             
-            // Tab 1 & 2: General CMS Page Data Mapping
             'title'            => $webinar->title ?? '',
             'shortDescription' => $webinar->shortDescription ?? '',
             'description'      => $webinar->description ?? '',
@@ -162,7 +185,6 @@ class WebinarController extends BaseController
             'slug'             => $webinar->slug ?? '',
             'status'           => $webinar->status ?? 1,
             
-            // Tab 3: Customer Success Variable Maps
             'product'          => $webinar->product ?? '',
             'service'          => $webinar->service ?? '',
             'industry'         => $webinar->industry ?? '',
@@ -170,9 +192,6 @@ class WebinarController extends BaseController
             'solution'         => $webinar->solution ?? '',
             'benefit'          => $webinar->benefit ?? '',
 
-            // ==========================================================================
-            // TAB 4: NEW DYNAMIC REGISTRATION FORM CONFIGURATION FIELDS MAPPING
-            // ==========================================================================
             'field_name_placeholder'     => $webinar->field_name_placeholder ?? 'First and last name',
             'field_name_required'        => $webinar->field_name_required ?? 1,
             
@@ -193,7 +212,6 @@ class WebinarController extends BaseController
             
             'field_erp_options'          => $webinar->field_erp_options ?? "Microsoft Dynamics 365\nSAP\nOracle\nTally\nQuickBooks\nExcel / Manual Spreadsheets",
 
-            // View Control List Arrays
             'blogCategoryList' => $blogCategoryList, 
             'typeList'         => ['webinar' => 'Webinar Event', 'blog' => 'Standard Blog Post'],
             'productList'      => [],
@@ -205,7 +223,7 @@ class WebinarController extends BaseController
     }
 
     /**
-     * 4. Handle the Save/POST request to update the record in the database
+     * 5. Handle the Save/POST request to update the record in the database
      */
     public function update_webinar($id)
     {
@@ -233,12 +251,10 @@ class WebinarController extends BaseController
             'solution'          => $this->request->getPost('solution'),
             'benefit'           => $this->request->getPost('benefit'),
 
-            // Checkboxes fallback maps
             'feature'           => $this->request->getPost('feature') ?? 0,
             'upcoming'          => $this->request->getPost('upcoming') ?? 0,
             'status'            => $this->request->getPost('status') ?? 0,
 
-            // --- Save Tab 4 form values ---
             'field_name_placeholder'     => $this->request->getPost('field_name_placeholder'),
             'field_name_required'        => $this->request->getPost('field_name_required') ?? 0,
             'field_company_placeholder'  => $this->request->getPost('field_company_placeholder'),
@@ -254,7 +270,6 @@ class WebinarController extends BaseController
             'field_erp_options'          => $this->request->getPost('field_erp_options'),
         ];
 
-        // Process file attachments updates
         $files = ['image', 'thumbnail', 'whitepaper_download'];
         foreach ($files as $f) {
             $fileObj = $this->request->getFile($f);
