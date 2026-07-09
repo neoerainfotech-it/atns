@@ -1641,41 +1641,36 @@ html.lenis, html.lenis body { height: auto; }
           </div>
           
           <!-- Checklist Matrix Grid Layer -->
-          <div class="overview-checklist__grid">
-            
-            <div class="overview-checklist__item">
-              <i class="fas fa-check-circle overview-checklist__icon"></i>
-              <div class="overview-checklist__body">
-                <h4 class="overview-checklist__label">Financial Consolidation</h4>
-                <p class="overview-checklist__text">Consolidate core multi-tier corporate financials across structural hierarchies securely.</p>
-              </div>
-            </div>
-
-            <div class="overview-checklist__item">
-              <i class="fas fa-check-circle overview-checklist__icon"></i>
-              <div class="overview-checklist__body">
-                <h4 class="overview-checklist__label">Intelligent Reporting</h4>
-                <p class="overview-checklist__text">Power BI integrated pipelines track drill-downs and real-time operational views.</p>
-              </div>
-            </div>
-
-            <div class="overview-checklist__item">
-              <i class="fas fa-check-circle overview-checklist__icon"></i>
-              <div class="overview-checklist__body">
-                <h4 class="overview-checklist__label">Currency Translation</h4>
-                <p class="overview-checklist__text">Global-ready multi-currency translation matrix balancing real-time foreign market exchange rates.</p>
-              </div>
-            </div>
-
-            <div class="overview-checklist__item">
-              <i class="fas fa-check-circle overview-checklist__icon"></i>
-              <div class="overview-checklist__body">
-                <h4 class="overview-checklist__label">Eliminations Engine</h4>
-                <p class="overview-checklist__text">Automated matching systems eliminate cross-company entries safely without manual gaps.</p>
-              </div>
-            </div>
-
-          </div><!-- /overview-checklist__grid -->
+          <!-- Checklist Matrix Grid Layer -->
+<div class="overview-checklist__grid">
+  <?php if (!empty($overviewMatrixList)): ?>
+    <?php foreach ($overviewMatrixList as $key => $matrixItem): ?>
+      <div class="overview-checklist__item" data-reveal data-delay="<?php echo min(($key + 1), 6); ?>">
+        <i class="fas fa-check-circle overview-checklist__icon"></i>
+        <div class="overview-checklist__body">
+          <h4 class="overview-checklist__label"><?php echo esc($matrixItem->label); ?></h4>
+          <p class="overview-checklist__text"><?php echo esc($matrixItem->text); ?></p>
+        </div>
+      </div>
+    <?php endforeach; ?>
+  <?php else: ?>
+    <!-- Production Fallback Templates if no custom cards are saved in Admin -->
+    <div class="overview-checklist__item">
+      <i class="fas fa-check-circle overview-checklist__icon"></i>
+      <div class="overview-checklist__body">
+        <h4 class="overview-checklist__label">Financial Consolidation</h4>
+        <p class="overview-checklist__text">Consolidate core multi-tier corporate financials across structural hierarchies securely.</p>
+      </div>
+    </div>
+    <div class="overview-checklist__item">
+      <i class="fas fa-check-circle overview-checklist__icon"></i>
+      <div class="overview-checklist__body">
+        <h4 class="overview-checklist__label">Intelligent Reporting</h4>
+        <p class="overview-checklist__text">Power BI integrated pipelines track drill-downs and real-time operational views.</p>
+      </div>
+    </div>
+  <?php endif; ?>
+</div><!-- /overview-checklist__grid -->
         </div>
       </div>
 
