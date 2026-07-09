@@ -267,6 +267,7 @@ class Product extends BaseController
         $data['categoryList'] = $categogryModel->asObject()->where('parent',0)->findAll();
 
         $model = new ProductModel();
+        $db = \Config\Database::connect(); // Initialize Core Database Connection Builder
 
         $IndustryModel = new IndustryModel(); 
         $data['inudstryList'] = $IndustryModel->asObject()->select('id,name')->where('status',1)->findAll(); 
@@ -298,11 +299,45 @@ class Product extends BaseController
             $data['industryTitle'] = $row->industryTitle; 
             $data['industryDescription'] = $row->industryDescription; 
             
+            // ========================================================
+            // FETCH RECOVERY ENGINE: Load Product Overview Context Fields
+            // ========================================================
+            $data['overviewEyebrow'] = isset($row->overviewEyebrow) ? $row->overviewEyebrow : '';
+            $data['overviewTitle']   = isset($row->overviewTitle) ? $row->overviewTitle : '';
+            
             $data['industries'] = json_decode($row->industries); 
 
-            $data['featureList'] = $this->AdminModel->all_fetch('product_feature',array('product_id'=>$row->id)); 
-            $data['capabilitiesList'] = $this->AdminModel->all_fetch('product_capabilities',array('product_id'=>$row->id)); 
-            $data['imagesList'] = $this->AdminModel->all_fetch('product_images',array('product_id'=>$row->id)); 
+            $data['featureList'] = $this->AdminModel->all_fetch('cyb_product_feature',array('product_id'=>$row->id)); 
+            $data['capabilitiesList'] = $this->AdminModel->all_fetch('cyb_product_capabilities',array('product_id'=>$row->id)); 
+            $data['imagesList'] = $this->AdminModel->all_fetch('cyb_product_images',array('product_id'=>$row->id)); 
+
+            // FETCH OVERVIEW REPEATER MATRIX: Load current point list rows securely
+            $data['overviewMatrixList'] = $db->table('cyb_product_overview_matrix')
+                                             ->where('product_id', $row->id)
+                                             ->orderBy('sort_order', 'ASC')
+                                             ->get()
+                                             ->getResult();
+
+            // FETCH EXSTING TESTIMONIALS: Load from table during edit execution cycles
+            $data['testimonialsList'] = $db->table('cyb_testimonials')
+                                           ->where('product_id', $row->id)
+                                           ->orderBy('sort_order', 'ASC')
+                                           ->get()
+                                           ->getResult();
+            
+            $data['partnershipSubheading']  = isset($row->partnershipSubheading) ? $row->partnershipSubheading : 'Strategic Value';
+            $data['partnershipTitle']       = isset($row->partnershipTitle) ? $row->partnershipTitle : 'Why Our Partnerships Matter';
+            $data['partnershipDescription'] = isset($row->partnershipDescription) ? $row->partnershipDescription : '';
+
+            // ========================================================================
+// FIXED RELATIONAL RETRIEVAL: TARGETS THE SANITIZED PARAMETER ID DIRECTLY
+// ========================================================================
+$data['partnershipCardsList'] = $db->table('cyb_product_partnership_cards')
+                                   ->where('product_id', $id) // Changed from $row->id to $id
+                                   ->orderBy('sort_order', 'ASC')
+                                   ->get()
+                                   ->getResult();
+// ========================================================================
         }else{
             $data['page_title'] = ' Add Product';
             $data['form_action'] ='admin/add_product';
@@ -328,13 +363,23 @@ class Product extends BaseController
             $data['industryTitle'] ='';
             $data['industryDescription'] = '';
 
+            // INITIAL BLANK ARRAYS DEFAULT CONFIGURATION
+            $data['overviewEyebrow'] = 'Understanding Platform Context';
+            $data['overviewTitle']   = 'Product Overview';
+
             $data['featureList'] = array();
             $data['capabilitiesList'] = array();
             $data['imagesList'] = array();
             $data['industries'] = array();
+            $data['testimonialsList'] = array(); 
+            $data['overviewMatrixList'] = array();
+            
+            $data['partnershipSubheading']  = 'Strategic Value';
+            $data['partnershipTitle']       = 'Why Our Partnerships Matter';
+            $data['partnershipDescription'] = '';
+            $data['partnershipCardsList']   = array();
         }
 
-        // FIXED: Switched to is('post') stream interception tool layer
         if ($this->request->is('post')) {
             $rules = [
                 'name' =>'required'
@@ -360,7 +405,23 @@ class Product extends BaseController
                 $save['info']['industryTitle'] = $this->request->getVar('industryTitle');
                 $save['info']['industryDescription'] = $this->request->getVar('industryDescription');
 
+                $save['info']['overviewEyebrow'] = $this->request->getVar('overviewEyebrow');
+                $save['info']['overviewTitle']   = $this->request->getVar('overviewTitle');
+
                 $save['info']['industries'] = json_encode($this->request->getVar('industries'));
+                
+                $save['info']['partnershipSubheading']  = $this->request->getPost('partnershipSubheading');
+                $save['info']['partnershipTitle']       = $this->request->getPost('partnershipTitle');
+                $save['info']['partnershipDescription'] = $this->request->getPost('partnershipDescription');
+
+                // ========================================================================
+                // FIXED EXTRACTION SYSTEM: MATCHED EXACTLY TO VIEW SELECT ELEMENTS NAME 'partnerCardIcon'
+                // ========================================================================
+                $save['partnerCardTitle']     = $this->request->getPost('partnerCardTitle');
+$save['partnerCardDesc']      = $this->request->getPost('partnerCardDesc');
+$save['partnerCardIcon']      = $this->request->getPost('partnerCardIcon'); // Synced completely
+$save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
+                // ========================================================================
 
                 if (!empty($this->request->getVar('slug'))) {
                    $save['info']['slug'] = sfu($this->request->getVar('slug'));
@@ -394,7 +455,6 @@ class Product extends BaseController
                     }
                 }
 
-                // Parse and save Hero Banner gracefully
                 if(!empty($_FILES['hero_banner']['name'])){
                     $file = $this->request->getFile('hero_banner');
                     if($file && $file->isValid() && !$file->hasMoved()){
@@ -405,15 +465,11 @@ class Product extends BaseController
                     } else {
                         $uploadError = $file ? $file->getErrorString() : 'File system stream rejected';
                         $this->session->setFlashdata('error', 'Hero Banner Error: ' . $uploadError);
-                        if ($id) {
-                            return redirect()->to('admin/add_product/'.$id);
-                        } else {
-                            return redirect()->to('admin/add_product');
-                        }
+                        return redirect()->to($id ? 'admin/add_product/'.$id : 'admin/add_product');
                     }
                 }
 
-                // feature
+                // features / use cases upload mapping logic
                 $uploadImgData = array();
                 if ($this->request->getFileMultiple('featureImages')) {
                     foreach($this->request->getFileMultiple('featureImages') as $key => $file)
@@ -434,12 +490,12 @@ class Product extends BaseController
                 $save['featureSortOrder'] = $this->request->getVar('featureSortOrder'); 
                 $save['featureYoutube'] = $this->request->getVar('featureYoutube');
 
-                // capabilities   
+                // capabilities / key features array pipeline
                 $save['capabilitiesTitle'] = $this->request->getVar('capabilitiesTitle'); 
                 $save['capabilitiesDescription'] = $this->request->getVar('capabilitiesDescription'); 
                 $save['capabilitiesSortOrder'] = $this->request->getVar('capabilitiesSortOrder'); 
 
-                // gallery
+                // gallery additional images uploads
                 $uploadimagesData = array();
                 if ($this->request->getFileMultiple('images')) {
                     foreach($this->request->getFileMultiple('images') as $key => $file)
@@ -457,26 +513,108 @@ class Product extends BaseController
                 $save['old_image'] = $this->request->getVar('old_image');
                 $save['imageSortOrder'] = $this->request->getVar('imageSortOrder'); 
 
+                // Execute core product table transactional storage via product Model logic
                 if ($id) {
                     $save['id'] = $id;
                     $result = $model->save_product($save);
-                    if ($result) {
-                        $this->session->setFlashdata('success','Record Update successfully');
-                        return redirect()->to('admin/add_product/'.$id);
-                    }else{
-                        $this->session->setFlashdata('error','Error in Update ');
-                        return redirect()->to('admin/add_product/'.$id);
-                    }
-                }else{
+                } else {
                     $save['id'] = '';
                     $result = $model->save_product($save);
                     if ($result) {
-                        $this->session->setFlashdata('success','Record Insert successfully');
-                        return redirect()->to('admin/products');
-                    }else{
-                        $this->session->setFlashdata('success','Record not inserted');
-                        return redirect()->to('admin/add_product');
+                        $id = $result; 
                     }
+                }
+
+                if ($result) {
+                    // ========================================================
+                    // REPEATER PROCESSING PIPELINE: Save Overview Matrix List
+                    // ========================================================
+                    $db->table('cyb_product_overview_matrix')->where('product_id', $id)->delete();
+                    $mLabels      = $this->request->getPost('overviewMatrixLabel');
+                    $mTexts       = $this->request->getPost('overviewMatrixText');
+                    $mSortOrders  = $this->request->getPost('overviewMatrixSortOrder');
+
+                    if (!empty($mLabels)) {
+                        foreach ($mLabels as $idx => $mLabel) {
+                            if (empty(trim($mLabel))) continue;
+                            $db->table('cyb_product_overview_matrix')->insert([
+                                'product_id' => $id,
+                                'label'      => esc($mLabel),
+                                'text'       => esc($mTexts[$idx]),
+                                'sort_order' => isset($mSortOrders[$idx]) ? (int)$mSortOrders[$idx] : 0
+                            ]);
+                        }
+                    }
+
+                    // ========================================================================
+                    // FIXED ADMIN LAYER: Removed double 'cyb_' prefix handling
+                    // ========================================================================
+                    $db->table('product_partnership_cards')->where('product_id', $id)->delete(); // <-- REMOVED "cyb_"
+
+                    $pCardTitles     = $this->request->getPost('partnerCardTitle');
+                    $pCardDescs      = $this->request->getPost('partnerCardDesc');
+                    $pCardIcons      = $this->request->getPost('partnerCardIcon');
+                    $pCardSortOrders = $this->request->getPost('partnerCardSortOrder');
+
+                    if (!empty($pCardTitles)) {
+                        foreach ($pCardTitles as $idx => $pCardTitle) {
+                            if (empty(trim($pCardTitle))) continue;
+                            
+                            $db->table('product_partnership_cards')->insert([ // <-- REMOVED "cyb_"
+                                'product_id'  => $id,
+                                'title'       => esc($pCardTitle),
+                                'description' => isset($pCardDescs[$idx]) ? esc($pCardDescs[$idx]) : '',
+                                'icon_class'  => !empty($pCardIcons[$idx]) ? $pCardIcons[$idx] : 'fas fa-handshake',
+                                'sort_order'  => isset($pCardSortOrders[$idx]) ? (int)$pCardSortOrders[$idx] : 0
+                            ]);
+                        }
+                    }
+                    // ========================================================
+
+                    // ========================================================
+                    // REPEATER PROCESSING PIPELINE: Save Client Testimonials
+                    // ========================================================
+                    $db->table('cyb_testimonials')->where('product_id', $id)->delete();
+
+                    $tNames        = $this->request->getPost('testimonialName');
+                    $tDesignations = $this->request->getPost('testimonialDesignation');
+                    $tDescriptions = $this->request->getPost('testimonialDescription');
+                    $tSortOrders   = $this->request->getPost('testimonialSortOrder');
+                    $tOldImages    = $this->request->getPost('testimonial_old_image');
+                    $tFiles        = $this->request->getFiles();
+
+                    if (!empty($tNames)) {
+                        foreach ($tNames as $idx => $tName) {
+                            if (empty(trim($tName))) continue;
+
+                            $finalImagePath = isset($tOldImages[$idx]) ? $tOldImages[$idx] : '';
+                            
+                            if (isset($tFiles['testimonialImages'][$idx])) {
+                                $tFile = $tFiles['testimonialImages'][$idx];
+                                if ($tFile->isValid() && !$tFile->hasMoved()) {
+                                    $tNewName = $tFile->getRandomName();
+                                    $tFile->move('uploads/testimonials/', $tNewName);
+                                    $finalImagePath = 'uploads/testimonials/' . $tNewName;
+                                }
+                            }
+
+                            $db->table('cyb_testimonials')->insert([
+                                'product_id'  => $id,
+                                'name'        => esc($tName),
+                                'designation' => esc($tDesignations[$idx]),
+                                'description' => esc($tDescriptions[$idx]),
+                                'image'       => $finalImagePath,
+                                'sort_order'  => isset($tSortOrders[$idx]) ? (int)$tSortOrders[$idx] : 0,
+                                'create_date' => date('Y-m-d H:i:s')
+                            ]);
+                        }
+                    }
+
+                    $this->session->setFlashdata('success', 'Record saved successfully');
+                    return redirect()->to('admin/add_product/' . $id);
+                } else {
+                    $this->session->setFlashdata('error', 'Error inside transaction handling sequence');
+                    return redirect()->to($id ? 'admin/add_product/'.$id : 'admin/add_product');
                 }
             }
         }
@@ -489,11 +627,15 @@ class Product extends BaseController
             $id = $this->request->getVar('selected');
           
             if ($id) {
+                $db = \Config\Database::connect();
                 foreach ($id as $key => $value) {
                     $model->delete(array('id'=>$value));
                     $this->AdminModel->deleteData('product_feature',array('product_id'=>$value));
                     $this->AdminModel->deleteData('product_capabilities',array('product_id'=>$value));
                     $this->AdminModel->deleteData('product_images',array('product_id'=>$value));
+                    
+                    // CASCADE DELETION LAYER: Drops matching rows instantly
+                    $db->table('cyb_testimonials')->where('product_id', $value)->delete();
                 }     
                 $this->session->setFlashdata('success','Record Delete successfully'); 
             }else{
