@@ -1679,6 +1679,23 @@ html.lenis, html.lenis body { height: auto; }
 </section>
 
 <!-- ================================================================
+     NEW SECTION: AZURE MARKETPLACE SOLUTIONS HUB MATRIX
+     ================================================================ -->
+<?php if (!empty($detail->marketplace_payload)): ?>
+  <section class="marketplace-injected-wrapper py-4 clearfix">
+    <div class="container">
+      <div class="row">
+        <div class="col-12" data-reveal>
+          <!-- Renders the full CKEditor rich-text responsive container payload safely -->
+          <?php echo $detail->marketplace_payload; ?>
+        </div>
+      </div>
+    </div>
+  </section>
+<?php endif; ?>
+<!-- ================================================================ --></div>
+
+<!-- ================================================================
      WHY SECTION — INTERACTIVE STICKY LATERAL ESCAPE ENGINE (DYNAMIC)
 ================================================================ -->
 <?php 
@@ -2066,16 +2083,17 @@ html.lenis, html.lenis body { height: auto; }
 <section class="bottom-section" id="contact">
   <div class="container">
     <div class="row g-4 align-items-stretch">
-      <div class="col-lg-5" data-reveal>
-        <div class="cta-block">
+      
+      <div class="<?php echo !empty($testimonialsList) ? 'col-lg-5 col-12' : 'col-12'; ?>" data-reveal>
+        <div class="cta-block" style="<?php echo !empty($testimonialsList) ? '' : 'clip-path: none; border-radius: 12px; padding: 80px 60px; text-align: center; align-items: center;'; ?>">
           <div class="cta-block__glow"></div>
           <div class="cta-block__glow2"></div>
           <div class="cta-block__hatch"></div>
           <h2 class="cta-block__title">Let's Build the Future Together</h2>
-          <p class="cta-block__body">
+          <p class="cta-block__body" style="<?php echo !empty($testimonialsList) ? '' : 'max-width: 700px; margin-left: auto; margin-right: auto;'; ?>">
             Partner with us to unlock the full potential of your business software ecosystem. Our experts are ready to optimize your setup from day one.
           </p>
-          <div class="cta-block__actions">
+          <div class="cta-block__actions" style="<?php echo !empty($testimonialsList) ? '' : 'justify-content: center;'; ?>">
             <a href="#" class="btn-primary">
               <i class="fas fa-calendar-alt"></i> Request Consultation
             </a>
@@ -2086,12 +2104,12 @@ html.lenis, html.lenis body { height: auto; }
         </div>
       </div>
 
-      <div class="col-lg-7" data-reveal data-delay="2">
-        <div class="testi-block">
-          <div class="testi-block__label">Client Testimonials</div>
-          <div class="swiper testi-swiper">
-            <div class="swiper-wrapper">
-              <?php if (!empty($testimonialsList)): ?>
+      <?php if (!empty($testimonialsList)): ?>
+        <div class="col-lg-7 col-12" data-reveal data-delay="2">
+          <div class="testi-block">
+            <div class="testi-block__label">Client Testimonials</div>
+            <div class="swiper testi-swiper">
+              <div class="swiper-wrapper">
                 <?php foreach ($testimonialsList as $row): ?>
                   <div class="swiper-slide">
                     <div class="testi-card">
@@ -2100,9 +2118,9 @@ html.lenis, html.lenis body { height: auto; }
                       <p class="testi-text">"<?php echo esc($row->description); ?>"</p>
                       <div class="testi-footer">
                         <img class="testi-avatar" 
-     src="<?php echo (!empty($row->image) && file_exists(FCPATH . $row->image)) ? base_url($row->image) : 'https://api.dicebear.com/7.x/initials/svg?seed=' . urlencode($row->name) . '&backgroundType=gradientLinear&backgroundColor=0083BF,005d8e'; ?>" 
-     alt="<?php echo esc($row->name); ?>" 
-     loading="lazy">
+                             src="<?php echo (!empty($row->image) && file_exists(FCPATH . $row->image)) ? base_url($row->image) : 'https://api.dicebear.com/7.x/initials/svg?seed=' . urlencode($row->name) . '&backgroundType=gradientLinear&backgroundColor=0083BF,005d8e'; ?>" 
+                             alt="<?php echo esc($row->name); ?>" 
+                             loading="lazy">
                         <div>
                           <div class="testi-name"><?php echo esc($row->name); ?></div>
                           <div class="testi-role"><?php echo esc($row->designation); ?></div>
@@ -2111,79 +2129,16 @@ html.lenis, html.lenis body { height: auto; }
                     </div>
                   </div>
                 <?php endforeach; ?>
-              <?php else: ?>
-                <!-- Clean Static Production Fallback Grid if no admin records exist -->
-                <div class="swiper-slide">
-                  <div class="testi-card">
-                    <div class="testi-quote-mark">&ldquo;</div>
-                    <div class="testi-stars">★★★★★</div>
-                    <p class="testi-text">"The implementation completely transformed our supply chain. Bottlenecks vanished within weeks and cross-team visibility improved dramatically across the board."</p>
-                    <div class="testi-footer">
-                      <img class="testi-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Kirthivasan A." loading="lazy">
-                      <div>
-                        <div class="testi-name">Kirthivasan A.</div>
-                        <div class="testi-role">Operations Director</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="swiper-slide">
-                  <div class="testi-card">
-                    <div class="testi-quote-mark">&ldquo;</div>
-                    <div class="testi-stars">★★★★★</div>
-                    <p class="testi-text">"Migrating to the cloud architecture eliminated our multi-currency tracking gaps entirely. The rollout was smooth and ROI was evident in the very first quarter."</p>
-                    <div class="testi-footer">
-                      <img class="testi-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Praveen Rajan" loading="lazy">
-                      <div>
-                        <div class="testi-name">Praveen Rajan</div>
-                        <div class="testi-role">Global Trade Architecture Head</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              <?php endif; ?>
+              </div>
+              <div class="swiper-pagination" style="margin-top:20px; position:static;"></div>
             </div>
-            <div class="swiper-pagination" style="margin-top:20px; position:static;"></div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
+      <?php endif; ?>
 
-<!-- ================================================================
-     FAQ SECTION (image_d965d4.png)
-     ================================================================ -->
-<section class="faq-sec">
-  <div class="container">
-    <h3 class="section-title text-center" data-reveal>Frequently Asked Questions</h3>
-    
-    <div class="faq-list">
-      <?php 
-      // Replace with your dynamic $faqList if you have one, otherwise using static array
-      $faqs = [
-        ['q' => 'What is ' . (!empty($detail->name) ? esc($detail->name) : 'FINCON') . '?', 'a' => 'It is a modern financial consolidation and reporting solution built to unify your data and deliver real-time insights.'],
-        ['q' => 'Is ' . (!empty($detail->name) ? esc($detail->name) : 'FINCON') . ' compliant with IFRS & GAAP?', 'a' => 'Yes, our platform is fully engineered to meet global compliance standards including GAAP, IFRS, and strict audit trail requirements.'],
-        ['q' => 'How does the platform handle multi-currency?', 'a' => 'We utilize a real-time exchange rate matrix that automates translations across all your multi-entity financial structures.'],
-        ['q' => 'Can I create custom reports?', 'a' => 'Absolutely. Our Power BI integration allows for bespoke drill-downs and advanced reporting dashboards.'],
-        ['q' => 'Can the platform integrate with our ERP?', 'a' => 'Yes, we provide robust API hooks for seamless data ingestion from leading ERP, CRM, and cloud-based platforms.'],
-        ['q' => 'How secure is the platform?', 'a' => 'We employ enterprise-grade encryption, role-based access control, and proactive infrastructure monitoring to ensure your data is always protected.']
-      ];
+    </div></div></section>
 
-      foreach($faqs as $index => $item): ?>
-        <div class="faq-item" data-reveal data-delay="<?php echo min(($index + 1), 6); ?>">
-          <div class="faq-q">
-            <span><?php echo $item['q']; ?></span>
-            <div class="faq-icon"><i class="fas fa-plus"></i></div>
-          </div>
-          <div class="faq-a">
-            <?php echo $item['a']; ?>
-          </div>
-        </div>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
+
 
 <?php echo $this->include('frontend/includes/bottom_section'); ?>
 

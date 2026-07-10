@@ -89,14 +89,23 @@ $transparentHeader = true;
     }
 
     .hero-partner-embedded-logo {
-        height: 52px;
-        width: auto;
-        object-fit: contain;
-        background: #ffffff;
-        padding: 8px 16px;
-        border-radius: 8px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    }
+    height: 190px;            /* Balanced high-visibility desktop height */
+    width: 280px;             /* Explicitly forces a wider, prominent landscape rectangular block */
+    object-fit: contain;      /* Ensures the logo inside scales cleanly without distortion */
+    background: #ffffff;
+    padding: 16px 28px;       /* Increased padding to complement the larger scale */
+    border-radius: 16px;      /* Slightly rounder corners for a modern, sleek tech look */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); /* Premium soft drop shadow */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;  /* Centers the logo perfectly inside the wider box */
+    transition: all 0.3s ease;
+}
+
+.hero-partner-embedded-logo:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+}
 
     .hero-pagination {
         position: absolute;
@@ -779,10 +788,6 @@ $transparentHeader = true;
                 }
             }
         });
-    });
-
-    $('.swiper-button-next').on('click',function(){
-        $('.ddd').hide();
     });
 </script>
 

@@ -304,6 +304,11 @@ class Product extends BaseController
             // ========================================================
             $data['overviewEyebrow'] = isset($row->overviewEyebrow) ? $row->overviewEyebrow : '';
             $data['overviewTitle']   = isset($row->overviewTitle) ? $row->overviewTitle : '';
+
+            $data['overview_summary'] = isset($row->overview_summary) ? $row->overview_summary : '';
+            
+            // ADD THIS LINE HERE: Extracts the data from the database table row into the view
+            $data['marketplace_payload'] = isset($row->marketplace_payload) ? $row->marketplace_payload : '';
             
             $data['industries'] = json_decode($row->industries); 
 
@@ -407,6 +412,10 @@ $data['partnershipCardsList'] = $db->table('cyb_product_partnership_cards')
 
                 $save['info']['overviewEyebrow'] = $this->request->getVar('overviewEyebrow');
                 $save['info']['overviewTitle']   = $this->request->getVar('overviewTitle');
+                $save['info']['overview_summary'] = $this->request->getVar('overview_summary');
+                
+                // ADD THIS LINE HERE: Captures the new CKEditor content payload from the POST request stream
+                $save['info']['marketplace_payload'] = $this->request->getVar('marketplace_payload');
 
                 $save['info']['industries'] = json_encode($this->request->getVar('industries'));
                 

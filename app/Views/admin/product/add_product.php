@@ -134,6 +134,7 @@ $model = new ProductCategoryModel();
       </div>
     </div>
     
+    
     <div class="row mb-4">
   <label class="col-sm-2 col-form-label fw-bold">Overview Paragraph</label>
   <div class="col-sm-10">
@@ -190,6 +191,24 @@ $model = new ProductCategoryModel();
       </table>
     </div>
   </fieldset>
+  <!-- ================================================================
+     FIXED: RICH-TEXT CKEDITOR FOR AZURE MARKETPLACE INTERFACE
+     ================================================================ -->
+<fieldset class="mt-4 pt-4 border-top">
+  <legend class="text-primary fw-bold mb-3">
+    <i class="fa-solid fa-cloud-arrow-up"></i> Azure Marketplace Layout Core
+  </legend>
+  <div class="row mb-3">
+    <label class="col-sm-2 col-form-label fw-bold">Marketplace Hub HTML Markup</label>
+    <div class="col-sm-10">
+      <!-- Added the 'ckeditor' class here to load the rich-text toolbar engine dynamically -->
+      <textarea name="marketplace_payload" class="form-control ckeditor" rows="15" placeholder="Paste or design the Marketplace structure here..."><?php echo isset($marketplace_payload) ? $marketplace_payload : ''; ?></textarea>
+      <div class="form-text text-muted mt-2">
+        <strong>Note:</strong> Use this premium editor workspace to customize, view source, or paste your grid elements without breaking alignments on the public view.
+      </div>
+    </div>
+  </div>
+</fieldset>
 </div>
 <!-- ================================================================ -->
 <!-- ================================================================
