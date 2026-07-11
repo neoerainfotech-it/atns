@@ -27,10 +27,10 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => 'root',              // Default XAMPP username
-        'password'     => '',                  // Default XAMPP password is empty
-        'database'     => 'ATnaDAtAbAsE',      // Exact case-sensitive database name from your SQL file
+        'hostname'     => 'srv947.hstgr.io',
+        'username'     => 'u957189082_atna_tech',              // Default XAMPP username
+        'password'     => 'Atna@2026',                  // Default XAMPP password is empty
+        'database'     => 'u957189082_atna_tech',      // Exact case-sensitive database name from your SQL file
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => 'cyb_',              // Automated prefix mapping handler for cyb_home_slider, etc.
         'pConnect'     => false,
