@@ -14,8 +14,8 @@ $transparentHeader = true;
    ========================================================================== */
 .premium-banner-swiper {
     width: 100%;
-    height: 85vh; 
-    min-height: 650px;
+    height: 80vh; 
+    min-height: 600px;
     background-color: #0b0f19;
     position: relative;
 }
@@ -73,8 +73,8 @@ $transparentHeader = true;
 
 /* Fluid Elite Typography Hierarchy */
 .premium-banner-swiper .lg-title {
-    font-size: clamp(2.25rem, 1.2rem + 4.5vw, 4.25rem) !important;
-    font-weight: 800 !important;
+    font-size: clamp(2.25rem, 1.2rem + 4.5vw, 3.5rem) !important;
+    font-weight: 650 !important;
     color: #ffffff !important;
     line-height: 1.12 !important;
     letter-spacing: -0.03em !important;
@@ -121,6 +121,14 @@ $transparentHeader = true;
 .hero-partner-badge-wrapper:hover {
     transform: translateY(-4px);
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.title-wrap {
+    position: relative !important;
+    z-index: 10 !important;
+    padding: 0px !important;
+    max-width: 100% !important;
+    word-wrap: break-word !important;
 }
 
 /* ==========================================================================

@@ -161,7 +161,7 @@ $footerList = $FrontModel->get_slider('footerList');
                 </ul>
             </div>
             <div class="col-md-4">
-                <div class="credit-text text-md-end">Designed by <a href="https://cyberworx.in" target="_blank">Cyberworx</a></div>
+                <div class="credit-text text-md-end">Designed by <a href="https://www.neoerainfotech.com/" target="_blank">Neoera Infotech</a></div>
             </div>
         </div>
     </div>

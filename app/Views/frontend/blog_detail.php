@@ -340,7 +340,7 @@ $authorInitial = mb_substr($displayAuthor, 0, 1);
         <div class="col-xl-4 col-lg-6 col-md-6 d-flex">
           <div style="z-index:2; position:relative;">
             <div class="blog-detail-hero__tag">Article Details</div>
-            <h1 class="blog-detail-hero__title" style="color: #fff; font-family: var(--font-display);"><?php echo $page_title; ?></h1>
+            <h1 class="blog-detail-hero__title" style="color: #fff; font-family: var(--font-display);"><?php echo esc($detail->title); ?></h1>
             <div class="blog-detail-hero__meta">
               <span class="blog-detail-hero__meta-item">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="3" width="14" height="12" rx="2" stroke="rgba(255,255,255,.8)" stroke-width="1.4"/><path d="M5 1v3M11 1v3M1 7h14" stroke="rgba(255,255,255,.8)" stroke-width="1.4" stroke-linecap="round"/></svg>

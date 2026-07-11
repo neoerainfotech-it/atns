@@ -188,8 +188,8 @@ html.lenis, html.lenis body { height: auto; }
 
 .xhero__dashboard-mockup-frame {
   width: 100%;
-  max-width: 520px; /* Reduced base boundary width for a more balanced grid */
-  height: 480px;    /* Strict professional height threshold boundary */
+  max-width: 620px; /* Reduced base boundary width for a more balanced grid */
+  height: 330px;    /* Strict professional height threshold boundary */
   object-fit: cover; /* Prevents aspect ratio distortion and bad stretching */
   object-position: center;
   border-radius: 12px;
@@ -239,12 +239,12 @@ html.lenis, html.lenis body { height: auto; }
 .xhero__floating-badge-text span { display: block; font-size: 0.72rem; color: var(--GR); }
 
 .xhero__scroll {
-  position: absolute; bottom: 65px; left: 0;
+  position: absolute; bottom: 65px; left: 12;
   z-index: 3; display: flex; align-items: center; gap: 10px;
   color: rgba(255,255,255,.35); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
 }
 .xhero__scroll-line {
-  width: 40px; height: 1px; background: rgba(255,255,255,.25);
+  width: 80px; height: 2px; background: rgba(255,255,255,.25);
   position: relative; overflow: hidden;
 }
 .xhero__scroll-line::after {
@@ -516,8 +516,8 @@ html.lenis, html.lenis body { height: auto; }
   height: 100%;
   min-height: 450px; /* Baseline minimum threshold */
   border-radius: 16px;
-  background: #040d18;
-  padding: 8px;
+  background: white;
+  padding: 0px;
   box-shadow: 0 20px 50px rgba(4, 13, 24, 0.08);
   border: 1px solid var(--rule, #dde6ee);
   display: flex;
@@ -529,7 +529,7 @@ html.lenis, html.lenis body { height: auto; }
   width: 100%;
   height: 100%;
   border-radius: 10px;
-  object-fit: cover; /* Crops and centers perfectly to scale to matching height */
+  object-fit: contain; /* Crops and centers perfectly to scale to matching height */
   object-position: center;
 }
 
@@ -1315,7 +1315,7 @@ html.lenis, html.lenis body { height: auto; }
   .xhero__left { align-items: center; margin-bottom: 50px; }
   .xhero__sub { max-width: 100%; }
   .xhero__btns { justify-content: center; }
-  .xhero__dashboard-mockup-frame { transform: none !important; max-width: 100%; height: 340px;}
+  .xhero__dashboard-mockup-frame { transform: none !important; max-width: 100%; height: 170px;}
   .xhero__floating-feature-tag { left: 20px; bottom: -10px; }
   .xhero__scroll { display: none; }
   .xhero__right { min-height: 450px; }
@@ -1418,7 +1418,7 @@ html.lenis, html.lenis body { height: auto; }
           
           <div class="xhero__scroll">
             <div class="xhero__scroll-line"></div>
-            Scroll
+            
           </div>
         </div>
       </div>
@@ -1697,6 +1697,64 @@ html.lenis, html.lenis body { height: auto; }
     </div><!-- /row -->
   </div><!-- /container -->
 </section>
+
+<section class="bottom-section" id="contact">
+  <div class="container">
+    <div class="row g-4 align-items-stretch">
+      
+      <div class="<?php echo !empty($testimonialsList) ? 'col-lg-5 col-12' : 'col-12'; ?>" data-reveal>
+        <div class="cta-block" style="<?php echo !empty($testimonialsList) ? '' : 'clip-path: none; border-radius: 12px; padding: 80px 60px; text-align: center; align-items: center;'; ?>">
+          <div class="cta-block__glow"></div>
+          <div class="cta-block__glow2"></div>
+          <div class="cta-block__hatch"></div>
+          <h2 class="cta-block__title">Let's Build the Future Together</h2>
+          <p class="cta-block__body" style="<?php echo !empty($testimonialsList) ? '' : 'max-width: 700px; margin-left: auto; margin-right: auto;'; ?>">
+            Partner with us to unlock the full potential of your business software ecosystem. Our experts are ready to optimize your setup from day one.
+          </p>
+          <div class="cta-block__actions" style="<?php echo !empty($testimonialsList) ? '' : 'justify-content: center;'; ?>">
+            <a href="#" class="btn-primary">
+              <i class="fas fa-calendar-alt"></i> Request Consultation
+            </a>
+            <a href="#" class="btn-ghost">
+              <i class="fas fa-envelope"></i> Contact Us
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <?php if (!empty($testimonialsList)): ?>
+        <div class="col-lg-7 col-12" data-reveal data-delay="2">
+          <div class="testi-block">
+            <div class="testi-block__label">Client Testimonials</div>
+            <div class="swiper testi-swiper">
+              <div class="swiper-wrapper">
+                <?php foreach ($testimonialsList as $row): ?>
+                  <div class="swiper-slide">
+                    <div class="testi-card">
+                      <div class="testi-quote-mark">&ldquo;</div>
+                      <div class="testi-stars">★★★★★</div>
+                      <p class="testi-text">"<?php echo esc($row->description); ?>"</p>
+                      <div class="testi-footer">
+                        <img class="testi-avatar" 
+                             src="<?php echo (!empty($row->image) && file_exists(FCPATH . $row->image)) ? base_url($row->image) : 'https://api.dicebear.com/7.x/initials/svg?seed=' . urlencode($row->name) . '&backgroundType=gradientLinear&backgroundColor=0083BF,005d8e'; ?>" 
+                             alt="<?php echo esc($row->name); ?>" 
+                             loading="lazy">
+                        <div>
+                          <div class="testi-name"><?php echo esc($row->name); ?></div>
+                          <div class="testi-role"><?php echo esc($row->designation); ?></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+              <div class="swiper-pagination" style="margin-top:20px; position:static;"></div>
+            </div>
+          </div>
+        </div>
+      <?php endif; ?>
+
+    </div></div></section>
 
 <!-- ================================================================
      NEW SECTION: AZURE MARKETPLACE SOLUTIONS HUB MATRIX
@@ -2101,63 +2159,7 @@ html.lenis, html.lenis body { height: auto; }
   </div><!-- /container -->
 </section>
 
-<section class="bottom-section" id="contact">
-  <div class="container">
-    <div class="row g-4 align-items-stretch">
-      
-      <div class="<?php echo !empty($testimonialsList) ? 'col-lg-5 col-12' : 'col-12'; ?>" data-reveal>
-        <div class="cta-block" style="<?php echo !empty($testimonialsList) ? '' : 'clip-path: none; border-radius: 12px; padding: 80px 60px; text-align: center; align-items: center;'; ?>">
-          <div class="cta-block__glow"></div>
-          <div class="cta-block__glow2"></div>
-          <div class="cta-block__hatch"></div>
-          <h2 class="cta-block__title">Let's Build the Future Together</h2>
-          <p class="cta-block__body" style="<?php echo !empty($testimonialsList) ? '' : 'max-width: 700px; margin-left: auto; margin-right: auto;'; ?>">
-            Partner with us to unlock the full potential of your business software ecosystem. Our experts are ready to optimize your setup from day one.
-          </p>
-          <div class="cta-block__actions" style="<?php echo !empty($testimonialsList) ? '' : 'justify-content: center;'; ?>">
-            <a href="#" class="btn-primary">
-              <i class="fas fa-calendar-alt"></i> Request Consultation
-            </a>
-            <a href="#" class="btn-ghost">
-              <i class="fas fa-envelope"></i> Contact Us
-            </a>
-          </div>
-        </div>
-      </div>
 
-      <?php if (!empty($testimonialsList)): ?>
-        <div class="col-lg-7 col-12" data-reveal data-delay="2">
-          <div class="testi-block">
-            <div class="testi-block__label">Client Testimonials</div>
-            <div class="swiper testi-swiper">
-              <div class="swiper-wrapper">
-                <?php foreach ($testimonialsList as $row): ?>
-                  <div class="swiper-slide">
-                    <div class="testi-card">
-                      <div class="testi-quote-mark">&ldquo;</div>
-                      <div class="testi-stars">★★★★★</div>
-                      <p class="testi-text">"<?php echo esc($row->description); ?>"</p>
-                      <div class="testi-footer">
-                        <img class="testi-avatar" 
-                             src="<?php echo (!empty($row->image) && file_exists(FCPATH . $row->image)) ? base_url($row->image) : 'https://api.dicebear.com/7.x/initials/svg?seed=' . urlencode($row->name) . '&backgroundType=gradientLinear&backgroundColor=0083BF,005d8e'; ?>" 
-                             alt="<?php echo esc($row->name); ?>" 
-                             loading="lazy">
-                        <div>
-                          <div class="testi-name"><?php echo esc($row->name); ?></div>
-                          <div class="testi-role"><?php echo esc($row->designation); ?></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                <?php endforeach; ?>
-              </div>
-              <div class="swiper-pagination" style="margin-top:20px; position:static;"></div>
-            </div>
-          </div>
-        </div>
-      <?php endif; ?>
-
-    </div></div></section>
 
 
 
