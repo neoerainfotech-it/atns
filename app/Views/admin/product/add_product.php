@@ -48,6 +48,16 @@ $model = new ProductCategoryModel();
     <i class="fa-solid fa-handshake"></i> Partnerships Deck
   </a>
 </li>
+<li class="nav-item">
+  <a href="#tab-trust-strip" data-bs-toggle="tab" class="nav-link text-info fw-bold">
+    <i class="fa-solid fa-building-shield"></i> Trust Strips
+  </a>
+</li>
+<li class="nav-item">
+  <a href="#tab-business-benefits" data-bs-toggle="tab" class="nav-link text-success fw-bold">
+    <i class="fa-solid fa-chart-simple"></i> Business Benefits
+  </a>
+</li>
   <li class="nav-item"><a href="#tab-capabilities" data-bs-toggle="tab" class="nav-link">Key Features</a></li>
   <li class="nav-item"><a href="#tab-feature" data-bs-toggle="tab" class="nav-link">Use Cases</a></li>
   <li class="nav-item"><a href="#tab-testimonials" data-bs-toggle="tab" class="nav-link text-success fw-bold"><i class="fa-solid fa-comments"></i> Testimonials</a></li>
@@ -311,6 +321,144 @@ $model = new ProductCategoryModel();
   </fieldset>
 </div>
 <!-- ------------------------------------------------------------------ -->
+ 
+<!-- ================================================================
+     DYNAMIC REGISTRATION INTERFACE: TRUST BADGES DATA REPEATER GRID
+     ================================================================ -->
+<div id="tab-trust-strip" class="tab-pane">
+  <fieldset>
+    <legend class="text-info fw-bold mb-4"><i class="fa-solid fa-building-shield"></i> Trust Strips Branding Badges Matrix</legend>
+    
+    <div class="row mb-4">
+      <label class="col-sm-2 col-form-label fw-bold">Section Heading Text</label>
+      <div class="col-sm-10">
+        <input type="text" name="trust_strip_title" value="<?php echo set_value('trust_strip_title', isset($trust_strip_title) ? $trust_strip_title : 'Trusted By Finance Teams'); ?>" placeholder="e.g., Trusted By Finance Teams" class="form-control" />
+      </div>
+    </div>
+
+    <div class="table-responsive mt-3">
+      <table id="trust-badges-matrix-table" class="table table-striped table-bordered table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <td style="width: 25%;">Logo Image Asset</td>
+            <td style="width: 35%;">Short Title</td>
+            <td style="width: 30%;">Short Subtitle</td>
+            <td style="width: 9%;">Sort Order</td>
+            <td style="width: 1%;" class="text-center">Action</td>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (!empty($trustBadgesList)): ?>
+            <?php foreach ($trustBadgesList as $badgeRow): ?>
+              <tr id="trust-badge-row-<?php echo $badgeRow->id; ?>">  
+                <td class="text-center">
+                  <?php if (!empty($badgeRow->image)): ?>
+                    <div class="mb-2">
+                      <img src="<?php echo base_url($badgeRow->image); ?>" width="40" height="40" style="object-fit: contain;" class="border rounded p-1" />
+                    </div>
+                    <input type="hidden" name="trust_badge_old_image[]" value="<?php echo $badgeRow->image; ?>" />
+                  <?php endif; ?>
+                  <input type="file" class="form-control form-control-sm" name="trustBadgeFiles[]" />
+                </td>
+                <td>
+                  <input type="text" name="trustBadgeTitle[]" value="<?php echo esc($badgeRow->title); ?>" placeholder="e.g., Microsoft" class="form-control form-control-sm" />
+                </td>
+                <td>
+                  <input type="text" name="trustBadgeSubtitle[]" value="<?php echo esc($badgeRow->subtitle); ?>" placeholder="e.g., Partner" class="form-control form-control-sm" />
+                </td>
+                <td>
+                  <input type="number" name="trustBadgeSortOrder[]" class="form-control form-control-sm text-center" value="<?php echo $badgeRow->sort_order; ?>" />
+                </td>
+                <td class="text-center">
+                  <button type="button" onclick="$('#trust-badge-row-<?php echo $badgeRow->id; ?>').remove();" data-bs-toggle="tooltip" title="Remove Badge" class="btn btn-danger btn-sm">
+                    <i class="fa fa-minus-circle"></i>
+                  </button>
+                </td>
+              </tr>  
+            <?php endforeach; ?>
+          <?php endif; ?> 
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4"></td>
+            <td class="text-center">
+              <button type="button" onclick="addTrustBadgeRow();" data-bs-toggle="tooltip" title="Add New Badge Element" class="btn btn-success btn-sm">
+                <i class="fa fa-plus-circle"></i>
+              </button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </fieldset>
+</div>
+
+
+<!-- ================================================================
+     BUSINESS BENEFITS — DYNAMIC REPEATER INTERFACE PANEL
+     ================================================================ -->
+<div id="tab-business-benefits" class="tab-pane">
+  <fieldset>
+    <legend class="text-success fw-bold mb-4"><i class="fa-solid fa-chart-column"></i> Business Benefits Metrics Matrix</legend>
+    
+    <div class="table-responsive">
+      <table id="business-benefits-table" class="table table-striped table-bordered table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <td style="width: 20%;">Card Title Header</td>
+            <td style="width: 12%;">Stat Number</td>
+            <td style="width: 10%;">Suffix (%, x7)</td>
+            <td style="width: 25%;">Footer Subtitle</td>
+            <td style="width: 15%;">Accent Theme</td>
+            <td style="width: 12%;">Icon Class</td>
+            <td style="width: 5%;">Sort</td>
+            <td style="width: 1%;" class="text-center">Action</td>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (!empty($businessBenefitsList)): ?>
+            <?php foreach ($businessBenefitsList as $benefitRow): ?>
+              <tr id="benefit-row-<?php echo $benefitRow->id; ?>">  
+                <td><input type="text" name="benefitTitle[]" value="<?php echo esc($benefitRow->title); ?>" placeholder="e.g., Reduce Closing Time" class="form-control form-control-sm" /></td>
+                <td><input type="text" name="benefitStatValue[]" value="<?php echo esc($benefitRow->stat_value); ?>" placeholder="e.g., 40" class="form-control form-control-sm text-center fw-bold" /></td>
+                <td><input type="text" name="benefitStatSuffix[]" value="<?php echo esc($benefitRow->stat_suffix); ?>" placeholder="e.g., %" class="form-control form-control-sm text-center" /></td>
+                <td><input type="text" name="benefitSubtitle[]" value="<?php echo esc($benefitRow->subtitle); ?>" placeholder="e.g., Faster month-end close" class="form-control form-control-sm" /></td>
+                <td>
+                  <select name="benefitCardTheme[]" class="form-select form-select-sm">
+                    <option value="blue-theme" <?php echo ($benefitRow->card_theme == 'blue-theme') ? 'selected' : ''; ?>>🔵 Blue Theme</option>
+                    <option value="green-theme" <?php echo ($benefitRow->card_theme == 'green-theme') ? 'selected' : ''; ?>>🟢 Green Theme</option>
+                    <option value="purple-theme" <?php echo ($benefitRow->card_theme == 'purple-theme') ? 'selected' : ''; ?>>🟣 Purple Theme</option>
+                    <option value="orange-theme" <?php echo ($benefitRow->card_theme == 'orange-theme') ? 'selected' : ''; ?>>🟠 Orange Theme</option>
+                  </select>
+                </td>
+                <td>
+                  <select name="benefitIconClass[]" class="form-select form-select-sm">
+                    <option value="fa-regular fa-clock" <?php echo ($benefitRow->icon_class == 'fa-regular fa-clock') ? 'selected' : ''; ?>>🕒 Clock</option>
+                    <option value="fa-regular fa-circle-check" <?php echo ($benefitRow->icon_class == 'fa-regular fa-circle-check') ? 'selected' : ''; ?>>⦾ Check</option>
+                    <option value="fa-regular fa-file-lines" <?php echo ($benefitRow->icon_class == 'fa-regular fa-file-lines') ? 'selected' : ''; ?>>📄 Document</option>
+                    <option value="fa-regular fa-eye" <?php echo ($benefitRow->icon_class == 'fa-regular fa-eye') ? 'selected' : ''; ?>>👁 Eye</option>
+                  </select>
+                </td>
+                <td><input type="number" name="benefitSortOrder[]" class="form-control form-control-sm text-center" value="<?php echo $benefitRow->sort_order; ?>" /></td>
+                <td class="text-center">
+                  <button type="button" onclick="$('#benefit-row-<?php echo $benefitRow->id; ?>').remove();" data-bs-toggle="tooltip" title="Remove Card" class="btn btn-danger btn-sm"><i class="fa fa-minus-circle"></i></button>
+                </td>
+              </tr>  
+            <?php endforeach; ?>
+          <?php endif; ?> 
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="7"></td>
+            <td class="text-center">
+              <button type="button" onclick="addBusinessBenefitRow();" data-bs-toggle="tooltip" title="Add Metric Card" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i></button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </fieldset>
+</div>
  
       <div id="tab-data" class="tab-pane">
                 <div class="row mb-3 d-none">
@@ -710,6 +858,50 @@ function addPartnershipCardRow() {
   partner_card_idx++;
 }
 
+var trust_badge_idx = 0;
+function addTrustBadgeRow() {
+  var html  = '<tr id="trust-badge-row-new' + trust_badge_idx + '">';
+  html += '    <td><input type="file" class="form-control form-control-sm" name="trustBadgeFiles[]" /></td>';
+  html += '    <td><input type="text" name="trustBadgeTitle[]" placeholder="e.g., Microsoft" class="form-control form-control-sm" /></td>';
+  html += '    <td><input type="text" name="trustBadgeSubtitle[]" placeholder="e.g., Power Platform" class="form-control form-control-sm" /></td>';
+  html += '    <td><input type="number" name="trustBadgeSortOrder[]" class="form-control form-control-sm text-center" value="0" /></td>';
+  html += '    <td class="text-center"><button type="button" onclick="$(\'#trust-badge-row-new' + trust_badge_idx + '\').remove();" data-bs-toggle="tooltip" title="Remove Row" class="btn btn-danger btn-sm"><i class="fa fa-minus-circle"></i></button></td>';
+  html += '</tr>';
+  
+  $('#trust-badges-matrix-table tbody').append(html);
+  trust_badge_idx++;
+}
+
+var benefit_card_idx = 0;
+function addBusinessBenefitRow() {
+  var html  = '<tr id="benefit-row-new' + benefit_card_idx + '">';
+  html += '    <td><input type="text" name="benefitTitle[]" placeholder="e.g., Improve Accuracy" class="form-control form-control-sm" /></td>';
+  html += '    <td><input type="text" name="benefitStatValue[]" placeholder="e.g., 99" class="form-control form-control-sm text-center fw-bold" /></td>';
+  html += '    <td><input type="text" name="benefitStatSuffix[]" placeholder="e.g., %" class="form-control form-control-sm text-center" /></td>';
+  html += '    <td><input type="text" name="benefitSubtitle[]" placeholder="e.g., Accurate & reliable data" class="form-control form-control-sm" /></td>';
+  html += '    <td>';
+  html += '      <select name="benefitCardTheme[]" class="form-select form-select-sm">';
+  html += '        <option value="blue-theme">🔵 Blue Theme</option>';
+  html += '        <option value="green-theme">🟢 Green Theme</option>';
+  html += '        <option value="purple-theme">🟣 Purple Theme</option>';
+  html += '        <option value="orange-theme">🟠 Orange Theme</option>';
+  html += '      </select>';
+  html += '    </td>';
+  html += '    <td>';
+  html += '      <select name="benefitIconClass[]" class="form-select form-select-sm">';
+  html += '        <option value="fa-regular fa-clock">🕒 Clock</option>';
+  html += '        <option value="fa-regular fa-circle-check">⦾ Check</option>';
+  html += '        <option value="fa-regular fa-file-lines">📄 Document</option>';
+  html += '        <option value="fa-regular fa-eye">👁 Eye</option>';
+  html += '      </select>';
+  html += '    </td>';
+  html += '    <td><input type="number" name="benefitSortOrder[]" class="form-control form-control-sm text-center" value="0" /></td>';
+  html += '    <td class="text-center"><button type="button" onclick="$(\'#benefit-row-new' + benefit_card_idx + '\').remove();" data-bs-toggle="tooltip" title="Remove" class="btn btn-danger btn-sm"><i class="fa fa-minus-circle"></i></button></td>';
+  html += '</tr>';
+  
+  $('#business-benefits-table tbody').append(html);
+  benefit_card_idx++;
+}
   var testimonial_row = 0;
   function addTestimonialRow() {
     var html  = '<tr id="testimonial-row-new' + testimonial_row + '">';

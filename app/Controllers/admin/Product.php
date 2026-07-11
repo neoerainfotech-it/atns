@@ -312,6 +312,17 @@ class Product extends BaseController
             
             $data['industries'] = json_decode($row->industries); 
 
+            // ------------------------------------------------------------------------
+            // INJECTED DATA LAYER: UNPACK TRUST STRIP TITLE & CHILD BADGES DYNAMIC SETS
+            // ------------------------------------------------------------------------
+            $data['trust_strip_title'] = isset($row->trust_strip_title) ? $row->trust_strip_title : 'Trusted By Finance Teams';
+            $data['trustBadgesList']   = $db->table('cyb_product_trust_badges')
+                                            ->where('product_id', $row->id)
+                                            ->orderBy('sort_order', 'ASC')
+                                            ->get()
+                                            ->getResult();
+            // ------------------------------------------------------------------------
+
             $data['featureList'] = $this->AdminModel->all_fetch('cyb_product_feature',array('product_id'=>$row->id)); 
             $data['capabilitiesList'] = $this->AdminModel->all_fetch('cyb_product_capabilities',array('product_id'=>$row->id)); 
             $data['imagesList'] = $this->AdminModel->all_fetch('cyb_product_images',array('product_id'=>$row->id)); 
@@ -343,6 +354,12 @@ $data['partnershipCardsList'] = $db->table('cyb_product_partnership_cards')
                                    ->get()
                                    ->getResult();
 // ========================================================================
+// FETCH RECOVERY ENGINE: Load Business Benefits Dynamic Row Sets
+            $data['businessBenefitsList'] = $db->table('cyb_product_business_benefits')
+                                               ->where('product_id', $row->id)
+                                               ->orderBy('sort_order', 'ASC')
+                                               ->get()
+                                               ->getResult();
         }else{
             $data['page_title'] = ' Add Product';
             $data['form_action'] ='admin/add_product';
@@ -371,6 +388,13 @@ $data['partnershipCardsList'] = $db->table('cyb_product_partnership_cards')
             // INITIAL BLANK ARRAYS DEFAULT CONFIGURATION
             $data['overviewEyebrow'] = 'Understanding Platform Context';
             $data['overviewTitle']   = 'Product Overview';
+            $data['overview_summary'] = '';
+            $data['marketplace_payload'] = '';
+
+            $data['trust_strip_title'] = 'Trusted By Finance Teams';
+            $data['trustBadgesList']   = array();
+
+            $data['businessBenefitsList'] = array();
 
             $data['featureList'] = array();
             $data['capabilitiesList'] = array();
@@ -416,6 +440,8 @@ $data['partnershipCardsList'] = $db->table('cyb_product_partnership_cards')
                 
                 // ADD THIS LINE HERE: Captures the new CKEditor content payload from the POST request stream
                 $save['info']['marketplace_payload'] = $this->request->getVar('marketplace_payload');
+
+                $save['info']['trust_strip_title'] = $this->request->getVar('trust_strip_title');
 
                 $save['info']['industries'] = json_encode($this->request->getVar('industries'));
                 
@@ -579,6 +605,75 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
                         }
                     }
                     // ========================================================
+
+                    // ========================================================================
+                    // REPEATER PROCESSING PIPELINE: Save Dynamic Trust Strip Badges Matrix
+                    // ========================================================================
+                    $db->table('cyb_product_trust_badges')->where('product_id', $id)->delete();
+
+                    $badgeTitles      = $this->request->getPost('trustBadgeTitle');
+                    $badgeSubtitles   = $this->request->getPost('trustBadgeSubtitle');
+                    $badgeSortOrders  = $this->request->getPost('trustBadgeSortOrder');
+                    $badgeOldImages   = $this->request->getPost('trust_badge_old_image');
+                    $badgeFiles       = $this->request->getFiles();
+
+                    if (!empty($badgeTitles)) {
+                        foreach ($badgeTitles as $idx => $bTitle) {
+                            if (empty(trim($bTitle))) continue;
+
+                            $finalBadgePath = isset($badgeOldImages[$idx]) ? $badgeOldImages[$idx] : '';
+                            
+                            // Multi-file request engine array check mapping parameters cleanly
+                            if (isset($badgeFiles['trustBadgeFiles'][$idx])) {
+                                $tFile = $badgeFiles['trustBadgeFiles'][$idx];
+                                if ($tFile->isValid() && !$tFile->hasMoved()) {
+                                    $tNewName = $tFile->getRandomName();
+                                    $tFile->move('uploads/product/', $tNewName);
+                                    $finalBadgePath = 'uploads/product/' . $tNewName;
+                                }
+                            }
+
+                            $db->table('cyb_product_trust_badges')->insert([
+                                'product_id' => $id,
+                                'title'      => esc($bTitle),
+                                'subtitle'   => esc($badgeSubtitles[$idx]),
+                                'image'      => $finalBadgePath,
+                                'sort_order' => isset($badgeSortOrders[$idx]) ? (int)$badgeSortOrders[$idx] : 0
+                            ]);
+                        }
+                    }
+                    // ========================================================================
+
+                    // ========================================================================
+                    // REPEATER PROCESSING PIPELINE: Save Business Benefits Cards Matrix
+                    // ========================================================================
+                    $db->table('cyb_product_business_benefits')->where('product_id', $id)->delete();
+
+                    $bTitles      = $this->request->getPost('benefitTitle');
+                    $bStatValues  = $this->request->getPost('benefitStatValue');
+                    $bStatSuffix  = $this->request->getPost('benefitStatSuffix');
+                    $bSubtitles   = $this->request->getPost('benefitSubtitle');
+                    $bThemes      = $this->request->getPost('benefitCardTheme');
+                    $bIcons       = $this->request->getPost('benefitIconClass');
+                    $bSortOrders  = $this->request->getPost('benefitSortOrder');
+
+                    if (!empty($bTitles)) {
+                        foreach ($bTitles as $idx => $bTitle) {
+                            if (empty(trim($bTitle))) continue;
+
+                            $db->table('cyb_product_business_benefits')->insert([
+                                'product_id'  => $id,
+                                'title'       => esc($bTitle),
+                                'stat_value'  => esc($bStatValues[$idx]),
+                                'stat_suffix' => esc($bStatSuffix[$idx]),
+                                'subtitle'    => esc($bSubtitles[$idx]),
+                                'card_theme'  => esc($bThemes[$idx]),
+                                'icon_class'  => !empty($bIcons[$idx]) ? esc($bIcons[$idx]) : 'fa-regular fa-clock',
+                                'sort_order'  => isset($bSortOrders[$idx]) ? (int)$bSortOrders[$idx] : 0
+                            ]);
+                        }
+                    }
+                    
 
                     // ========================================================
                     // REPEATER PROCESSING PIPELINE: Save Client Testimonials

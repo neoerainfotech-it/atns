@@ -10,121 +10,231 @@ $transparentHeader = true;
     }
     
     /* ==========================================================================
-       HERO ENGINE: UNIFORM CONTAINER CONSTRAINTS & CONTRAST TINTS
-       ========================================================================== */
-    .premium-banner-swiper {
-        width: 100%;
-        height: 80vh; 
-        min-height: 600px;
-        background-color: #0F172A;
-        position: relative;
-    }
+   HERO ENGINE: ELITE VISUAL CONSTRAINTS & GLASS SYSTEMS
+   ========================================================================== */
+.premium-banner-swiper {
+    width: 100%;
+    height: 85vh; 
+    min-height: 650px;
+    background-color: #0b0f19;
+    position: relative;
+}
 
-    .premium-banner-swiper .swiper-slide {
-        width: 100% !important;
-        height: 100% !important;
-        position: relative;
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-    }
+.premium-banner-swiper .swiper-slide {
+    width: 100% !important;
+    height: 100% !important;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
 
-    .banner-bg-image-layer {
-        position: absolute;
-        top: 0; left: 0; 
-        width: 100%; height: 100%;
-        object-fit: cover;
-        z-index: 0;
-        transform: scale(1.02);
-        transition: transform 6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+.banner-bg-image-layer {
+    position: absolute;
+    top: 0; left: 0; 
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    transform: scale(1.05);
+    transition: transform 7s cubic-bezier(0.25, 1, 0.5, 1);
+}
 
-    .swiper-slide-active .banner-bg-image-layer {
-        transform: scale(1);
-    }
+.swiper-slide-active .banner-bg-image-layer {
+    transform: scale(1);
+}
 
-    .banner-overlay-tint {
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(to right, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.65) 60%, rgba(15, 23, 42, 0.35) 100%);
-        z-index: 1;
-        pointer-events: none;
-    }
+/* Elite Cine-Gradation Layer */
+.banner-overlay-tint {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(105deg, 
+        rgba(11, 15, 25, 0.95) 0%, 
+        rgba(11, 15, 25, 0.80) 40%, 
+        rgba(11, 15, 25, 0.40) 70%, 
+        rgba(11, 15, 25, 0.15) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+}
 
-    .premium-banner-swiper .cstm-container {
-        position: relative;
-        z-index: 2;
-        width: 100%;
-        max-width: 1320px;
-        padding: 0 24px;
-        margin: 0 auto;
-    }
+.premium-banner-swiper .cstm-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1320px;
+    padding: 0 32px;
+    margin: 0 auto;
+}
 
-    .premium-banner-swiper .text-wrap {
-        max-width: 750px;
-        padding: 20px 0;
-    }
+.premium-banner-swiper .text-wrap {
+    max-width: 820px;
+    padding: 40px 0;
+}
 
-    .premium-banner-swiper .lg-title {
-        font-size: 3.75rem !important;
-        font-weight: 800 !important;
-        color: #ffffff !important;
-        line-height: 1.15 !important;
-        letter-spacing: -0.02em !important;
-    }
+/* Fluid Elite Typography Hierarchy */
+.premium-banner-swiper .lg-title {
+    font-size: clamp(2.25rem, 1.2rem + 4.5vw, 4.25rem) !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.03em !important;
+}
 
-    .premium-banner-swiper .editor p {
-        font-size: 1.15rem !important;
-        line-height: 1.65 !important;
-        color: #E2E8F0 !important;
-        margin-top: 15px;
-    }
+.premium-banner-swiper .editor p {
+    font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.25rem) !important;
+    line-height: 1.65 !important;
+    color: #cbd5e1 !important;
+    margin-top: 20px;
+    max-width: 680px;
+}
 
-    .banner-integrated-badge-row {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 24px;
-        margin-top: 35px;
-    }
+.banner-integrated-badge-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 28px;
+    margin-top: 40px;
+}
 
-    .hero-partner-embedded-logo {
-    height: 190px;            /* Balanced high-visibility desktop height */
-    width: 280px;             /* Explicitly forces a wider, prominent landscape rectangular block */
-    object-fit: contain;      /* Ensures the logo inside scales cleanly without distortion */
+/* Balanced Tech Logo Box Frame */
+.hero-partner-badge-wrapper {
+    height: 140px;
+    width: 200px;            /* Explicitly matches the nearly-square badge proportions */
     background: #ffffff;
-    padding: 16px 28px;       /* Increased padding to complement the larger scale */
-    border-radius: 16px;      /* Slightly rounder corners for a modern, sleek tech look */
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); /* Premium soft drop shadow */
+    padding: 10px;            /* Clean internal spacing */
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
     display: inline-flex;
     align-items: center;
-    justify-content: center;  /* Centers the logo perfectly inside the wider box */
-    transition: all 0.3s ease;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.hero-partner-embedded-logo:hover {
+/* Force image child logic to scale cleanly inside the medium box container */
+.hero-partner-badge-wrapper img.hero-partner-embedded-logo {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: contain !important;
+}
+
+.hero-partner-badge-wrapper:hover {
     transform: translateY(-4px);
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
 }
 
+/* ==========================================================================
+   RESPONSIVE MATRIX ADJUSTMENTS FOR THE NEW SIZE
+   ========================================================================== */
+@media (max-width: 991px) {
+    .hero-partner-badge-wrapper {
+        height: 110px;
+        width: 160px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-partner-badge-wrapper {
+        height: 90px;
+        width: 140px;
+        padding: 6px;
+    }
+}
+
+/* Modern Minimalist Pagination Engine */
+.hero-pagination {
+    position: absolute;
+    bottom: 40px !important;
+    left: 32px !important;
+    transform: none !important;
+    width: auto !important;
+    z-index: 10;
+    display: flex;
+    gap: 8px;
+}
+
+.hero-pagination .swiper-pagination-bullet {
+    background: rgba(255, 255, 255, 0.25) !important;
+    opacity: 1;
+    width: 24px;
+    height: 4px;
+    border-radius: 2px;
+    transition: all 0.4s ease;
+    margin: 0 !important;
+}
+
+.hero-pagination .swiper-pagination-bullet-active {
+    background: #0083BF !important; /* System Brand Match Dynamic Accent color */
+    width: 48px;
+}
+
+/* Re-apply layout definitions specifically for the Case Study custom selectors */
+.case-panel-next, .case-panel-prev {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    color: #0083BF;
+}
+
+
+/* ==========================================================================
+   RESPONSIVE MATRIX ADJUSTMENTS
+   ========================================================================== */
+@media (max-width: 991px) {
+    .premium-banner-swiper {
+        height: 75vh;
+        min-height: 550px;
+    }
+    .premium-banner-swiper .cstm-container {
+        padding: 0 24px;
+    }
+    .premium-banner-swiper .text-wrap { 
+        text-align: center; 
+        margin: 0 auto; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .premium-banner-swiper .editor p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .banner-integrated-badge-row { 
+        justify-content: center; 
+        gap: 20px; 
+        margin-top: 30px;
+    }
     .hero-pagination {
-        position: absolute;
-        bottom: 30px !important;
         left: 50% !important;
-        transform: translateX(-50%);
-        z-index: 10;
+        transform: translateX(-50%) !important;
+        bottom: 25px !important;
     }
+    
+}
 
-    .hero-pagination .swiper-pagination-bullet {
-        background: rgba(255, 255, 255, 0.4) !important;
-        opacity: 1;
+@media (max-width: 576px) {
+    .premium-banner-swiper {
+        height: 80vh;
+        min-height: 500px;
     }
-
-    .hero-pagination .swiper-pagination-bullet-active {
-        background: #38bdf8 !important;
-        width: 30px;
-        border-radius: 4px;
+    .premium-banner-swiper .text-wrap {
+        padding: 20px 0;
     }
+    .banner-integrated-badge-row {
+        flex-direction: column;
+        width: 100%;
+        gap: 16px;
+    }
+    .banner-integrated-badge-row .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+}
 
     /* ==========================================================================
        CASE STUDY PLATFORM: FULL-BLEED DESIGN REALIGNMENT & OVERFLOW PROTECTION
@@ -273,7 +383,6 @@ $transparentHeader = true;
     @media (max-width: 576px) {
         .premium-banner-swiper .lg-title { font-size: 2.2rem !important; }
         .premium-banner-swiper .editor p { font-size: 1rem !important; }
-        .hero-partner-embedded-logo { height: 44px; }
     }
 </style>
 
@@ -297,12 +406,15 @@ $transparentHeader = true;
                                             <p><?php echo $slide->description; ?></p>
                                         </div>
                                         <div class="banner-integrated-badge-row">
-                                            <a href="<?php echo !empty($slide->link) ? base_url($slide->link) : base_url($heading->link ?? ''); ?>" class="btn btn-theme btn-icon m-0">Explore More <span class="icon"><svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="#fff"/></svg></span></a>
-                                            
-                                            <?php if (!empty($heading->image1)): ?>
-                                                <img src="<?php echo base_url($heading->image1); ?>" class="hero-partner-embedded-logo" alt="Partner Badge" />
-                                            <?php endif; ?>
-                                        </div>
+    <a href="<?php echo !empty($slide->link) ? base_url($slide->link) : base_url($heading->link ?? ''); ?>" class="btn btn-theme btn-icon m-0">Explore More <span class="icon"><svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="#fff"/></svg></span></a>
+    
+    <?php if (!empty($heading->image1)): ?>
+        <!-- Wrapper container block for premium layout containment -->
+        <div class="hero-partner-badge-wrapper">
+            <img src="<?php echo base_url($heading->image1); ?>" class="hero-partner-embedded-logo" alt="Partner Badge" />
+        </div>
+    <?php endif; ?>
+</div>
                                     </div>
                                 </div>
                             </div>
@@ -462,10 +574,10 @@ $transparentHeader = true;
                     </div>
                     
                     <div class="swiper-controls" style="--swiper-navigation-color: #0083BF; margin-top: 24px;">
-                        <div class="swiper-button-prev"></div>
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-button-next"></div>
-                    </div>
+    <div class="case-panel-prev"></div>
+    <div class="swiper-pagination"></div>
+    <div class="case-panel-next"></div>
+</div>
                 </div>
             </div>
 
@@ -726,7 +838,7 @@ $transparentHeader = true;
         var premiumBannerSwiper = new Swiper('.premium-banner-swiper', {
             effect: 'fade',
             fadeEffect: { crossFade: true },
-            speed: 1200,
+            speed: 1400,
             autoplay: {
                 delay: 5000,
                 disableOnInteraction: false,
@@ -752,20 +864,20 @@ $transparentHeader = true;
             speed: 800
         });
 
-        var caseMainBoxSwiper = new Swiper('.case-study-box', {
-            speed: 800,
-            navigation: {
-                nextEl: '.home-case-study .swiper-button-next',
-                prevEl: '.home-case-study .swiper-button-prev',
-            },
-            pagination: {
-                el: '.home-case-study .swiper-pagination',
-                clickable: true,
-            },
-            controller: {
-                control: [caseBgSwiper, caseNextPreviewSwiper]
-            }
-        });
+       var caseMainBoxSwiper = new Swiper('.case-study-box', {
+    speed: 800,
+    navigation: {
+        nextEl: '.home-case-study .case-panel-next',
+        prevEl: '.home-case-study .case-panel-prev',
+    },
+    pagination: {
+        el: '.home-case-study .swiper-pagination',
+        clickable: true,
+    },
+    controller: {
+        control: [caseBgSwiper, caseNextPreviewSwiper]
+    }
+});
     });
 
     $('body').delegate("#spt","click",function(){
@@ -790,5 +902,34 @@ $transparentHeader = true;
         });
     });
 </script>
+
+<!-- Place this at the absolute bottom of the file, just above your endSection line -->
+<style>
+    /* 1. Target Swiper's exact internal font-family icon generation */
+    .home-banner *::after, 
+    .home-banner *::before,
+    .premium-banner-swiper *::after,
+    .premium-banner-swiper *::before {
+        content: none !important;
+    }
+
+    /* 2. Target any absolutely positioned control blocks created by animation scripts */
+    .home-banner [class*="swiper-button"],
+    .home-banner [class*="nav-"],
+    .home-banner [class*="arrow-"] {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+        pointer-events: none !important;
+    }
+
+    /* 3. Force hide anything acting as a navigation anchor next to the container */
+    .premium-banner-swiper + div,
+    .premium-banner-swiper + a {
+        pointer-events: none !important;
+    }
+</style>
 
 <?php $this->endSection(); ?>

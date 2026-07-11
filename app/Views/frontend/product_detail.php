@@ -1471,78 +1471,98 @@ html.lenis, html.lenis body { height: auto; }
 <!-- ================================================================
      NEW SECTION: TRUSTED BY FINANCE TEAMS (UNIFIED BRANDING ENGINE)
      ================================================================ -->
+<!-- ================================================================
+     HYBRID LOGIC: DYNAMIC / STATIC FALLBACK TRUST STRIP ENGINE
+     ================================================================ -->
 <div class="finance-trust-strip">
   <div class="container">
     <div class="finance-trust__wrapper">
       
-      <h5 class="finance-trust__title" data-reveal>Trusted By Finance Teams</h5>
+      <!-- 1. Dynamic Section Header Title -->
+      <h5 class="finance-trust__title" data-reveal>
+        <?php echo !empty($detail->trust_strip_title) ? esc($detail->trust_strip_title) : 'Trusted By Finance Teams'; ?>
+      </h5>
       
       <div class="finance-trust__grid">
-        
-        <!-- 1. Microsoft Partner Brand Badge -->
-        <div class="finance-trust__logo-badge" data-reveal data-delay="1">
-          <svg viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0H11V11H0V0Z" fill="#F25022"/>
-            <path d="M12 0H23V11H12V0Z" fill="#7FBA00"/>
-            <path d="M0 12H11V23H0V12Z" fill="#00A4EF"/>
-            <path d="M12 12H23V23H12V12Z" fill="#FFB900"/>
-          </svg>
-          <div class="finance-trust__logo-text">
-            <strong>Microsoft</strong>
-            <span>Partner</span>
-          </div>
-        </div>
+        <?php if (!empty($trustBadgesList)): ?>
+          
+          <!-- A. IF ADMIN HAS ADDED DETAILS: Loop through custom inputs dynamically -->
+          <?php foreach ($trustBadgesList as $badgeItem): ?>
+            <div class="finance-trust__logo-badge" data-reveal>
+              <img src="<?php echo base_url($badgeItem->image); ?>" alt="<?php echo esc($badgeItem->title); ?>" style="width: 28px; height: 28px; object-fit: contain; flex-shrink: 0;" />
+              <div class="finance-trust__logo-text">
+                <strong><?php echo esc($badgeItem->title); ?></strong>
+                <span><?php echo esc($badgeItem->subtitle); ?></span>
+              </div>
+            </div>
+          <?php endforeach; ?>
 
-        <!-- 2. Microsoft Power Platform Brand Badge -->
-        <div class="finance-trust__logo-badge" data-reveal data-delay="2">
-          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16 6L7 11V21L16 26L25 21V11L16 6Z" fill="#742774"/>
-            <path d="M16 9.5L10.5 12.5V19.5L16 22.5L21.5 19.5V12.5L16 9.5Z" fill="#E3008C"/>
-          </svg>
-          <div class="finance-trust__logo-text">
-            <strong>Microsoft</strong>
-            <span>Power Platform</span>
-          </div>
-        </div>
+        <?php else: ?>
 
-        <!-- 3. Power BI Analytics Badge -->
-        <div class="finance-trust__logo-badge" data-reveal data-delay="3">
-          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="5" y="18" width="5" height="9" rx="1" fill="#E6AD12"/>
-            <rect x="13" y="10" width="5" height="17" rx="1" fill="#F8C100"/>
-            <rect x="21" y="4" width="5" height="23" rx="1" fill="#FFD851"/>
-          </svg>
-          <div class="finance-trust__logo-text">
-            <strong>Power BI</strong>
-            <span>Analytics Engine</span>
+          <!-- B. FALLBACK: If admin left it blank, show your beautiful standard static details -->
+          <!-- 1. Microsoft Partner Brand Badge -->
+          <div class="finance-trust__logo-badge" data-reveal data-delay="1">
+            <svg viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0H11V11H0V0Z" fill="#F25022"/>
+              <path d="M12 0H23V11H12V0Z" fill="#7FBA00"/>
+              <path d="M0 12H11V23H0V12Z" fill="#00A4EF"/>
+              <path d="M12 12H23V23H12V12Z" fill="#FFB900"/>
+            </svg>
+            <div class="finance-trust__logo-text">
+              <strong>Microsoft</strong>
+              <span>Partner</span>
+            </div>
           </div>
-        </div>
 
-        <!-- 4. ISO 27001 Security Badge -->
-        <div class="finance-trust__logo-badge" data-reveal data-delay="4">
-          <!-- Premium Vector Shield Icon for Information Security -->
-          <div class="finance-trust__icon-iso-blue">
-            <i class="fa-solid fa-shield-halved"></i>
+          <!-- 2. Microsoft Power Platform Brand Badge -->
+          <div class="finance-trust__logo-badge" data-reveal data-delay="2">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 6L7 11V21L16 26L25 21V11L16 6Z" fill="#742774"/>
+              <path d="M16 9.5L10.5 12.5V19.5L16 22.5L21.5 19.5V12.5L16 9.5Z" fill="#E3008C"/>
+            </svg>
+            <div class="finance-trust__logo-text">
+              <strong>Microsoft</strong>
+              <span>Power Platform</span>
+            </div>
           </div>
-          <div class="finance-trust__logo-text">
-            <strong>ISO 27001:2013</strong>
-            <span>Information Security Standard</span>
-          </div>
-        </div>
 
-        <!-- 5. ISO 9001 Quality Framework Badge -->
-        <div class="finance-trust__logo-badge" data-reveal data-delay="5">
-          <!-- Premium Vector Globe-Check Icon for Quality Certification Management -->
-          <div class="finance-trust__icon-iso-navy">
-            <i class="fa-solid fa-square-poll-horizontal"></i>
+          <!-- 3. Power BI Analytics Badge -->
+          <div class="finance-trust__logo-badge" data-reveal data-delay="3">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="5" y="18" width="5" height="9" rx="1" fill="#E6AD12"/>
+              <rect x="13" y="10" width="5" height="17" rx="1" fill="#F8C100"/>
+              <rect x="21" y="4" width="5" height="23" rx="1" fill="#FFD851"/>
+            </svg>
+            <div class="finance-trust__logo-text">
+              <strong>Power BI</strong>
+              <span>Analytics Engine</span>
+            </div>
           </div>
-          <div class="finance-trust__logo-text">
-            <strong>ISO 9001:2015</strong>
-            <span>Quality Management Certified</span>
-          </div>
-        </div>
 
-      </div>
+          <!-- 4. ISO 27001 Security Badge -->
+          <div class="finance-trust__logo-badge" data-reveal data-delay="4">
+            <div class="finance-trust__icon-iso-blue">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div class="finance-trust__logo-text">
+              <strong>ISO 27001:2013</strong>
+              <span>Information Security Standard</span>
+            </div>
+          </div>
+
+          <!-- 5. ISO 9001 Quality Framework Badge -->
+          <div class="finance-trust__logo-badge" data-reveal data-delay="5">
+            <div class="finance-trust__icon-iso-navy">
+              <i class="fa-solid fa-square-poll-horizontal"></i>
+            </div>
+            <div class="finance-trust__logo-text">
+              <strong>ISO 9001:2015</strong>
+              <span>Quality Management Certified</span>
+            </div>
+          </div>
+
+        <?php endif; ?>
+      </div><!-- /finance-trust__grid -->
 
     </div>
   </div>
@@ -1914,7 +1934,7 @@ html.lenis, html.lenis body { height: auto; }
 <?php endif; ?>
 
 <!-- ================================================================
-     NEW SECTION: BUSINESS BENEFITS METRICS CANVASES (ANIMATED ENGINE)
+     HYBRID METRICS CORE ENGINE: DYNAMIC CARDS OVER THE FALLBACKS
      ================================================================ -->
 <section class="biz-benefits-sec">
   <div class="container">
@@ -1922,45 +1942,46 @@ html.lenis, html.lenis body { height: auto; }
     <h3 class="biz-benefits__title" data-reveal>Business Benefits</h3>
     
     <div class="biz-benefits__grid">
-      
-      <!-- Card 1: Reduce Closing Time -->
-      <div class="biz-benefits__card blue-theme" data-reveal data-delay="1">
-        <div class="biz-benefits__card-hdr">
-          <i class="fa-regular fa-clock"></i> Reduce Closing Time
-        </div>
-        <!-- data-target-value holds the number, data-suffix holds characters like % or x7 -->
-        <div class="biz-benefits__stat"><span class="run-counter" data-target-value="40" data-suffix="%">0</span>%</div>
-        <p class="biz-benefits__desc">Faster month-end close</p>
-      </div>
+      <?php if (!empty($businessBenefitsList)): ?>
+        
+        <!-- A. DYNAMIC ADMIN OVERRIDE ENGINE -->
+        <?php foreach ($businessBenefitsList as $benefitItem): ?>
+          <div class="biz-benefits__card <?php echo esc($benefitItem->card_theme); ?>" data-reveal>
+            <div class="biz-benefits__card-hdr">
+              <i class="<?php echo esc($benefitItem->icon_class); ?>"></i> <?php echo esc($benefitItem->title); ?>
+            </div>
+            <div class="biz-benefits__stat">
+              <span class="run-counter" data-target-value="<?php echo (int)filter_var($benefitItem->stat_value, FILTER_SANITIZE_NUMBER_INT); ?>" data-suffix="<?php echo esc($benefitItem->stat_suffix); ?>">0</span><?php echo esc($benefitItem->stat_suffix); ?>
+            </div>
+            <p class="biz-benefits__desc"><?php echo esc($benefitItem->subtitle); ?></p>
+          </div>
+        <?php endforeach; ?>
 
-      <!-- Card 2: Improve Accuracy -->
-      <div class="biz-benefits__card green-theme" data-reveal data-delay="2">
-        <div class="biz-benefits__card-hdr">
-          <i class="fa-regular fa-circle-check"></i> Improve Accuracy
-        </div>
-        <div class="biz-benefits__stat"><span class="run-counter" data-target-value="99" data-suffix="%">0</span>%</div>
-        <p class="biz-benefits__desc">Accurate &amp; reliable data</p>
-      </div>
+      <?php else: ?>
 
-      <!-- Card 3: Automated Reporting -->
-      <div class="biz-benefits__card purple-theme" data-reveal data-delay="3">
-        <div class="biz-benefits__card-hdr">
-          <i class="fa-regular fa-file-lines"></i> Automated Reporting
+        <!-- B. DEFAULT FACTORY FALLBACK MOCK CARDS TEMPLATE -->
+        <div class="biz-benefits__card blue-theme" data-reveal data-delay="1">
+          <div class="biz-benefits__card-hdr"><i class="fa-regular fa-clock"></i> Reduce Closing Time</div>
+          <div class="biz-benefits__stat"><span class="run-counter" data-target-value="40" data-suffix="%">0</span>%</div>
+          <p class="biz-benefits__desc">Faster month-end close</p>
         </div>
-        <div class="biz-benefits__stat"><span class="run-counter" data-target-value="100" data-suffix="%">0</span>%</div>
-        <p class="biz-benefits__desc">Eliminate manual efforts</p>
-      </div>
-
-      <!-- Card 4: Real-time Visibility -->
-      <div class="biz-benefits__card orange-theme" data-reveal data-delay="4">
-        <div class="biz-benefits__card-hdr">
-          <i class="fa-regular fa-eye"></i> Real-time Visibility
+        <div class="biz-benefits__card green-theme" data-reveal data-delay="2">
+          <div class="biz-benefits__card-hdr"><i class="fa-regular fa-circle-check"></i> Improve Accuracy</div>
+          <div class="biz-benefits__stat"><span class="run-counter" data-target-value="99" data-suffix="%">0</span>%</div>
+          <p class="biz-benefits__desc">Accurate &amp; reliable data</p>
         </div>
-        <!-- For non-standard numbers like 24x7, we run the base to 24 and append x7 dynamically -->
-        <div class="biz-benefits__stat"><span class="run-counter" data-target-value="24" data-suffix="x7">0</span>x7</div>
-        <p class="biz-benefits__desc">Eliminate anything anywhere</p>
-      </div>
+        <div class="biz-benefits__card purple-theme" data-reveal data-delay="3">
+          <div class="biz-benefits__card-hdr"><i class="fa-regular fa-file-lines"></i> Automated Reporting</div>
+          <div class="biz-benefits__stat"><span class="run-counter" data-target-value="100" data-suffix="%">0</span>%</div>
+          <p class="biz-benefits__desc">Eliminate manual efforts</p>
+        </div>
+        <div class="biz-benefits__card orange-theme" data-reveal data-delay="4">
+          <div class="biz-benefits__card-hdr"><i class="fa-regular fa-eye"></i> Real-time Visibility</div>
+          <div class="biz-benefits__stat"><span class="run-counter" data-target-value="24" data-suffix="x7">0</span>x7</div>
+          <p class="biz-benefits__desc">Eliminate anything anywhere</p>
+        </div>
 
+      <?php endif; ?>
     </div><!-- /biz-benefits__grid -->
     
   </div><!-- /container -->

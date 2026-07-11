@@ -333,33 +333,35 @@ $validation = \Config\Services::validation();
 
 <script type="text/javascript">
     var carouselIndex = 0;
-    function addCarouselRow() {
-        let html = `
-        <tr id="new-carousel-row-${carouselIndex}">
-            <td>
-                <input type="hidden" name="slide_id[]" value="" />
-                <input type="file" name="slide_image_new[]" class="form-control form-control-sm" required />
-            </td>
-            <td>
-                <input type="text" name="slide_title[]" placeholder="Enter headline title" class="form-control form-control-sm" required />
-            </td>
-            <td>
-                <textarea name="slide_description[]" rows="3" placeholder="Enter banner summary..." class="form-control form-control-sm"></textarea>
-            </td>
-            <td>
-                <input type="text" name="slide_link[]" placeholder="e.g., service/analytics" class="form-control form-control-sm" />
-            </td>
-            <td>
-                <input type="number" name="slide_sort_order[]" value="0" class="form-control form-control-sm" />
-            </td>
-            <td class="text-center">
-                <button type="button" onclick="$('#new-carousel-row-${carouselIndex}').remove();" class="btn btn-danger btn-sm"><i class="fa fa-minus-circle"></i></button>
-            </td>
-        </tr>`;
-        
-        $('#carousel-table tbody').append(html);
-        carouselIndex++;
-    }
+function addCarouselRow() {
+    let html = `
+    <tr id="new-carousel-row-${carouselIndex}">
+        <td>
+            <input type="hidden" name="slide_id[]" value="" />
+            <!-- FIXED: Dynamic unique contextual index tracking row binder -->
+            <input type="file" name="slide_image_new_${carouselIndex}" class="form-control form-control-sm" required />
+            <input type="hidden" name="new_slide_index[]" value="${carouselIndex}" />
+        </td>
+        <td>
+            <input type="text" name="slide_title[]" placeholder="Enter headline title" class="form-control form-control-sm" required />
+        </td>
+        <td>
+            <textarea name="slide_description[]" rows="3" placeholder="Enter banner summary..." class="form-control form-control-sm"></textarea>
+        </td>
+        <td>
+            <input type="text" name="slide_link[]" placeholder="e.g., service/analytics" class="form-control form-control-sm" />
+        </td>
+        <td>
+            <input type="number" name="slide_sort_order[]" value="0" class="form-control form-control-sm" />
+        </td>
+        <td class="text-center">
+            <button type="button" onclick="$('#new-carousel-row-${carouselIndex}').remove();" class="btn btn-danger btn-sm"><i class="fa fa-minus-circle"></i></button>
+        </td>
+    </tr>`;
+    
+    $('#carousel-table tbody').append(html);
+    carouselIndex++;
+}
 
     var visionIndex = 0;
     function addVisionRow() {

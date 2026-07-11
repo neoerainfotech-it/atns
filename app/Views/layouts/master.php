@@ -130,6 +130,17 @@ if (!empty($metaKeyword)) {
    select.required.nofillout{
       border: 1px solid #f70101 !important;
    }
+
+   /* Wipes out the default library buttons globally from the root level */
+.swiper-button-next, 
+.swiper-button-prev,
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    content: none !important;
+}
 </style>
 
 <body>

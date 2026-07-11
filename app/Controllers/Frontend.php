@@ -753,12 +753,13 @@ public function product_detail()
         $data['imagesList'] = $this->AdminModel->all_fetch('product_images',array('product_id'=>$meta->id)); 
         
         $db = \Config\Database::connect();
+        $productId = $meta->id;
 
         // ========================================================================
         // FIXED DATA LAYER: Clear explicit prefix to avoid duplicate table name errors
         // ========================================================================
-        $data['overviewMatrixList'] = $db->table('product_overview_matrix') // <-- REMOVED "cyb_"
-                                         ->where('product_id', $meta->id)
+        $data['overviewMatrixList'] = $db->table('product_overview_matrix') 
+                                         ->where('product_id', $productId)
                                          ->orderBy('sort_order', 'ASC')
                                          ->get()
                                          ->getResult();
@@ -771,15 +772,32 @@ public function product_detail()
         $data['partnershipTitle']       = isset($meta->partnershipTitle) ? $meta->partnershipTitle : 'Why Our Partnerships Matter';
         $data['partnershipDescription'] = isset($meta->partnershipDescription) ? $meta->partnershipDescription : '';
         
-        $data['partnershipCardsList']   = $db->table('product_partnership_cards') // <-- REMOVED "cyb_"
-                                             ->where('product_id', $meta->id)
+        $data['partnershipCardsList']   = $db->table('product_partnership_cards') 
+                                             ->where('product_id', $productId)
                                              ->orderBy('sort_order', 'ASC')
                                              ->get()
                                              ->getResult();
         // ========================================================================
 
+        // ========================================================================
+        // DYNAMIC INTEGRATION: FETCH CUSTOM TRUST STRIP BADGES MATRIX FROM DATABASE
+        // ========================================================================
+        $data['trustBadgesList'] = $db->table('product_trust_badges')
+                                      ->where('product_id', $productId)
+                                      ->orderBy('sort_order', 'ASC')
+                                      ->get()
+                                      ->getResult();
+        // ========================================================================
+
+        // Fetch Dynamic Business Benefits Metrics Dataset Map
+        $data['businessBenefitsList'] = $db->table('product_business_benefits')
+                                           ->where('product_id', $productId)
+                                           ->orderBy('sort_order', 'ASC')
+                                           ->get()
+                                           ->getResult();
+
         $data['testimonialsList'] = $db->table('cyb_testimonials')
-                                       ->where('product_id', $meta->id)
+                                       ->where('product_id', $productId)
                                        ->orderBy('sort_order', 'ASC')
                                        ->get()
                                        ->getResult();
@@ -789,7 +807,6 @@ public function product_detail()
       
         return view('frontend/product_detail',$data);
     }
-    
     
 public function services(){
       

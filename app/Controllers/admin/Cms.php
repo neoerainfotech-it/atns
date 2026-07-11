@@ -71,7 +71,6 @@ class Cms extends BaseController
             $data['image1'] = $row->image1;
             
             $data['featureList'] = $this->AdminModel->all_fetch('home_feature', ['home_id' => $row->id]);
-            // Fetch existing sliders to load them inside the carousel interface fields
             $data['sliders'] = $this->AdminModel->all_fetch('home_slider', ['home_id' => $row->id]);
         } else {
             $data['page_title'] = 'Add Heading';
@@ -81,7 +80,7 @@ class Cms extends BaseController
             $data['description'] = ''; 
             $data['solutionTitle'] = ''; 
             $data['image'] = '';  
-            $data['solutionDescription'] = '';   
+            $data['solutionDescription'] = '';    
             $data['keyTitle'] = ''; 
             $data['whyTitle'] = '';  
             $data['customerTitle'] = '';  
@@ -170,16 +169,22 @@ class Cms extends BaseController
                 $save['slide_description']  = $this->request->getVar('slide_description');
                 $save['slide_link']         = $this->request->getVar('slide_link');
                 $save['slide_sort_order']   = $this->request->getVar('slide_sort_order');
+                $newSlideIndexes            = $this->request->getVar('new_slide_index');
 
-                // Process image file uploads for NEW dynamic slideshow lines
+                // ========================================================================
+                // FIXED DATA LAYER: PROCESS FRESHLY CAPTURED NEW SLIDES MATCHING INDEX KEYS
+                // ========================================================================
                 $sliderImagesNew = [];
-                $newSliderFiles  = $this->request->getFileMultiple('slide_image_new');
-                if ($newSliderFiles) {
-                    foreach ($newSliderFiles as $key => $file) {
-                        if ($file->isValid() && !$file->hasMoved()) {
-                            $file_name = $file->getRandomName();
-                            if ($file->move('uploads/images/', $file_name)) {
-                                $sliderImagesNew[$key] = 'uploads/images/' . $file_name;
+                if (!empty($save['slide_id'])) {
+                    foreach ($save['slide_id'] as $key => $sId) {
+                        if (empty($sId) && isset($newSlideIndexes[$key])) {
+                            $indexKey = $newSlideIndexes[$key];
+                            $file = $this->request->getFile("slide_image_new_{$indexKey}");
+                            if ($file && $file->isValid() && !$file->hasMoved()) {
+                                $file_name = $file->getRandomName();
+                                if ($file->move('uploads/images/', $file_name)) {
+                                    $sliderImagesNew[$key] = 'uploads/images/' . $file_name;
+                                }
                             }
                         }
                     }
