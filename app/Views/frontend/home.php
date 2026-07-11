@@ -10,242 +10,160 @@ $transparentHeader = true;
     }
     
     /* ==========================================================================
-   HERO ENGINE: ELITE VISUAL CONSTRAINTS & GLASS SYSTEMS
-   ========================================================================== */
-.premium-banner-swiper {
-    width: 100%;
-    height: 80vh; 
-    min-height: 600px;
-    background-color: #0b0f19;
-    position: relative;
-}
-
-.premium-banner-swiper .swiper-slide {
-    width: 100% !important;
-    height: 100% !important;
-    position: relative;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-}
-
-.banner-bg-image-layer {
-    position: absolute;
-    top: 0; left: 0; 
-    width: 100%; height: 100%;
-    object-fit: cover;
-    z-index: 0;
-    transform: scale(1.05);
-    transition: transform 7s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.swiper-slide-active .banner-bg-image-layer {
-    transform: scale(1);
-}
-
-/* Elite Cine-Gradation Layer */
-.banner-overlay-tint {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(105deg, 
-        rgba(11, 15, 25, 0.95) 0%, 
-        rgba(11, 15, 25, 0.80) 40%, 
-        rgba(11, 15, 25, 0.40) 70%, 
-        rgba(11, 15, 25, 0.15) 100%
-    );
-    z-index: 1;
-    pointer-events: none;
-}
-
-.premium-banner-swiper .cstm-container {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 1320px;
-    padding: 0 32px;
-    margin: 0 auto;
-}
-
-.premium-banner-swiper .text-wrap {
-    max-width: 820px;
-    padding: 40px 0;
-}
-
-/* Fluid Elite Typography Hierarchy */
-.premium-banner-swiper .lg-title {
-    font-size: clamp(2.25rem, 1.2rem + 4.5vw, 3.5rem) !important;
-    font-weight: 650 !important;
-    color: #ffffff !important;
-    line-height: 1.12 !important;
-    letter-spacing: -0.03em !important;
-}
-
-.premium-banner-swiper .editor p {
-    font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.25rem) !important;
-    line-height: 1.65 !important;
-    color: #cbd5e1 !important;
-    margin-top: 20px;
-    max-width: 680px;
-}
-
-.banner-integrated-badge-row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 28px;
-    margin-top: 40px;
-}
-
-/* Balanced Tech Logo Box Frame */
-.hero-partner-badge-wrapper {
-    height: 140px;
-    width: 200px;            /* Explicitly matches the nearly-square badge proportions */
-    background: #ffffff;
-    padding: 10px;            /* Clean internal spacing */
-    border-radius: 12px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Force image child logic to scale cleanly inside the medium box container */
-.hero-partner-badge-wrapper img.hero-partner-embedded-logo {
-    height: 100% !important;
-    width: 100% !important;
-    object-fit: contain !important;
-}
-
-.hero-partner-badge-wrapper:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
-}
-
-.title-wrap {
-    position: relative !important;
-    z-index: 10 !important;
-    padding: 0px !important;
-    max-width: 100% !important;
-    word-wrap: break-word !important;
-}
-
-/* ==========================================================================
-   RESPONSIVE MATRIX ADJUSTMENTS FOR THE NEW SIZE
-   ========================================================================== */
-@media (max-width: 991px) {
-    .hero-partner-badge-wrapper {
-        height: 110px;
-        width: 160px;
-        padding: 8px;
-    }
-}
-
-@media (max-width: 576px) {
-    .hero-partner-badge-wrapper {
-        height: 90px;
-        width: 140px;
-        padding: 6px;
-    }
-}
-
-/* Modern Minimalist Pagination Engine */
-.hero-pagination {
-    position: absolute;
-    bottom: 40px !important;
-    left: 32px !important;
-    transform: none !important;
-    width: auto !important;
-    z-index: 10;
-    display: flex;
-    gap: 8px;
-}
-
-.hero-pagination .swiper-pagination-bullet {
-    background: rgba(255, 255, 255, 0.25) !important;
-    opacity: 1;
-    width: 24px;
-    height: 4px;
-    border-radius: 2px;
-    transition: all 0.4s ease;
-    margin: 0 !important;
-}
-
-.hero-pagination .swiper-pagination-bullet-active {
-    background: #0083BF !important; /* System Brand Match Dynamic Accent color */
-    width: 48px;
-}
-
-/* Re-apply layout definitions specifically for the Case Study custom selectors */
-.case-panel-next, .case-panel-prev {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    color: #0083BF;
-}
-
-
-/* ==========================================================================
-   RESPONSIVE MATRIX ADJUSTMENTS
-   ========================================================================== */
-@media (max-width: 991px) {
+       HERO ENGINE: ELITE VISUAL CONSTRAINTS & GLASS SYSTEMS
+       ========================================================================== */
     .premium-banner-swiper {
-        height: 75vh;
-        min-height: 550px;
+        width: 100%;
+        height: 80vh; 
+        min-height: 600px;
+        background-color: #0b0f19;
+        position: relative;
     }
-    .premium-banner-swiper .cstm-container {
-        padding: 0 24px;
-    }
-    .premium-banner-swiper .text-wrap { 
-        text-align: center; 
-        margin: 0 auto; 
+
+    .premium-banner-swiper .swiper-slide {
+        width: 100% !important;
+        height: 100% !important;
+        position: relative;
         display: flex;
-        flex-direction: column;
         align-items: center;
+        overflow: hidden;
     }
-    .premium-banner-swiper .editor p {
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .banner-integrated-badge-row { 
-        justify-content: center; 
-        gap: 20px; 
-        margin-top: 30px;
-    }
-    .hero-pagination {
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        bottom: 25px !important;
-    }
-    
-}
 
-@media (max-width: 576px) {
-    .premium-banner-swiper {
-        height: 80vh;
-        min-height: 500px;
+    .banner-bg-image-layer {
+        position: absolute;
+        top: 0; left: 0; 
+        width: 100%; height: 100%;
+        object-fit: cover;
+        z-index: 0;
+        transform: scale(1.05);
+        transition: transform 7s cubic-bezier(0.25, 1, 0.5, 1);
     }
+
+    .swiper-slide-active .banner-bg-image-layer {
+        transform: scale(1);
+    }
+
+    /* Elite Cine-Gradation Layer */
+    .banner-overlay-tint {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(105deg, 
+            rgba(11, 15, 25, 0.95) 0%, 
+            rgba(11, 15, 25, 0.80) 40%, 
+            rgba(11, 15, 25, 0.40) 70%, 
+            rgba(11, 15, 25, 0.15) 100%
+        );
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .premium-banner-swiper .cstm-container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 1320px;
+        padding: 0 32px;
+        margin: 0 auto;
+    }
+
     .premium-banner-swiper .text-wrap {
-        padding: 20px 0;
+        max-width: 820px;
+        padding: 40px 0;
     }
+
+    /* Fluid Elite Typography Hierarchy */
+    .premium-banner-swiper .lg-title {
+        font-size: clamp(2.25rem, 1.2rem + 4.5vw, 3.5rem) !important;
+        font-weight: 650 !important;
+        color: #ffffff !important;
+        line-height: 1.12 !important;
+        letter-spacing: -0.03em !important;
+    }
+
+    .premium-banner-swiper .editor p {
+        font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.25rem) !important;
+        line-height: 1.65 !important;
+        color: #cbd5e1 !important;
+        margin-top: 20px;
+        max-width: 680px;
+    }
+
     .banner-integrated-badge-row {
-        flex-direction: column;
-        width: 100%;
-        gap: 16px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 28px;
+        margin-top: 40px;
     }
-    .banner-integrated-badge-row .btn {
-        width: 100%;
+
+    /* Balanced Tech Logo Box Frame */
+    .hero-partner-badge-wrapper {
+        height: 140px;
+        width: 200px;
+        background: #ffffff;
+        padding: 10px;
+        border-radius: 12px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+        display: inline-flex;
+        align-items: center;
         justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    
-}
+
+    .hero-partner-badge-wrapper img.hero-partner-embedded-logo {
+        height: 100% !important;
+        width: 100% !important;
+        object-fit: contain !important;
+    }
+
+    .hero-partner-badge-wrapper:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Modern Minimalist Pagination Engine */
+    .hero-pagination {
+        position: absolute;
+        bottom: 40px !important;
+        left: 32px !important;
+        transform: none !important;
+        width: auto !important;
+        z-index: 10;
+        display: flex;
+        gap: 8px;
+    }
+
+    .hero-pagination .swiper-pagination-bullet {
+        background: rgba(255, 255, 255, 0.25) !important;
+        opacity: 1 !important;
+        width: 24px !important;
+        height: 4px !important;
+        border-radius: 2px !important;
+        transition: all 0.4s ease !important;
+        margin: 0 !important;
+    }
+
+    .hero-pagination .swiper-pagination-bullet-active {
+        background: #0083BF !important;
+        width: 48px !important;
+    }
+
+    /* Strip Navigation elements cleanly inside Hero wrapper boundary only */
+    .premium-banner-swiper .swiper-button-next,
+    .premium-banner-swiper .swiper-button-prev,
+    .premium-banner-swiper .swiper-button-next::after,
+    .premium-banner-swiper .swiper-button-prev::after {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        content: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
 
     /* ==========================================================================
-       CASE STUDY PLATFORM: FULL-BLEED DESIGN REALIGNMENT & OVERFLOW PROTECTION
+       CASE STUDY PLATFORM: PREMIUM FULL-BLEED REALIGNMENT
        ========================================================================== */
     .home-case-study {
         position: relative;
@@ -283,7 +201,7 @@ $transparentHeader = true;
     .home-case-study .case-study-bg::after {
         content: ''; position: absolute;
         top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(15, 23, 42, 0.45);
+        background: rgba(15, 23, 42, 0.35);
         z-index: 2;
     }
 
@@ -294,14 +212,13 @@ $transparentHeader = true;
 
     .home-case-study .slider-container {
         background: rgba(255, 255, 255, 0.96);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        padding: 50px 45px;
-        border-radius: 24px;
-        border: 1px solid rgba(255, 255, 255, 0.6);
-        box-shadow: 0 30px 60px rgba(15, 23, 42, 0.25);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        padding: 50px 45px 40px 45px;
+        border-radius: 4px;
+        box-shadow: 0 30px 60px rgba(15, 23, 42, 0.2);
         width: 100%;
-        max-width: 520px; 
+        max-width: 560px; 
     }
 
     .home-case-study .case-study-box {
@@ -341,45 +258,154 @@ $transparentHeader = true;
         font-size: 0.85rem;
         letter-spacing: 0.05em;
         text-decoration: none !important;
+        margin-bottom: 24px;
     }
 
+    /* Glassmorphic Next Preview Panel Card */
     .next-slide-card-wrapper {
-        background: rgba(30, 41, 59, 0.9);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        padding: 30px;
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 35px;
+        border-radius: 4px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
         width: 100%;
-        max-width: 360px;
+        max-width: 380px;
         margin-left: auto;
     }
 
     .next-slide-card-wrapper h4 {
-        color: #38bdf8 !important;
-        font-size: 0.8rem;
+        color: #0083BF !important;
+        font-size: 0.85rem;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.05em;
         margin-bottom: 12px;
     }
 
     .next-slide-card-wrapper p {
-        color: #F8FAFC !important;
-        font-size: 0.95rem;
-        font-weight: 600;
+        color: #1e293b !important;
+        font-size: 1rem;
+        font-weight: 700;
         line-height: 1.4;
         margin: 0;
     }
 
     /* ==========================================================================
-       RESPONSIVE MATRIX ADJUSTMENTS
+       INLINE PREMIUM NAVIGATION ENGINE
+       ========================================================================== */
+    .home-case-study .swiper-controls {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 14px !important;
+        margin-top: 10px !important;
+        background: transparent !important;
+        width: auto !important;
+    }
+
+    .home-case-study .case-panel-next,
+    .home-case-study .case-panel-prev {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 24px !important;
+        height: 24px !important;
+        cursor: pointer;
+        background: none !important;
+        border: none !important;
+        position: relative !important;
+        top: auto !important; left: auto !important; right: auto !important;
+        margin: 0 !important;
+        transition: transform 0.2s ease;
+        z-index: 30 !important;
+    }
+
+    .home-case-study .case-panel-prev::after {
+        content: '<' !important;
+        font-size: 20px !important;
+        color: #94a3b8 !important;
+        font-weight: 400 !important;
+    }
+
+    .home-case-study .case-panel-next::after {
+        content: '>' !important;
+        font-size: 20px !important;
+        color: #94a3b8 !important;
+        font-weight: 400 !important;
+    }
+
+    .home-case-study .case-panel-prev:hover::after,
+    .home-case-study .case-panel-next:hover::after {
+        color: #0083BF !important;
+    }
+
+    /* Custom Inline Case Study Dashed Pagination Track */
+    .home-case-study .case-pagination {
+        position: relative !important;
+        bottom: auto !important;
+        left: auto !important;
+        transform: none !important;
+        width: auto !important;
+        display: inline-flex !important;
+        align-items: center;
+        gap: 8px !important;
+        z-index: 25 !important;
+    }
+
+    .home-case-study .case-pagination .swiper-pagination-bullet {
+        width: 32px !important;
+        height: 4px !important;
+        background: #cbd5e1 !important;
+        border-radius: 2px !important;
+        opacity: 1 !important;
+        margin: 0 !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .home-case-study .case-pagination .swiper-pagination-bullet-active {
+        background: #0083BF !important;
+        width: 48px !important;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE LAYOUT adjustments
        ========================================================================== */
     @media (max-width: 991px) {
+        .premium-banner-swiper {
+            height: 75vh;
+            min-height: 550px;
+        }
         .premium-banner-swiper .lg-title { font-size: 2.75rem !important; }
-        .premium-banner-swiper .text-wrap { text-align: center; margin: 0 auto; }
-        .banner-integrated-badge-row { justify-content: center; gap: 16px; }
+        .premium-banner-swiper .cstm-container {
+            padding: 0 24px;
+        }
+        .premium-banner-swiper .text-wrap { 
+            text-align: center; 
+            margin: 0 auto; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .premium-banner-swiper .editor p {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .banner-integrated-badge-row { 
+            justify-content: center; 
+            gap: 20px; 
+            margin-top: 30px;
+        }
+        .hero-pagination {
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            bottom: 25px !important;
+        }
+        .hero-partner-badge-wrapper {
+            height: 110px;
+            width: 160px;
+            padding: 8px;
+        }
         
         .home-case-study { height: auto; min-height: auto; padding: 60px 0; background-color: #F8FAFC; }
         .home-case-study .bg-slider-container { display: none; }
@@ -389,8 +415,29 @@ $transparentHeader = true;
     }
 
     @media (max-width: 576px) {
+        .premium-banner-swiper {
+            height: 80vh;
+            min-height: 500px;
+        }
         .premium-banner-swiper .lg-title { font-size: 2.2rem !important; }
         .premium-banner-swiper .editor p { font-size: 1rem !important; }
+        .premium-banner-swiper .text-wrap {
+            padding: 20px 0;
+        }
+        .banner-integrated-badge-row {
+            flex-direction: column;
+            width: 100%;
+            gap: 16px;
+        }
+        .banner-integrated-badge-row .btn {
+            width: 100%;
+            justify-content: center;
+        }
+        .hero-partner-badge-wrapper {
+            height: 90px;
+            width: 140px;
+            padding: 6px;
+        }
     }
 </style>
 
@@ -414,15 +461,14 @@ $transparentHeader = true;
                                             <p><?php echo $slide->description; ?></p>
                                         </div>
                                         <div class="banner-integrated-badge-row">
-    <a href="<?php echo !empty($slide->link) ? base_url($slide->link) : base_url($heading->link ?? ''); ?>" class="btn btn-theme btn-icon m-0">Explore More <span class="icon"><svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="#fff"/></svg></span></a>
-    
-    <?php if (!empty($heading->image1)): ?>
-        <!-- Wrapper container block for premium layout containment -->
-        <div class="hero-partner-badge-wrapper">
-            <img src="<?php echo base_url($heading->image1); ?>" class="hero-partner-embedded-logo" alt="Partner Badge" />
-        </div>
-    <?php endif; ?>
-</div>
+                                            <a href="<?php echo !empty($slide->link) ? base_url($slide->link) : base_url($heading->link ?? ''); ?>" class="btn btn-theme btn-icon m-0">Explore More <span class="icon"><svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="#fff"/></svg></span></a>
+                                            
+                                            <?php if (!empty($heading->image1)): ?>
+                                                <div class="hero-partner-badge-wrapper">
+                                                    <img src="<?php echo base_url($heading->image1); ?>" class="hero-partner-embedded-logo" alt="Partner Badge" />
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -541,7 +587,8 @@ $transparentHeader = true;
 
 <section class="home-case-study">
     <div class="bg-slider-container">
-        <div thumbsSlider="" class="swiper case-study">
+        <!-- FIX 1: Stripped thumbsSlider attribute to decouple the sync engine loops -->
+        <div class="swiper case-study">
             <div class="swiper-wrapper">
                 <?php if (!empty($caseStudyList)): foreach ($caseStudyList as $key => $value): ?>
                     <div class="swiper-slide">
@@ -581,11 +628,12 @@ $transparentHeader = true;
                         </div>
                     </div>
                     
-                    <div class="swiper-controls" style="--swiper-navigation-color: #0083BF; margin-top: 24px;">
-    <div class="case-panel-prev"></div>
-    <div class="swiper-pagination"></div>
-    <div class="case-panel-next"></div>
-</div>
+                    <!-- FIX 2: Swapped out generic class names for isolated control handles -->
+                    <div class="swiper-controls">
+                        <div class="case-panel-prev"></div>
+                        <div class="case-pagination"></div>
+                        <div class="case-panel-next"></div>
+                    </div>
                 </div>
             </div>
 
@@ -711,14 +759,15 @@ $transparentHeader = true;
             </div>
         </div>
         <div class="">
-            <div class="row g-0 counter-trigger" data-cues="slideInUp">
+            <!-- FIX 3: Added grid centering helpers so items align cleanly -->
+            <div class="row g-0 counter-trigger justify-content-center text-center" data-cues="slideInUp">
                 <?php if (!empty($counterList)){foreach ($counterList as $key => $value) {?>
-                    <div class="col-lg-2">
-                        <div class="number-counter">
-                            <div class="number-wrap">
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="number-counter" style="border-right: 1px solid #e2e8f0; padding: 20px 10px;">
+                            <div class="number-wrap" style="color: #0083BF; font-weight: 800; font-size: 2.2rem;">
                                 <span class="count"><?php echo $value->title; ?></span><?php echo $value->symbol; ?>
                             </div>
-                            <h3 class="h4"><?php echo $value->description; ?></h3>
+                            <h3 class="h4" style="font-size: 0.95rem; font-weight: 700; color: #1e293b;"><?php echo $value->description; ?></h3>
                         </div>
                     </div>
                 <?php } } ?>
@@ -857,7 +906,7 @@ $transparentHeader = true;
             }
         });
 
-        // Initialize synchronized Case Study components correctly
+        // Initialize background layer independently
         var caseBgSwiper = new Swiper('.case-study', {
             effect: 'fade',
             fadeEffect: { crossFade: true },
@@ -865,6 +914,7 @@ $transparentHeader = true;
             speed: 800
         });
 
+        // Initialize 'Up Next' tracker preview card independently
         var caseNextPreviewSwiper = new Swiper('.case-study-next-preview-tracker', {
             effect: 'fade',
             fadeEffect: { crossFade: true },
@@ -872,20 +922,29 @@ $transparentHeader = true;
             speed: 800
         });
 
-       var caseMainBoxSwiper = new Swiper('.case-study-box', {
-    speed: 800,
-    navigation: {
-        nextEl: '.home-case-study .case-panel-next',
-        prevEl: '.home-case-study .case-panel-prev',
-    },
-    pagination: {
-        el: '.home-case-study .swiper-pagination',
-        clickable: true,
-    },
-    controller: {
-        control: [caseBgSwiper, caseNextPreviewSwiper]
-    }
-});
+        // Initialize master controller text box slider with explicit target elements
+        var caseMainBoxSwiper = new Swiper('.case-study-box', {
+            speed: 800,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            navigation: {
+                nextEl: '.home-case-study .case-panel-next',
+                prevEl: '.home-case-study .case-panel-prev',
+            },
+            pagination: {
+                el: '.home-case-study .case-pagination',
+                clickable: true,
+            }
+        });
+
+        // FIX 4: Bind event hook parameters cleanly to link layouts together without infinite loops
+        caseMainBoxSwiper.on('slideChange', function () {
+            var activeIndex = caseMainBoxSwiper.activeIndex;
+            caseBgSwiper.slideTo(activeIndex, 800, false);
+            caseNextPreviewSwiper.slideTo(activeIndex, 800, false);
+        });
     });
 
     $('body').delegate("#spt","click",function(){
@@ -910,34 +969,5 @@ $transparentHeader = true;
         });
     });
 </script>
-
-<!-- Place this at the absolute bottom of the file, just above your endSection line -->
-<style>
-    /* 1. Target Swiper's exact internal font-family icon generation */
-    .home-banner *::after, 
-    .home-banner *::before,
-    .premium-banner-swiper *::after,
-    .premium-banner-swiper *::before {
-        content: none !important;
-    }
-
-    /* 2. Target any absolutely positioned control blocks created by animation scripts */
-    .home-banner [class*="swiper-button"],
-    .home-banner [class*="nav-"],
-    .home-banner [class*="arrow-"] {
-        display: none !important;
-        opacity: 0 !important;
-        visibility: hidden !important;
-        width: 0 !important;
-        height: 0 !important;
-        pointer-events: none !important;
-    }
-
-    /* 3. Force hide anything acting as a navigation anchor next to the container */
-    .premium-banner-swiper + div,
-    .premium-banner-swiper + a {
-        pointer-events: none !important;
-    }
-</style>
 
 <?php $this->endSection(); ?>
