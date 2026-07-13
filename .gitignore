@@ -46,3 +46,9 @@ writable/debugbar/debugbar_1783606101.287704.json
 writable/debugbar/debugbar_1783606104.103759.json
 writable/debugbar/debugbar_1783606107.074460.json
 writable/debugbar/debugbar_1783606109.926166.json
+
+
+# Ignore local runtime debugbar logs
+writable/debugbar/
+writable/session/
+writable/cache/
