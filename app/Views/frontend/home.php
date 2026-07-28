@@ -8,7 +8,14 @@ $transparentHeader = true;
     .ddd {
         display: none;
     }
-    
+    /* Locate this in style.css around line 3628 */
+    .title-wrap {
+        position: relative;
+        z-index: 10;
+        padding: 0px; /* Changed from 20px to 0px */
+        max-width: 100%;
+        word-wrap: break-word;
+    }
     /* ==========================================================================
        HERO ENGINE: ELITE VISUAL CONSTRAINTS & GLASS SYSTEMS
        ========================================================================== */
@@ -454,14 +461,14 @@ $transparentHeader = true;
                             <div class="row w-100 m-0">
                                 <div class="col-lg-12 p-0">
                                     <div class="text-wrap" data-cues="slideInUp" data-group="banner-content-<?php echo $index; ?>">
-                                        <div class="title-wrap mb-2">
+                                        <div class="title-wrap mb-2 p-0">
                                             <h1 class="lg-title mb-0"><?php echo $slide->title; ?></h1>
                                         </div>
                                         <div class="editor fs-20">
                                             <p><?php echo $slide->description; ?></p>
                                         </div>
                                         <div class="banner-integrated-badge-row">
-                                            <a href="<?php echo !empty($slide->link) ? base_url($slide->link) : base_url($heading->link ?? ''); ?>" class="btn btn-theme btn-icon m-0">Explore More <span class="icon"><svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="#fff"/></svg></span></a>
+                                            <a href="<?php echo !empty($slide->link) ? base_url($slide->link) : base_url($heading->link ?? ''); ?>" class="btn btn-theme btn-icon m-0">Contact Us <span class="icon"><svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="#fff"/></svg></span></a>
                                             
                                             <?php if (!empty($heading->image1)): ?>
                                                 <div class="hero-partner-badge-wrapper">

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\admin; // Clean lowercase namespace setup
+namespace App\Controllers\Admin; // FIXED: Capitalized 'Admin' to perfectly prevent Linux Hostinger URL routing crashes
 
 use App\Controllers\BaseController;
 
@@ -124,19 +124,29 @@ class WebinarController extends BaseController
         $output = fopen("php://output", "w");
         fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF)); // Excel UTF-8 BOM Lang Fix
 
-        // Output column row array mapping
-        fputcsv($output, ['ID', 'Event Title', 'Attendee Name', 'Email', 'Phone', 'Company', 'Designation', 'ERP System', 'Registration Date']);
+        // FIXED: Added all new international and metadata fields directly into the layout column mapping matrix
+        fputcsv($output, [
+            'ID', 'Event Title', 'Target Service', 'Target Product', 'Attendee Name', 
+            'Email', 'Country', 'Country Code', 'Phone Number', 'Company Name', 
+            'Designation', 'ERP System', 'Expectations/Comments', 'Registration Date'
+        ]);
 
         foreach ($records as $row) {
+            // FIXED: Stream records using the updated schema fields mapping parameters safely
             fputcsv($output, [
                 $row->id,
                 $row->event_title ?? 'Unified Webinar',
+                $row->service ?? 'N/A',
+                $row->product ?? 'N/A',
                 $row->name,
                 $row->email,
+                $row->country ?? 'N/A',
+                $row->country_code ?? '',
                 $row->phone ?? '',
                 $row->company_name ?? '',
                 $row->title ?? '',
                 $row->erp_system ?? '',
+                $row->expectation ?? ($row->message ?? ''),
                 $row->create_date ?? ''
             ]);
         }

@@ -4,7 +4,6 @@ $this->section('page');
 $transparentHeader = true;
 ?>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
@@ -34,19 +33,23 @@ $transparentHeader = true;
        BACKGROUNDS & COMPOSITOR LAYOUTS
        ========================================================================== */
     .bg-enterprise-dark { background: linear-gradient(135deg,  #0083BF 0%, #0d2c6c 100%); }
+    
     .network-glow-bg {
         position: relative;
-        background-color:  #0083BF;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
+        background-size: cover !important;
+        background-position: center right !important;
+        background-repeat: no-repeat !important;
         overflow: hidden;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        min-height: 90vh;
+        padding-top: 3px !important; 
+        display: flex;
+        align-items: center;
     }
     .network-glow-bg::before {
         content: '';
         position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%232f7cff' stroke-width='0.5' stroke-opacity='0.04'%3E%3Cpath d='M40 0v80M0 40h80'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23ffffff' stroke-width='0.5' stroke-opacity='0.03'%3E%3Cpath d='M40 0v80M0 40h80'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         z-index: 1; pointer-events: none;
     }
     .hero-blur-orb {
@@ -61,15 +64,16 @@ $transparentHeader = true;
        TYPOGRAPHY & BRAND COMPONENT DESIGN ELEMENTS
        ========================================================================== */
     .text-gradient-premium {
-        background: linear-gradient(135deg, #ffffff 30%, #a5c7fe 100%);
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        color: #ffffff;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
     .tracking-wider { letter-spacing: 0.08em; }
     .hero-badge-glow {
-        background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 16px; border-radius: 50px;
-        font-size: 0.8rem; font-weight: 600; color: #e2e8f0; display: inline-flex; align-items: center; gap: 8px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        background: rgba(13, 44, 108, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.2); padding: 6px 16px; border-radius: 50px;
+        font-size: 0.8rem; font-weight: 600; color: #ffffff; display: inline-flex; align-items: center; gap: 8px;
     }
     .rounded-pill-custom { border-radius: 50px !important; }
     
@@ -82,25 +86,13 @@ $transparentHeader = true;
         box-shadow: 0 8px 25px rgba(47, 124, 255, 0.3); color: #fff;
     }
     .btn-outline-custom {
-        border: 1px solid rgba(255, 255, 255, 0.2); color: #fff;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        border: 1px solid rgba(255, 255, 255, 0.4); color: #fff;
+        background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(8px);
+        transition: all 0.3s ease;
     }
     .btn-outline-custom:hover {
-        background: rgba(255, 255, 255, 0.05); border-color: #fff; transform: translateY(-2px); color: #fff;
+        background: rgba(255, 255, 255, 0.2); border-color: #fff; transform: translateY(-2px); color: #fff;
     }
-
-    .hero-showroom-viewport { position: relative; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2; }
-    .hero-glass-frame {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 24px; padding: 30px;
-        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2); width: 100%; max-width: 480px;
-    }
-    .hero-image-canvas {
-        border-radius: 14px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1);
-        background: #091428; box-shadow: 0 15px 35px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; min-height: 250px;
-    }
-    .hero-image-canvas img { width: 100%; height: 100%; object-fit: contain; padding: 15px; background: #fff; }
 
     /* ==========================================================================
        PREMIUM CARD & UI INTERACTIONS
@@ -155,14 +147,14 @@ $transparentHeader = true;
     }
 
     /* ==========================================================================
-       PARTNERSHIPS CAROUSEL SLIDER 
+       PARTNERSHIPS GRID LAYOUT STYLING
        ========================================================================== */
     .partner-logo-card {
         height: 90px; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         background: #ffffff; border: 1px solid rgba(13, 44, 108, 0.06); box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         display: flex; align-items: center; justify-content: center; padding: 15px 25px; border-radius: 8px;
     }
-    .partner-logo-card:hover { border-color: var(--atna-secondary); box-shadow: 0 10px 20px rgba(13, 44, 108, 0.06); }
+    .partner-logo-card:hover { border-color: var(--atna-secondary); box-shadow: 0 10px 20px rgba(13, 44, 108, 0.06); transform: translateY(-3px); }
     
     .logo-greyscale {
         filter: none !important; opacity: 1 !important; transition: all 0.4s ease; max-height: 42px; max-width: 100%; object-fit: contain;
@@ -170,7 +162,7 @@ $transparentHeader = true;
     .partner-logo-card:hover .logo-greyscale { transform: scale(1.04); }
 
     /* ==========================================================================
-       HIGH-TREND COLOR-CODED SECTORS DESIGN UTILITY TOKENS (SECTION 7 REARCHITECT)
+       HIGH-TREND COLOR-CODED SECTORS DESIGN UTILITY TOKENS (SECTION 7)
        ========================================================================== */
     .vertical-app-card {
         background: #ffffff;
@@ -187,27 +179,13 @@ $transparentHeader = true;
         box-shadow: 0 25px 50px rgba(13, 44, 108, 0.08) !important;
     }
     .vertical-app-card .card-accent-strip {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 5px;
+        position: absolute; top: 0; left: 0; width: 100%; height: 5px;
     }
     .vertical-app-card .icon-header-box {
-        width: 54px;
-        height: 54px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.35rem;
-        margin-bottom: 1.25rem;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.04);
-        transition: transform 0.4s ease;
+        width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-size: 1.35rem; margin-bottom: 1.25rem; box-shadow: 0 8px 20px rgba(0,0,0,0.04); transition: transform 0.4s ease;
     }
-    .vertical-app-card:hover .icon-header-box {
-        transform: scale(1.1) rotate(-8deg);
-    }
+    .vertical-app-card:hover .icon-header-box { transform: scale(1.1) rotate(-8deg); }
     
     .v-card-blue { --accent-clr: #0052cc; --accent-bg: rgba(0,82,204,0.08); }
     .v-card-green { --accent-clr: #2e7d32; --accent-bg: rgba(46,125,50,0.08); }
@@ -223,21 +201,12 @@ $transparentHeader = true;
     .vertical-app-card .node-bullet-check { color: var(--accent-clr); }
 
     .vertical-title-text {
-        font-size: 1.25rem;
-        font-weight: 800;
-        color: #111827;
-        margin-bottom: 1.2rem;
-        letter-spacing: -0.01em;
+        font-size: 1.25rem; font-weight: 800; color: #111827; margin-bottom: 1.2rem; letter-spacing: -0.01em;
     }
     .vertical-app-node-line {
-        font-size: 0.92rem;
-        font-weight: 500;
-        color: #4b5563;
-        transition: color 0.2s ease;
+        font-size: 0.92rem; font-weight: 500; color: #4b5563; transition: color 0.2s ease;
     }
-    .vertical-app-card:hover .vertical-app-node-line {
-        color: #1f2937;
-    }
+    .vertical-app-card:hover .vertical-app-node-line { color: #1f2937; }
 
     /* ==========================================================================
        ADVANCED HIGH-TREND ASYMMETRIC PILLARS DESIGN
@@ -248,88 +217,46 @@ $transparentHeader = true;
         position: relative;
     }
     .asymmetric-interactive-card {
-        background: #ffffff;
-        border: 1px solid rgba(13, 44, 108, 0.06);
-        border-radius: 1.5rem;
-        padding: 2.2rem 1.8rem;
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
-        transition: all 0.5s cubic-bezier(0.25, 1, 0.33, 1);
-        box-shadow: 0 12px 35px rgba(13, 44, 108, 0.03);
+        background: #ffffff; border: 1px solid rgba(13, 44, 108, 0.06); border-radius: 1.5rem;
+        padding: 2.2rem 1.8rem; position: relative; overflow: hidden; z-index: 1;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.33, 1); box-shadow: 0 12px 35px rgba(13, 44, 108, 0.03);
     }
     .asymmetric-interactive-card::before {
-        content: '';
-        position: absolute;
-        width: 160px;
-        height: 160px;
+        content: ''; position: absolute; width: 160px; height: 160px;
         background: linear-gradient(135deg, rgba(0, 131, 191, 0.07) 0%, rgba(13, 44, 108, 0.03) 100%);
-        border-radius: 50%;
-        top: -60px;
-        right: -60px;
-        z-index: -1;
-        transition: transform 0.6s cubic-bezier(0.25, 1, 0.33, 1);
+        border-radius: 50%; top: -60px; right: -60px; z-index: -1; transition: transform 0.6s cubic-bezier(0.25, 1, 0.33, 1);
     }
     .asymmetric-interactive-card:hover {
         transform: translateY(-8px) scale(1.02) rotate(0.5deg);
-        border-color: rgba(0, 131, 191, 0.35);
-        box-shadow: 0 25px 50px rgba(13, 44, 108, 0.09) !important;
+        border-color: rgba(0, 131, 191, 0.35); box-shadow: 0 25px 50px rgba(13, 44, 108, 0.09) !important;
     }
-    .asymmetric-interactive-card:hover::before {
-        transform: scale(1.4) translate(-10px, 10px);
-    }
+    .asymmetric-interactive-card:hover::before { transform: scale(1.4) translate(-10px, 10px); }
     .asymmetric-interactive-card .icon-shield-frame {
-        width: 60px;
-        height: 60px;
+        width: 60px; height: 60px;
         background: linear-gradient(135deg, rgba(27, 71, 146, 0.06) 0%, rgba(0, 131, 191, 0.04) 100%);
-        color: var(--atna-secondary);
-        border: 1px solid rgba(27, 71, 146, 0.05);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 1rem;
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-        transition: all 0.4s ease;
+        color: var(--atna-secondary); border: 1px solid rgba(27, 71, 146, 0.05);
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 1rem; font-size: 1.5rem; margin-bottom: 1.5rem; transition: all 0.4s ease;
     }
     .asymmetric-interactive-card:hover .icon-shield-frame {
         background: linear-gradient(135deg, var(--atna-secondary) 0%, #0083BF 100%);
-        color: #ffffff;
-        transform: scale(1.08) rotate(-4deg);
-        box-shadow: 0 8px 20px rgba(0, 131, 191, 0.25);
+        color: #ffffff; transform: scale(1.08) rotate(-4deg); box-shadow: 0 8px 20px rgba(0, 131, 191, 0.25);
     }
     .asymmetric-card-title {
-        font-size: 1.15rem;
-        font-weight: 700;
-        color: #111827;
-        margin-bottom: 0.75rem;
-        letter-spacing: -0.015em;
+        font-size: 1.15rem; font-weight: 700; color: #111827; margin-bottom: 0.75rem; letter-spacing: -0.015em;
     }
-    .asymmetric-card-desc {
-        font-size: 0.88rem;
-        color: #4b5563;
-        line-height: 1.55;
-    }
+    .asymmetric-card-desc { font-size: 0.88rem; color: #4b5563; line-height: 1.55; }
 
-    .sec-vpad {
-        padding-top: var(--section-py);
-        padding-bottom: var(--section-py);
-    }
+    .sec-vpad { padding-top: var(--section-py); padding-bottom: var(--section-py); }
 
     /* ==========================================================================
        RESPONSIVE SYSTEM BREAKPOINTS
        ========================================================================== */
-    @media (max-width: 1200px) {
-        .partner-next { right: -10px !important; }
-        .partner-prev { left: -10px !important; }
-    }
     @media (max-width: 991.98px) {
-        .network-glow-bg { padding-top: 140px !important; padding-bottom: 60px !important; }
-        .hero-showroom-viewport { margin-top: 40px; }
-        .partner-next, .partner-prev { top: auto; bottom: -50px; transform: none; }
-        .partner-prev { left: calc(50% - 55px) !important; }
-        .partner-next { right: calc(50% - 55px) !important; }
-        .swiper-partner-wrapper { padding-bottom: 50px !important; }
+        .network-glow-bg {
+            background: linear-gradient(180deg, rgba(8, 24, 56, 0.92) 0%, rgba(8, 24, 56, 0.75) 100%), url('<?php echo !empty($banner_image_primary) ? base_url($banner_image_primary) : ''; ?>') !important;
+            padding-top: 130px !important; padding-bottom: 60px !important;
+        }
         .brand-marquee-node { padding: 0 20px; height: 35px; }
     }
     @media (max-width: 767.98px) {
@@ -344,36 +271,38 @@ $transparentHeader = true;
 
 <div class="page-partners">
 
-<!-- SECTION 2: DYNAMIC HERO BANNER WITH DYNAMIC BACKGROUND EXECUTION -->
+<!-- SECTION 2: DYNAMIC HERO BANNER WITH BACKGROUND IMAGE -->
 <?php 
-    $heroBgStyle = "background-image: radial-gradient(circle at 10% 20%, rgba(47, 124, 255, 0.15) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);";
-    if(!empty($banner_image_secondary)) {
-        $heroBgStyle = "background-image: linear-gradient(to right, rgba(13, 44, 108, 0.92) 30%, rgba(0, 131, 191, 0.45) 100%), url('" . base_url($banner_image_secondary) . "');";
-    }
+    $heroBgImg = !empty($banner_image_primary) ? base_url($banner_image_primary) : (!empty($banner_image_secondary) ? base_url($banner_image_secondary) : '');
+    
+    // Gradient overlay mask ensuring clear text readability on the left while fading to reveal background image on the right
+    $heroBgStyle = "background: linear-gradient(90deg, rgba(8, 24, 56, 0.92) 0%, rgba(8, 24, 56, 0.75) 50%, rgba(8, 24, 56, 0.35) 100%), url('" . $heroBgImg . "');";
 ?>
-<section class="inner_banner position-relative overflow-hidden py-5 d-flex align-items-center network-glow-bg" style="<?php echo $heroBgStyle; ?>">
+<section class="inner_banner position-relative overflow-hidden network-glow-bg" style="<?php echo $heroBgStyle; ?>">
     <div class="hero-blur-orb orb-top-right"></div>
     <div class="hero-blur-orb orb-bottom-left"></div>
     
     <div class="container-xl position-relative" style="z-index: 2;">
-        <div class="row align-items-center g-4 g-lg-5">
-            <div class="col-lg-6 text-center text-lg-start">
-                <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start mb-4">
+        <div class="row align-items-center">
+            <div class="col-lg-8 col-xl-7 text-center text-lg-start">
+                
+                <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start mb-3">
                     <?php if(!empty($banner_badge_1)): ?><span class="hero-badge-glow"><i class="fab fa-microsoft text-info"></i> <?php echo htmlspecialchars($banner_badge_1); ?></span><?php endif; ?>
                     <?php if(!empty($banner_badge_2)): ?><span class="hero-badge-glow"><i class="bi bi-cpu-fill text-warning"></i> <?php echo htmlspecialchars($banner_badge_2); ?></span><?php endif; ?>
                 </div>
 
-                <h1 class="display-5 fw-bold mb-3 text-gradient-premium">
+                <h1 class="display-4 fw-bold mb-3 text-gradient-premium">
                     <?php echo !empty($banner_title) ? htmlspecialchars($banner_title) : 'Digital Transformation Through Strategic Alliances'; ?>
                 </h1>
 
-                <p class="lead mb-4 text-white fs-6 lh-base">
+                <!-- Applied justification directly to the paragraph body -->
+                <p class="lead mb-4 text-white fs-6 lh-base opacity-90" style="max-width: 735px; text-shadow: 0 1px 4px rgba(0,0,0,0.5); text-align: justify;">
                     <?php echo !empty($banner_description) ? htmlspecialchars($banner_description) : 'At ATNA Technologies, we collaborate with leading global technology providers...'; ?>
                 </p>
 
-                <div class="pt-3 pb-3 border-top border-bottom border-light border-opacity-10 mb-4">
-                    <span class="small text-uppercase tracking-wider text-white fw-semibold d-block mb-3" style="font-size:0.7rem;"><?php echo !empty($trusted_verticals_text) ? htmlspecialchars($trusted_verticals_text) : ''; ?></span>
-                    <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3 text-white small" style="font-size:0.8rem;">
+                <div class="py-2 border-top border-bottom border-light border-opacity-20 mb-4" style="max-width: 735px;">
+                    <span class="small text-uppercase tracking-wider text-white fw-semibold d-block mb-2" style="font-size:0.7rem; opacity:0.85;"><?php echo !empty($trusted_verticals_text) ? htmlspecialchars($trusted_verticals_text) : ''; ?></span>
+                    <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3 text-white small" style="font-size:0.82rem;">
                         <?php 
                         $sectors = !empty($inline_sectors_list) ? explode('|', $inline_sectors_list) : ['Manufacturing', 'Retail & E-comm', 'BFSI'];
                         foreach($sectors as $idx => $sector):
@@ -384,23 +313,11 @@ $transparentHeader = true;
                     </div>
                 </div>
 
-                <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
-                    <a href="<?php echo !empty($cta_url_1) ? htmlspecialchars($cta_url_1) : '#contact'; ?>" class="btn btn-atna-primary rounded-pill-custom px-4 py-2 fw-semibold shadow-sm text-uppercase tracking-wider small" style="font-size:0.75rem;"><?php echo !empty($cta_label_1) ? htmlspecialchars($cta_label_1) : 'Talk to Our Experts'; ?></a>
-                    <a href="<?php echo !empty($cta_url_2) ? htmlspecialchars($cta_url_2) : '#ecosystem'; ?>" class="btn btn-outline-custom rounded-pill-custom px-4 py-2 fw-semibold text-uppercase tracking-wider small" style="font-size:0.75rem;"><?php echo !empty($cta_label_2) ? htmlspecialchars($cta_label_2) : 'Explore Our Solutions'; ?></a>
+                <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start pt-1">
+                    <a href="<?php echo !empty($cta_url_1) ? htmlspecialchars($cta_url_1) : '#contact'; ?>" class="btn btn-atna-primary rounded-pill-custom px-4 py-2.5 fw-bold shadow-sm text-uppercase tracking-wider small" style="font-size:0.75rem;"><?php echo !empty($cta_label_1) ? htmlspecialchars($cta_label_1) : 'Talk to Our Experts'; ?></a>
+                    <a href="<?php echo !empty($cta_url_2) ? htmlspecialchars($cta_url_2) : '#ecosystem'; ?>" class="btn btn-outline-custom rounded-pill-custom px-4 py-2.5 fw-bold text-uppercase tracking-wider small" style="font-size:0.75rem;"><?php echo !empty($cta_label_2) ? htmlspecialchars($cta_label_2) : 'Explore Our Solutions'; ?></a>
                 </div>
-            </div>
 
-            <div class="col-lg-6 d-flex justify-content-center align-items-center">
-                <div class="hero-showroom-viewport">
-                    <div class="hero-glass-frame">
-                        <div class="hero-image-canvas">
-                            <img src="<?php echo !empty($banner_image_primary) ? base_url($banner_image_primary) : base_url('assets/frontend/img/logo.png'); ?>"
-                                 loading="eager"
-                                 alt="Ecosystem Matrix Showcase Platform Blueprint"
-                                 onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/1/1a/Microsoft_Dynamics_logo.svg';">
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -451,7 +368,7 @@ $transparentHeader = true;
     </div>
 </section>
 
-<!-- SECTION 5 & 6: VALUE SLIDER & CARDS REPEATER ENGINE -->
+<!-- SECTION 5 & 6: VALUE GRID (CONVERTED TO GRID) & CARDS REPEATER ENGINE -->
 <section class="sec-vpad bg-light border-bottom">
     <div class="container-xl">
         
@@ -462,23 +379,20 @@ $transparentHeader = true;
             </div>
         </div>
 
-        <div class="swiper-partner-wrapper position-relative mb-5">
-            <div class="swiper partnerSwiper" style="padding: 10px 4px;">
-                <div class="swiper-wrapper align-items-center">
-                    <?php if (!empty($gallery)): foreach ($gallery as $key => $value): if (!empty($value['list'])): foreach ($value['list'] as $row): ?>
-                        <div class="swiper-slide">
-                            <div class="partner-logo-card">
-                                <img src="<?php echo !empty($row->image) ? base_url($row->image) : base_url($config_logo); ?>" alt="<?php echo !empty($row->name) ? htmlspecialchars($row->name) : 'Partner Logo'; ?>" class="img-fluid logo-greyscale">
-                            </div>
-                        </div>
-                    <?php endforeach; endif; endforeach; else: ?>
-                        <div class="swiper-slide"><div class="partner-logo-card"><img src="https://cdn.worldvectorlogo.com/logos/power-bi.svg" alt="Power BI" class="img-fluid logo-greyscale"></div></div>
-                        <div class="swiper-slide"><div class="partner-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Microsoft_Dynamics_logo.svg" alt="Dynamics 365" class="img-fluid logo-greyscale"></div></div>
-                        <div class="swiper-slide"><div class="partner-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="img-fluid logo-greyscale" style="max-height: 38px;"></div></div>
-                        <div class="swiper-slide"><div class="partner-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft" class="img-fluid logo-greyscale"></div></div>
-                    <?php endif; ?>
+        <!-- PARTNER LOGOS GRID -->
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3 mb-5 justify-content-center align-items-center">
+            <?php if (!empty($gallery)): foreach ($gallery as $key => $value): if (!empty($value['list'])): foreach ($value['list'] as $row): ?>
+                <div class="col">
+                    <div class="partner-logo-card">
+                        <img src="<?php echo !empty($row->image) ? base_url($row->image) : base_url($config_logo); ?>" alt="<?php echo !empty($row->name) ? htmlspecialchars($row->name) : 'Partner Logo'; ?>" class="img-fluid logo-greyscale">
+                    </div>
                 </div>
-            </div>
+            <?php endforeach; endif; endforeach; else: ?>
+                <div class="col"><div class="partner-logo-card"><img src="https://cdn.worldvectorlogo.com/logos/power-bi.svg" alt="Power BI" class="img-fluid logo-greyscale"></div></div>
+                <div class="col"><div class="partner-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Microsoft_Dynamics_logo.svg" alt="Dynamics 365" class="img-fluid logo-greyscale"></div></div>
+                <div class="col"><div class="partner-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="img-fluid logo-greyscale" style="max-height: 38px;"></div></div>
+                <div class="col"><div class="partner-logo-card"><img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft" class="img-fluid logo-greyscale"></div></div>
+            <?php endif; ?>
         </div>
 
         <!-- DYNAMIC CARD REPEATER BLOCK -->
@@ -554,7 +468,7 @@ $transparentHeader = true;
     </div>
 </section>
 
-<!-- SECTION 7 REDESIGN: COLORFUL ASYMMETRIC VERTICAL MODULE APPLICATIONS MATRIX -->
+<!-- SECTION 7: COLORFUL ASYMMETRIC VERTICAL MODULE APPLICATIONS MATRIX -->
 <section class="sec-vpad bg-white border-bottom">
     <div class="container-xl">
         <div class="row justify-content-center mb-5">
@@ -599,9 +513,7 @@ $transparentHeader = true;
     </div>
 </section>
 
-<!-- ==========================================================================
-     DYNAMIC METRIC STRIP — Cleaned Ultra-Premium Layout (No Box Pattern)
-     ========================================================================== -->
+<!-- DYNAMIC METRIC STRIP -->
 <section class="py-4 bg-white">
     <div class="container-xl">
         <div class="card border-0 rounded-4 shadow-sm bg-enterprise-dark position-relative overflow-hidden text-white py-4 px-3">
@@ -808,18 +720,7 @@ $transparentHeader = true;
     </div>
 </section>
 
-<!-- ==========================================================================
-     PREMIUM SECURE ENQUIRY WORKSPACE (WITH GOOGLE reCAPTCHA v3)
-     ========================================================================== 
--->
-<!-- Inline CSS to hide the default floating v3 reCAPTCHA badge from the corner -->
-<style>
-.grecaptcha-badge { 
-    visibility: hidden !important; 
-}
-</style>
-
-<!-- Form UI Section Container -->
+<!-- SECTION 11: PREMIUM SECURE ENQUIRY WORKSPACE -->
 <section id="partner-enquiry-section" class="sec-vpad bg-light">
     <div class="container-xl">
         <div class="row justify-content-center">
@@ -833,14 +734,12 @@ $transparentHeader = true;
                             <p class="text-muted small">Submit your operational parameters to map an alliance architectural profile safely.</p>
                         </div>
 
-                        <!-- Feedback Alert Message Boxes -->
                         <div id="enquiry-alert-msg" class="alert d-none" role="alert"></div>
 
                         <form id="form-secure-enquiry" autocomplete="off" novalidate>
                             <?= csrf_field() ?>
                             
                             <div class="row g-3">
-                                <!-- 1. Name -->
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-secondary">Full Name <span class="text-danger">*</span></label>
                                     <div class="input-group">
@@ -849,7 +748,6 @@ $transparentHeader = true;
                                     </div>
                                 </div>
 
-                                <!-- 2. Company Name -->
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-secondary">Company Name <span class="text-danger">*</span></label>
                                     <div class="input-group">
@@ -858,7 +756,6 @@ $transparentHeader = true;
                                     </div>
                                 </div>
 
-                                <!-- 3. Title -->
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-secondary">Title / Designation <span class="text-danger">*</span></label>
                                     <div class="input-group">
@@ -867,7 +764,6 @@ $transparentHeader = true;
                                     </div>
                                 </div>
 
-                                <!-- 4. Business Email Address -->
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-secondary">Business Email Address <span class="text-danger">*</span></label>
                                     <div class="input-group">
@@ -876,7 +772,6 @@ $transparentHeader = true;
                                     </div>
                                 </div>
 
-                                <!-- 5. Phone Number -->
                                 <div class="col-md-12">
                                     <label class="form-label small fw-bold text-secondary">Phone Number <span class="text-danger">*</span></label>
                                     <div class="input-group">
@@ -885,97 +780,78 @@ $transparentHeader = true;
                                     </div>
                                 </div>
 
-                                <!-- Submit Button -->
+                                <div class="col-12 d-flex justify-content-center mt-3">
+                                    <!-- Site Key for Recaptcha -->
+                                    <div class="g-recaptcha" data-sitekey="6LfTGlEtAAAAAEscEgL9-OZ0n_phaWbpSrNtDN46"></div>
+                                </div>
+
                                 <div class="col-12 text-center mt-4">
                                     <button type="submit" id="btn-submit-enquiry" class="btn btn-atna-primary w-100 rounded-pill-custom py-2.5 fw-bold text-uppercase tracking-wider small">
                                         <i class="fa-solid fa-paper-plane me-1"></i> Dispatch Security Request
                                     </button>
                                 </div>
-                                <div class="col-12 text-center mt-2">
-    <small class="text-muted" style="font-size: 0.72rem;">
-        This site is protected by reCAPTCHA and the Google 
-        <a href="https://policies.google.com/privacy" target="_blank" class="text-decoration-none">Privacy Policy</a> and 
-        <a href="https://policies.google.com/terms" target="_blank" class="text-decoration-none">Terms of Service</a> apply.
-    </small>
-</div>
                             </div>
                         </form>
-
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>
 </section>
 
-<script src="https://www.google.com/recaptcha/api.js?render=6Ld7DEMtAAAAALvAMGN3banyiNeleFPIoDdtxgUx"></script>
+<!-- Google reCAPTCHA API -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script>
 (function () {
-  'use strict';
-
-  /* ---- FAQ Accordion Event Toggler ---- */
-  var faqBlocks = document.querySelectorAll('.fc-faq__item');
-  faqBlocks.forEach(function(blk) {
-    var trigger = blk.querySelector('.fc-faq__hdr');
-    trigger.addEventListener('click', function() {
-      var state = blk.classList.contains('active');
-      faqBlocks.forEach(function(el) { el.classList.remove('active'); });
-      if (!state) { blk.classList.add('active'); }
-    });
-  });
-
-  // =================================================================
-  // DOUBLE SUBMISSION GUARD FLAG
-  // =================================================================
-  var isSubmitting = false; 
-
-  /* ---- Submissions Form Engine Asynchronous Handler ---- */
-  document.getElementById('form-secure-enquiry').addEventListener('submit', function(e) {
-    e.preventDefault();
+    'use strict';
     
-    // If a request is already running, block any secondary double-clicks right here
-    if (isSubmitting) {
-        return false;
-    }
-    
-    var formNode = this;
-    var submitBtn = document.getElementById('btn-submit-enquiry');
-    var alertBox = document.getElementById('enquiry-alert-msg');
-    
-    // Turn on the lock flag instantly to close the door on double submissions
-    isSubmitting = true;
-    
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = "<i class='fa-solid fa-circle-notch fa-spin me-1'></i> Encrypting Data Stream...";
+    var isSubmitting = false; 
 
-    grecaptcha.ready(function() {
-        grecaptcha.execute('6Ld7DEMtAAAAALvAMGN3banyiNeleFPIoDdtxgUx', {action: 'submit'})
-        .then(function(token) {
-            var formData = new FormData(formNode);
-            formData.append('g-recaptcha-response', token);
+    document.getElementById('form-secure-enquiry').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        var formNode = this;
+        var submitBtn = document.getElementById('btn-submit-enquiry');
+        var alertBox = document.getElementById('enquiry-alert-msg');
 
-            return fetch("/ATNA/public/frontend/save_partner_enquiry", {
-                method: "POST",
-                body: formData,
-                headers: {
-                    "X-Requested-With": "XMLHttpRequest"
-                }
-            });
+        if (isSubmitting) return false;
+        
+        // 1. Safety Check: Verify recaptcha library loaded
+        if (typeof grecaptcha === 'undefined') {
+            alertBox.classList.remove('d-none');
+            alertBox.className = "alert alert-danger small fw-bold";
+            alertBox.innerHTML = "Security script not loaded. Please refresh the page.";
+            return false;
+        }
+
+        // 2. Validate Captcha
+        var captchaResponse = grecaptcha.getResponse();
+        if (captchaResponse.length === 0) {
+            alertBox.classList.remove('d-none');
+            alertBox.className = "alert alert-danger small fw-bold";
+            alertBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation me-2'></i> Please complete the reCAPTCHA verification.";
+            return false;
+        }
+        
+        isSubmitting = true;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = "<i class='fa-solid fa-circle-notch fa-spin me-1'></i> Encrypting Data...";
+
+        var formData = new FormData(formNode);
+        formData.append('g-recaptcha-response', captchaResponse);
+
+        fetch("<?= base_url('frontend/save_partner_enquiry') ?>", {
+            method: "POST",
+            body: formData,
+            headers: { "X-Requested-With": "XMLHttpRequest" }
         })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => { throw new Error(text) });
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(res => {
             alertBox.classList.remove('d-none');
-            
             if (res.tokenHash) {
                 var csrfInput = formNode.querySelector('input[type="hidden"][name^="csrf_"]');
-                if (csrfInput) { csrfInput.value = res.tokenHash; }
+                if (csrfInput) csrfInput.value = res.tokenHash;
             }
 
             if (res.status === 1) {
@@ -987,54 +863,25 @@ $transparentHeader = true;
                 alertBox.innerHTML = "<i class='fa-solid fa-circle-xmark me-2'></i> " + res.msg;
             }
             
-            // Release the lock when the database successfully finishes writing the data
+            grecaptcha.reset(); // Reset to allow fresh submission
             isSubmitting = false;
             submitBtn.disabled = false;
             submitBtn.innerHTML = "<i class='fa-solid fa-paper-plane me-1'></i> Dispatch Security Request";
         })
         .catch(err => {
-            console.error("Pipeline Exception Detailed Log:", err);
             alertBox.className = "alert alert-danger small fw-bold";
-            alertBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation me-2'></i> Technical infrastructure bottleneck detected.";
+            alertBox.innerHTML = "Connection error. Please try again.";
             alertBox.classList.remove('d-none');
-            
-            // Release the lock if a system failure occurs so the user can try again
+            grecaptcha.reset();
             isSubmitting = false;
             submitBtn.disabled = false;
             submitBtn.innerHTML = "<i class='fa-solid fa-paper-plane me-1'></i> Dispatch Security Request";
         });
     });
-  });
-
 })();
 </script>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var swiper = new Swiper(".partnerSwiper", {
-            slidesPerView: 4,
-            spaceBetween: 30,
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true,
-            },
-            navigation: {
-                nextEl: ".partner-next",
-                prevEl: ".partner-prev",
-            },
-            breakpoints: {
-                0: { slidesPerView: 1, spaceBetween: 15 },
-                480: { slidesPerView: 2, spaceBetween: 15 },
-                768: { slidesPerView: 3, spaceBetween: 20 },
-                1024: { slidesPerView: 4, spaceBetween: 30 },
-            }
-        });
-    });
-</script>
+</div>
 
 <?php echo $this->include('frontend/includes/bottom_section'); ?>
 <?php $this->endSection(); ?>
