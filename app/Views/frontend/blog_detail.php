@@ -423,52 +423,7 @@ $authorInitial = mb_substr($displayAuthor, 0, 1);
     </div>
 
     <?php if (!empty($relatedPost)) { ?>
-    <section class="blog-related-section">
-      <div class="blog-section-header">
-        <div>
-          <div class="eyebrow">Recommended</div>
-          <h2 class="section-title">Related Articles</h2>
-        </div>
-      </div>
-
-      <div class="row g-4">
-        <?php foreach ($relatedPost as $key => $value) { 
-          $cleanCardExcerpt = isset($value->description) ? mb_strimwidth(strip_tags($value->description), 0, 110, '...') : 'Explore deeper insights and strategy metrics from our latest structural updates...';
-        ?>
-        <div class="col-lg-4 col-md-6 d-flex">
-          <div class="blog-card w-100">
-            <div class="blog-card__img-wrap">
-              <img
-                src="<?php echo $value->thumbnail ? base_url($value->thumbnail) : base_url($config_logo); ?>"
-                alt="<?php echo htmlspecialchars($value->title); ?>"
-                loading="lazy"
-              />
-            </div>
-            <div class="blog-card__body">
-              <div class="blog-card__meta">
-                <span class="blog-card__date">
-                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="3" width="14" height="12" rx="2" stroke="#65809B" stroke-width="1.4"/><path d="M5 1v3M11 1v3M1 7h14" stroke="#65809B" stroke-width="1.4" stroke-linecap="round"/></svg>
-                  <?php echo $value->publish ? date('d M Y', strtotime($value->publish)) : ''; ?>
-                </span>
-                <span class="blog-card__author">
-                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="5" r="3.3" stroke="#65809B" stroke-width="1.4"/><path d="M2 14c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5" stroke="#65809B" stroke-width="1.4" stroke-linecap="round"/></svg>
-                  Author: <strong><?php echo !empty($value->author_name) ? esc($value->author_name) : 'Editorial Team'; ?></strong>
-                </span>
-              </div>
-              <h4 class="blog-card__title"><?php echo esc($value->title); ?></h4>
-              
-              <p class="blog-card__excerpt"><?php echo $cleanCardExcerpt; ?></p>
-
-              <a href="<?php echo base_url('blog/' . $value->slug); ?>" class="blog-card__read-more">
-                Read Article
-                <svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M1 5.25a.75.75 0 0 0 0 1.5zm14.53 1.28a.75.75 0 0 0 0-1.06L10.757.697a.75.75 0 0 0-1.06 1.06L13.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM1 6.75h14v-1.5H1z" fill="currentColor"/></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-        <?php } ?>
-      </div>
-    </section>
+    
     <?php } ?>
 
   </div>
