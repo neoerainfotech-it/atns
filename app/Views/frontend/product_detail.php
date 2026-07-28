@@ -1396,64 +1396,83 @@ html.lenis, html.lenis body { height: auto; }
     <div class="row align-items-center">
       
       <!-- LEFT ENGINE COLUMN: Conversion Copy & Action Block -->
-      <div class="col-lg-6 col-12">
-        <div class="xhero__left">
-          <span class="xhero__tag">
-            <span class="xhero__tag-dot"></span>
-            Solutions Profile
-          </span>
-          
-          <h1 class="xhero__title">
-            <?php echo !empty($detail->name) ? esc($detail->name) : 'Enterprise Solution'; ?>
-            <br><mark>Built to Scale.</mark>
-          </h1>
-          
-          <p class="xhero__sub">
-            Modernize your operations, eliminate infrastructure gaps, and accelerate growth with precision-engineered technology built around your business.
-          </p>
-          
-          <div class="xhero__btns">
-            <a href="#contact" class="xbtn-solid"><i class="fas fa-comments"></i> Request Demo</a>
-          </div>
-          
-          <div class="xhero__scroll">
-            <div class="xhero__scroll-line"></div>
-            
-          </div>
-        </div>
-      </div>
-      
-      <!-- RIGHT ENGINE COLUMN: Perspective Dashboard Presentation Canvas -->
-      <div class="col-lg-6 col-12">
-        <div class="xhero__right-perspective-canvas">
-          
-          <?php if (!empty($detail->hero_banner)): ?>
-  <!-- Displays the designated Hero Layout Banner inside the premium 3D frame -->
-  <img src="<?php echo base_url($detail->hero_banner); ?>" class="xhero__dashboard-mockup-frame" alt="<?php echo esc($detail->name); ?>">
-<?php elseif (!empty($detail->image)): ?>
-  <img src="<?php echo base_url($detail->image); ?>" class="xhero__dashboard-mockup-frame" alt="<?php echo esc($detail->name); ?>">
-<?php else: ?>
-  <!-- Ultra-Clean fallback asset layout placeholder -->
-  <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" class="xhero__dashboard-mockup-frame" alt="Fallback Dashboard Visualization">
-<?php endif; ?>
+<div class="col-lg-6 col-12">
+  <div class="xhero__left">
+    
+    <!-- DYNAMIC TOP PILL BADGE -->
+    <span class="xhero__tag">
+      <span class="xhero__tag-dot"></span>
+      <?php echo !empty($detail->heroBadge) ? esc($detail->heroBadge) : 'Solutions Profile'; ?>
+    </span>
+    
+    <!-- DYNAMIC HEADLINE & CYAN HIGHLIGHT -->
+    <h1 class="xhero__title">
+      <?php echo !empty($detail->name) ? esc($detail->name) : 'Enterprise Solution'; ?>
+      <br>
+      <mark><?php echo !empty($detail->heroTitleHighlight) ? esc($detail->heroTitleHighlight) : 'Built to Scale.'; ?></mark>
+    </h1>
+    
+    <!-- DYNAMIC SUBTITLE / DESCRIPTION -->
+    <p class="xhero__sub">
+      <?php echo !empty($detail->shortDescription) ? esc($detail->shortDescription) : 'Modernize your operations, eliminate infrastructure gaps, and accelerate growth with precision-engineered technology built around your business.'; ?>
+    </p>
+    
+    <!-- DYNAMIC CTA BUTTON -->
+    <div class="xhero__btns">
+      <?php 
+  // Handle smooth section anchors (#contact) vs page routes (/contact-us or contact-us)
+  $ctaLink = '#contact';
+  if (!empty($detail->heroCtaLink)) {
+      $rawLink = trim($detail->heroCtaLink);
+      if (strpos($rawLink, '#') === 0 || strpos($rawLink, 'http') === 0) {
+          $ctaLink = $rawLink; // Keep hash links or external URLs intact
+      } else {
+          $ctaLink = base_url(ltrim($rawLink, '/')); // Automatically prepends site base URL
+      }
+  }
+?>
+<a href="<?php echo $ctaLink; ?>" class="xbtn-solid">
+  <i class="fas fa-comments"></i> 
+  <?php echo !empty($detail->heroCtaText) ? esc($detail->heroCtaText) : 'Request Demo'; ?>
+</a>
+        
+    </div>
+    
+    <div class="xhero__scroll">
+      <div class="xhero__scroll-line"></div>
+    </div>
+  </div>
+</div>
 
-          <!-- Floating Info Card component block mapped from reference layout badge configurations -->
-          <div class="xhero__floating-feature-tag">
-            <div class="xhero__floating-badge-icon">
-              <?php if (!empty($detail->thumbnail)): ?>
-                <img src="<?php echo base_url($detail->thumbnail); ?>" style="width:16px;height:16px;object-fit:contain;filter:brightness(0) invert(1)" alt="">
-              <?php else: ?>
-                <i class="fas fa-chart-line"></i>
-              <?php endif; ?>
-            </div>
-            <div class="xhero__floating-badge-text">
-              <strong><?php echo !empty($detail->name) ? esc($detail->name) : 'Platform Core'; ?></strong>
-              <span>Active &amp; Optimized</span>
-            </div>
-          </div>
+<!-- RIGHT ENGINE COLUMN: Perspective Frame & Floating Badge -->
+<div class="col-lg-6 col-12">
+  <div class="xhero__right-perspective-canvas">
+    
+    <?php if (!empty($detail->hero_banner)): ?>
+      <img src="<?php echo base_url($detail->hero_banner); ?>" class="xhero__dashboard-mockup-frame" alt="<?php echo esc($detail->name); ?>">
+    <?php elseif (!empty($detail->image)): ?>
+      <img src="<?php echo base_url($detail->image); ?>" class="xhero__dashboard-mockup-frame" alt="<?php echo esc($detail->name); ?>">
+    <?php else: ?>
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" class="xhero__dashboard-mockup-frame" alt="Fallback Dashboard Visualization">
+    <?php endif; ?>
 
-        </div>
+    <!-- DYNAMIC FLOATING BADGE -->
+    <div class="xhero__floating-feature-tag">
+      <div class="xhero__floating-badge-icon">
+        <?php if (!empty($detail->thumbnail)): ?>
+          <img src="<?php echo base_url($detail->thumbnail); ?>" style="width:16px;height:16px;object-fit:contain;filter:brightness(0) invert(1)" alt="">
+        <?php else: ?>
+          <i class="fas fa-chart-line"></i>
+        <?php endif; ?>
       </div>
+      <div class="xhero__floating-badge-text">
+        <strong><?php echo !empty($detail->floatingBadgeTitle) ? esc($detail->floatingBadgeTitle) : (!empty($detail->name) ? esc($detail->name) : 'Platform Core'); ?></strong>
+        <span><?php echo !empty($detail->floatingBadgeSubtitle) ? esc($detail->floatingBadgeSubtitle) : 'Active &amp; Optimized'; ?></span>
+      </div>
+    </div>
+
+  </div>
+</div>
       
     </div><!-- /row -->
   </div><!-- /container -->
@@ -1461,10 +1480,23 @@ html.lenis, html.lenis body { height: auto; }
 
 <div class="xticker">
   <div class="xticker__track">
-    <?php $tick_items = ['Enterprise Ready','Scalable Architecture','24/7 Support','GDPR Compliant','Cloud-Native','Real-Time Analytics','Multi-Currency','Bank-Level Security','Rapid Deployment','ROI Focused'];
-    for($t=0;$t<4;$t++): foreach($tick_items as $ti): ?>
-      <span class="xticker__item"><i class="fas fa-check-circle"></i><?php echo $ti?></span>
-    <?php endforeach; endfor; ?>
+    <?php if (!empty($tickerItemsList)): ?>
+      <!-- Repeat 4 times to fill widescreen desktop widths without gaps -->
+      <?php for($i = 0; $i < 4; $i++): ?>
+        <?php foreach($tickerItemsList as $tItem): ?>
+          <span class="xticker__item">
+            <i class="fas fa-check-circle"></i>
+            <?php echo esc($tItem->title); ?>
+          </span>
+        <?php endforeach; ?>
+      <?php endfor; ?>
+    <?php else: ?>
+      <!-- Default fallback items if admin hasn't added custom ones -->
+      <?php $tick_items = ['Enterprise Ready','Scalable Architecture','24/7 Support','GDPR Compliant','Cloud-Native','Real-Time Analytics','Multi-Currency','Bank-Level Security','Rapid Deployment','ROI Focused'];
+      for($t=0;$t<4;$t++): foreach($tick_items as $ti): ?>
+        <span class="xticker__item"><i class="fas fa-check-circle"></i><?php echo $ti?></span>
+      <?php endforeach; endfor; ?>
+    <?php endif; ?>
   </div>
 </div>
 
@@ -1574,57 +1606,67 @@ html.lenis, html.lenis body { height: auto; }
 <div class="why-benefits-banner">
   <div class="container">
     
-    <!-- Dynamic Product Context Header -->
+    <!-- Dynamic Section Main Heading -->
     <h3 class="why-benefits__title" data-reveal>
-      Why <?php echo !empty($detail->name) ? esc($detail->name) : 'Our Platform'; ?>?
+      <?php echo !empty($detail->benefitsSectionTitle) ? esc($detail->benefitsSectionTitle) : 'Why ' . (!empty($detail->name) ? esc($detail->name) : 'Our Platform') . '?'; ?>
     </h3>
     
     <div class="why-benefits__grid">
-      
-      <!-- Card 1: Faster Financial Close -->
-      <div class="why-benefits__card" data-reveal data-delay="1">
-        <div class="why-benefits__icon-frame blue-accent">
-          <i class="fas fa-bolt"></i>
-        </div>
-        <div class="why-benefits__content">
-          <h4 class="why-benefits__card-title">Faster Financial Close</h4>
-          <p class="why-benefits__card-desc">Reduce month-end closing timelines effortlessly.</p>
-        </div>
-      </div>
+      <?php if (!empty($whyChooseUsList)): ?>
+        
+        <?php $delayCount = 1; ?>
+        <?php foreach ($whyChooseUsList as $whyCard): ?>
+          <?php 
+            // Map theme color classes cleanly
+            $themeClass = !empty($whyCard->card_theme) ? esc($whyCard->card_theme) : 'blue-accent';
+            // Normalize theme values (e.g. blue-theme -> blue-accent)
+            $themeClass = str_replace('-theme', '-accent', $themeClass);
+          ?>
+          <div class="why-benefits__card" data-reveal data-delay="<?php echo min($delayCount, 6); ?>">
+            <div class="why-benefits__icon-frame <?php echo $themeClass; ?>">
+              <i class="<?php echo !empty($whyCard->icon_class) ? esc($whyCard->icon_class) : 'fas fa-bolt'; ?>"></i>
+            </div>
+            <div class="why-benefits__content">
+              <h4 class="why-benefits__card-title"><?php echo esc($whyCard->title); ?></h4>
+              <p class="why-benefits__card-desc"><?php echo esc($whyCard->subtitle); ?></p>
+            </div>
+          </div>
+          <?php $delayCount++; ?>
+        <?php endforeach; ?>
 
-      <!-- Card 2: Unified Consolidation -->
-      <div class="why-benefits__card" data-reveal data-delay="2">
-        <div class="why-benefits__icon-frame green-accent">
-          <i class="fas fa-database"></i>
-        </div>
-        <div class="why-benefits__content">
-          <h4 class="why-benefits__card-title">Unified Consolidation</h4>
-          <p class="why-benefits__card-desc">Combine disparate source data from ERP systems &amp; cloud pools.</p>
-        </div>
-      </div>
+      <?php else: ?>
 
-      <!-- Card 3: Intelligent Reporting -->
-      <div class="why-benefits__card" data-reveal data-delay="3">
-        <div class="why-benefits__icon-frame purple-accent">
-          <i class="fas fa-chart-line"></i>
+        <!-- Fallback static cards if no records exist in DB -->
+        <div class="why-benefits__card" data-reveal data-delay="1">
+          <div class="why-benefits__icon-frame blue-accent"><i class="fas fa-bolt"></i></div>
+          <div class="why-benefits__content">
+            <h4 class="why-benefits__card-title">Faster Financial Close</h4>
+            <p class="why-benefits__card-desc">Reduce month-end closing timelines effortlessly.</p>
+          </div>
         </div>
-        <div class="why-benefits__content">
-          <h4 class="why-benefits__card-title">Intelligent Reporting</h4>
-          <p class="why-benefits__card-desc">Power BI analytics engine models live architectural insights.</p>
+        <div class="why-benefits__card" data-reveal data-delay="2">
+          <div class="why-benefits__icon-frame green-accent"><i class="fas fa-database"></i></div>
+          <div class="why-benefits__content">
+            <h4 class="why-benefits__card-title">Unified Consolidation</h4>
+            <p class="why-benefits__card-desc">Combine disparate source data from ERP systems &amp; cloud pools.</p>
+          </div>
         </div>
-      </div>
+        <div class="why-benefits__card" data-reveal data-delay="3">
+          <div class="why-benefits__icon-frame purple-accent"><i class="fas fa-chart-line"></i></div>
+          <div class="why-benefits__content">
+            <h4 class="why-benefits__card-title">Intelligent Reporting</h4>
+            <p class="why-benefits__card-desc">Power BI analytics engine models live architectural insights.</p>
+          </div>
+        </div>
+        <div class="why-benefits__card" data-reveal data-delay="4">
+          <div class="why-benefits__icon-frame teal-accent"><i class="fas fa-shield-halved"></i></div>
+          <div class="why-benefits__content">
+            <h4 class="why-benefits__card-title">Compliance Ready</h4>
+            <p class="why-benefits__card-desc">Engineered for GAAP, IFRS compliance, and strict log audit trails.</p>
+          </div>
+        </div>
 
-      <!-- Card 4: Compliance Ready -->
-      <div class="why-benefits__card" data-reveal data-delay="4">
-        <div class="why-benefits__icon-frame teal-accent">
-          <i class="fas fa-shield-solid fa-shield-halved"></i>
-        </div>
-        <div class="why-benefits__content">
-          <h4 class="why-benefits__card-title">Compliance Ready</h4>
-          <p class="why-benefits__card-desc">Engineered for GAAP, IFRS compliance, and strict log audit trails.</p>
-        </div>
-      </div>
-
+      <?php endif; ?>
     </div><!-- /why-benefits__grid -->
     
   </div><!-- /container -->

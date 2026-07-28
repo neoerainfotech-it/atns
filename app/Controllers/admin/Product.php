@@ -301,6 +301,20 @@ class Product extends BaseController
             $data['floatingBadgeTitle']    = isset($row->floatingBadgeTitle) ? $row->floatingBadgeTitle : 'Accounts payable automation';
             $data['floatingBadgeSubtitle'] = isset($row->floatingBadgeSubtitle) ? $row->floatingBadgeSubtitle : 'Active & Optimized';
 
+            // 1. Fetch Below-Hero Scrolling Ticker Items
+$data['tickerItemsList'] = $db->table('cyb_product_ticker_items')
+                             ->where('product_id', $row->id)
+                             ->orderBy('sort_order', 'ASC')
+                             ->get()
+                             ->getResult();
+
+// 2. Fetch "Why Choose Us" Card Items
+$data['whyChooseUsList'] = $db->table('cyb_product_why_choose_us')
+                              ->where('product_id', $row->id)
+                              ->orderBy('sort_order', 'ASC')
+                              ->get()
+                              ->getResult();
+
             // ========================================================================
             // "WHY CHOOSE US" SECTION MAIN TITLE
             // ========================================================================
@@ -393,6 +407,9 @@ class Product extends BaseController
             $data['floatingBadgeSubtitle'] = 'Active & Optimized';
 
             $data['benefitsSectionTitle']  = 'Why Accounts payable automation?';
+
+            $data['tickerItemsList'] = array();
+            $data['whyChooseUsList']  = array();
 
             $data['keyTitle'] = '';
             $data['keyDescription'] = '';
@@ -615,6 +632,50 @@ class Product extends BaseController
                         }
                     }
 
+                    // ========================================================================
+// REPEATER PROCESSING: Save Hero Ticker Items
+// ========================================================================
+$db->table('cyb_product_ticker_items')->where('product_id', $id)->delete();
+$tTitles     = $this->request->getPost('tickerTitle');
+$tSortOrders = $this->request->getPost('tickerSortOrder');
+
+if (!empty($tTitles)) {
+    foreach ($tTitles as $idx => $tTitle) {
+        if (empty(trim($tTitle))) continue;
+
+        $db->table('cyb_product_ticker_items')->insert([
+            'product_id' => $id,
+            'title'      => esc($tTitle),
+            'sort_order' => isset($tSortOrders[$idx]) ? (int)$tSortOrders[$idx] : 0
+        ]);
+    }
+}
+
+// ========================================================================
+// REPEATER PROCESSING: Save "Why Choose Us" Benefit Cards
+// ========================================================================
+$db->table('cyb_product_why_choose_us')->where('product_id', $id)->delete();
+$wTitles      = $this->request->getPost('whyTitle');
+$wSubtitles   = $this->request->getPost('whySubtitle');
+$wThemes      = $this->request->getPost('whyCardTheme');
+$wIcons       = $this->request->getPost('whyIconClass');
+$wSortOrders  = $this->request->getPost('whySortOrder');
+
+if (!empty($wTitles)) {
+    foreach ($wTitles as $idx => $wTitle) {
+        if (empty(trim($wTitle))) continue;
+
+        $db->table('cyb_product_why_choose_us')->insert([
+            'product_id'  => $id,
+            'title'       => esc($wTitle),
+            'subtitle'    => isset($wSubtitles[$idx]) ? esc($wSubtitles[$idx]) : '',
+            'card_theme'  => isset($wThemes[$idx]) ? esc($wThemes[$idx]) : 'blue-theme',
+            'icon_class'  => !empty($wIcons[$idx]) ? esc($wIcons[$idx]) : 'fas fa-bolt',
+            'sort_order'  => isset($wSortOrders[$idx]) ? (int)$wSortOrders[$idx] : 0
+        ]);
+    }
+}
+
                     // Save Dynamic Trust Strip Badges Matrix
                     $db->table('cyb_product_trust_badges')->where('product_id', $id)->delete();
                     $badgeTitles      = $this->request->getPost('trustBadgeTitle');
@@ -698,6 +759,8 @@ class Product extends BaseController
                         }
                     }
 
+
+
                     // Save Client Testimonials
                     $db->table('cyb_testimonials')->where('product_id', $id)->delete();
                     $tNames        = $this->request->getPost('testimonialName');
@@ -757,6 +820,9 @@ class Product extends BaseController
                     $this->AdminModel->deleteData('product_feature',array('product_id'=>$value));
                     $this->AdminModel->deleteData('product_capabilities',array('product_id'=>$value));
                     $this->AdminModel->deleteData('product_images',array('product_id'=>$value));
+
+                    $db->table('cyb_product_ticker_items')->where('product_id', $value)->delete();
+                    $db->table('cyb_product_why_choose_us')->where('product_id', $value)->delete();
                     
                     $db->table('cyb_testimonials')->where('product_id', $value)->delete();
                     $db->table('cyb_product_business_benefits')->where('product_id', $value)->delete();

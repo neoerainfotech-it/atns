@@ -44,7 +44,7 @@ $model = new ProductCategoryModel();
         <form action="<?php echo $form_action; ?>" method="post" enctype="multipart/form-data" id="form-user" class="form-horizontal">
           
           <!-- ================================================================
-               NAVIGATION TABS (ALL SECTIONS PRESERVED)
+               NAVIGATION TABS
                ================================================================ -->
           <ul class="nav nav-tabs border-bottom mb-4" id="productTabs" role="tablist">
             <li class="nav-item">
@@ -107,7 +107,7 @@ $model = new ProductCategoryModel();
           <div class="tab-content">
 
             <!-- ================================================================
-                 TAB 1: HERO BANNER STAGE
+                 TAB 1: HERO BANNER STAGE & SCROLLING TICKER
                  ================================================================ -->
             <div id="tab-hero" class="tab-pane active">
               <fieldset>
@@ -178,57 +178,56 @@ $model = new ProductCategoryModel();
                 </div>
 
               </fieldset>
-            </div>
+              
 
-            <!-- ================================================================
-     HERO TICKER / SCROLLING HIGHLIGHT BAR REPEATER
-     ================================================================ -->
-<fieldset class="mt-4 pt-3 border-top">
-  <legend class="text-primary fw-bold mb-3">
-    <i class="fa-solid fa-bars-staggered"></i> Below Hero Scrolling Ticker Items
-  </legend>
+              <!-- HERO SCROLLING TICKER ITEMS REPEATER -->
+              <fieldset class="mt-4 pt-3 border-top">
+                <legend class="text-primary fw-bold mb-3">
+                  <i class="fa-solid fa-bars-staggered"></i> Below Hero Scrolling Ticker Items
+                </legend>
 
-  <div class="table-responsive">
-    <table id="hero-ticker-table" class="table table-striped table-bordered table-hover align-middle">
-      <thead class="table-dark">
-        <tr>
-          <td style="width: 75%;">Ticker Text Label</td>
-          <td style="width: 15%;">Sort Order</td>
-          <td style="width: 10%;" class="text-center">Action</td>
-        </tr>
-      </thead>
-      <tbody>
-        <?php if (!empty($tickerItemsList)): ?>
-          <?php foreach ($tickerItemsList as $tRow): ?>
-            <tr id="ticker-row-<?php echo $tRow->id; ?>">  
-              <td>
-                <input type="text" name="tickerTitle[]" value="<?php echo esc($tRow->title); ?>" placeholder="e.g., Real-Time Analytics" class="form-control" />
-              </td>
-              <td>
-                <input type="number" name="tickerSortOrder[]" class="form-control text-center" value="<?php echo $tRow->sort_order; ?>" />
-              </td>
-              <td class="text-center">
-                <button type="button" onclick="$('#ticker-row-<?php echo $tRow->id; ?>').remove();" data-bs-toggle="tooltip" title="Remove" class="btn btn-danger btn-sm">
-                  <i class="fa fa-minus-circle"></i>
-                </button>
-              </td>
-            </tr>  
-          <?php endforeach; ?>
-        <?php endif; ?> 
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="2"></td>
-          <td class="text-center">
-            <button type="button" onclick="addHeroTickerRow();" data-bs-toggle="tooltip" title="Add Ticker Item" class="btn btn-primary btn-sm">
-              <i class="fa fa-plus-circle"></i>
-            </button>
-          </td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-</fieldset>
+                <div class="table-responsive">
+                  <table id="hero-ticker-table" class="table table-striped table-bordered table-hover align-middle">
+                    <thead class="table-dark">
+                      <tr>
+                        <td style="width: 75%;">Ticker Text Label</td>
+                        <td style="width: 15%;">Sort Order</td>
+                        <td style="width: 10%;" class="text-center">Action</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php if (!empty($tickerItemsList)): ?>
+                        <?php foreach ($tickerItemsList as $tRow): ?>
+                          <tr id="ticker-row-<?php echo $tRow->id; ?>">  
+                            <td>
+                              <input type="text" name="tickerTitle[]" value="<?php echo esc($tRow->title); ?>" placeholder="e.g., Real-Time Analytics" class="form-control" />
+                            </td>
+                            <td>
+                              <input type="number" name="tickerSortOrder[]" class="form-control text-center" value="<?php echo $tRow->sort_order; ?>" />
+                            </td>
+                            <td class="text-center">
+                              <button type="button" onclick="$('#ticker-row-<?php echo $tRow->id; ?>').remove();" data-bs-toggle="tooltip" title="Remove" class="btn btn-danger btn-sm">
+                                <i class="fa fa-minus-circle"></i>
+                              </button>
+                            </td>
+                          </tr>  
+                        <?php endforeach; ?>
+                      <?php endif; ?> 
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="2"></td>
+                        <td class="text-center">
+                          <button type="button" onclick="addHeroTickerRow();" data-bs-toggle="tooltip" title="Add Ticker Item" class="btn btn-primary btn-sm">
+                            <i class="fa fa-plus-circle"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </fieldset>
+            </div><!-- /#tab-hero -->
 
             <!-- ================================================================
                  TAB 2: PRODUCT OVERVIEW & SHOWROOM CANVAS
@@ -724,7 +723,7 @@ $model = new ProductCategoryModel();
             </div>
 
             <!-- ================================================================
-                 TAB 8: BUSINESS BENEFITS METRICS (PRESERVED AS SHOWN IN SCREENSHOT)
+                 TAB 8: BUSINESS BENEFITS METRICS
                  ================================================================ -->
             <div id="tab-business-benefits" class="tab-pane">
               <fieldset>
@@ -957,9 +956,20 @@ $model = new ProductCategoryModel();
 </div>
 
 <!-- ================================================================
-     DYNAMIC ROW ADDER SCRIPTS (ALL PRESERVED AND VERIFIED)
+     DYNAMIC ROW ADDER SCRIPTS (ALL PRESERVED AND COMPLETE)
      ================================================================ -->
 <script type="text/javascript">
+  var hero_ticker_idx = 0;
+  function addHeroTickerRow() {
+    var html  = '<tr id="ticker-row-new' + hero_ticker_idx + '">';
+    html += '    <td><input type="text" name="tickerTitle[]" placeholder="e.g., Bank-Level Security" class="form-control" /></td>';
+    html += '    <td><input type="number" name="tickerSortOrder[]" class="form-control text-center" value="0" /></td>';
+    html += '    <td class="text-center"><button type="button" onclick="$(\'#ticker-row-new' + hero_ticker_idx + '\').remove();" data-bs-toggle="tooltip" title="Remove" class="btn btn-danger btn-sm"><i class="fa fa-minus-circle"></i></button></td>';
+    html += '</tr>';
+    $('#hero-ticker-table tbody').append(html);
+    hero_ticker_idx++;
+  }
+
   var feature = 0;
   function addFeature() {
     var html  = '<tr id="feature-row' + feature + '">';
@@ -1052,7 +1062,7 @@ $model = new ProductCategoryModel();
     html += '    <td>';
     html += '      <select name="whyIconClass[]" class="form-select form-select-sm">';
     html += '        <option value="fas fa-bolt">⚡ Lightning / Bolt</option>';
-    html += '        <option value="fas fa-database">𝗣 Database / Storage</option>';
+    html += '        <option value="fas fa-database">T Database / Storage</option>';
     html += '        <option value="fas fa-chart-line">📈 Chart / Analytics</option>';
     html += '        <option value="fas fa-shield-alt">🛡️ Shield / Security</option>';
     html += '        <option value="fas fa-check-circle">✅ Checkmark</option>';

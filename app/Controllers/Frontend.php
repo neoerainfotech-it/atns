@@ -728,85 +728,94 @@ function job_detail(){
     
     
 public function product_detail()
-    {
-        $model = new ProductModel();
-        $MediaModel = new MediaModel();
-        $FrontModel = new FrontModel();
-        
-        $link = $this->uri->getSegment(2); 
-        $meta = $model->asObject()->where(['slug'=>$link,'status'=>1])->first();
+{
+    $model = new ProductModel();
+    $MediaModel = new MediaModel();
+    $FrontModel = new FrontModel();
+    
+    $link = $this->uri->getSegment(2); 
+    $meta = $model->asObject()->where(['slug'=>$link,'status'=>1])->first();
 
-        if(empty($meta)){
-            return redirect()->to('404');
-        }
-        
-        $data['metaTitle'] = $meta->metaTitle;
-        $data['metaDescription'] =  $meta->metaDescription;
-        $data['metaKeyword'] =  $meta->metaKeyword;
-        $data['meta'] =  $meta;
-        $data['detail'] =  $meta;
-        
-        $data['industryList'] = $FrontModel->get_industry_list(json_decode($meta->industries)); 
-        
-        $data['usecasesList'] = $this->AdminModel->all_fetch('product_feature',array('product_id'=>$meta->id)); 
-        $data['keyFeatureList'] = $this->AdminModel->all_fetch('product_capabilities',array('product_id'=>$meta->id)); 
-        $data['imagesList'] = $this->AdminModel->all_fetch('product_images',array('product_id'=>$meta->id)); 
-        
-        $db = \Config\Database::connect();
-        $productId = $meta->id;
+    if(empty($meta)){
+        return redirect()->to('404');
+    }
+    
+    $data['metaTitle']       = $meta->metaTitle;
+    $data['metaDescription'] = $meta->metaDescription;
+    $data['metaKeyword']     = $meta->metaKeyword;
+    $data['meta']            = $meta;
+    $data['detail']          = $meta;
+    
+    $data['industryList']   = $FrontModel->get_industry_list(json_decode($meta->industries)); 
+    $data['usecasesList']   = $this->AdminModel->all_fetch('product_feature',array('product_id'=>$meta->id)); 
+    $data['keyFeatureList'] = $this->AdminModel->all_fetch('product_capabilities',array('product_id'=>$meta->id)); 
+    $data['imagesList']     = $this->AdminModel->all_fetch('product_images',array('product_id'=>$meta->id)); 
+    
+    $db = \Config\Database::connect();
+    $productId = $meta->id;
 
-        // ========================================================================
-        // FIXED DATA LAYER: Clear explicit prefix to avoid duplicate table name errors
-        // ========================================================================
-        $data['overviewMatrixList'] = $db->table('product_overview_matrix') 
+    // Fetch Overview Matrix
+    $data['overviewMatrixList'] = $db->table('product_overview_matrix') 
+                                     ->where('product_id', $productId)
+                                     ->orderBy('sort_order', 'ASC')
+                                     ->get()
+                                     ->getResult();
+
+    // Fetch Partnerships Header & Cards
+    $data['partnershipSubheading']  = isset($meta->partnershipSubheading) ? $meta->partnershipSubheading : 'Strategic Value';
+    $data['partnershipTitle']       = isset($meta->partnershipTitle) ? $meta->partnershipTitle : 'Why Our Partnerships Matter';
+    $data['partnershipDescription'] = isset($meta->partnershipDescription) ? $meta->partnershipDescription : '';
+    
+    $data['partnershipCardsList']   = $db->table('product_partnership_cards') 
                                          ->where('product_id', $productId)
                                          ->orderBy('sort_order', 'ASC')
                                          ->get()
                                          ->getResult();
-        // ========================================================================
 
-        // ========================================================================
-        // FIXED DATA LAYER: Removed double 'cyb_' prefix handling
-        // ========================================================================
-        $data['partnershipSubheading']  = isset($meta->partnershipSubheading) ? $meta->partnershipSubheading : 'Strategic Value';
-        $data['partnershipTitle']       = isset($meta->partnershipTitle) ? $meta->partnershipTitle : 'Why Our Partnerships Matter';
-        $data['partnershipDescription'] = isset($meta->partnershipDescription) ? $meta->partnershipDescription : '';
-        
-        $data['partnershipCardsList']   = $db->table('product_partnership_cards') 
-                                             ->where('product_id', $productId)
-                                             ->orderBy('sort_order', 'ASC')
-                                             ->get()
-                                             ->getResult();
-        // ========================================================================
+    // Fetch Trust Badges
+    $data['trustBadgesList'] = $db->table('product_trust_badges')
+                                  ->where('product_id', $productId)
+                                  ->orderBy('sort_order', 'ASC')
+                                  ->get()
+                                  ->getResult();
 
-        // ========================================================================
-        // DYNAMIC INTEGRATION: FETCH CUSTOM TRUST STRIP BADGES MATRIX FROM DATABASE
-        // ========================================================================
-        $data['trustBadgesList'] = $db->table('product_trust_badges')
-                                      ->where('product_id', $productId)
-                                      ->orderBy('sort_order', 'ASC')
-                                      ->get()
-                                      ->getResult();
-        // ========================================================================
-
-        // Fetch Dynamic Business Benefits Metrics Dataset Map
-        $data['businessBenefitsList'] = $db->table('product_business_benefits')
-                                           ->where('product_id', $productId)
-                                           ->orderBy('sort_order', 'ASC')
-                                           ->get()
-                                           ->getResult();
-
-        $data['testimonialsList'] = $db->table('cyb_testimonials')
+    // Fetch Business Benefits (Stat Cards Matrix)
+    $data['businessBenefitsList'] = $db->table('product_business_benefits')
                                        ->where('product_id', $productId)
                                        ->orderBy('sort_order', 'ASC')
                                        ->get()
                                        ->getResult();
-        
-        $data['config_logo'] = $this->config_logo;
-        $data['caseStudyList'] = $MediaModel->asObject()->select('id,shortDescription,thumbnail,slug,title')->where(['status'=>1,'type'=>'CASE_STUDY'])->findALL();
-      
-        return view('frontend/product_detail',$data);
-    }
+
+    // ========================================================================
+    // ADDED: FETCH BELOW-HERO TICKER ITEMS
+    // ========================================================================
+    $data['tickerItemsList'] = $db->table('cyb_product_ticker_items')
+                                  ->where('product_id', $productId)
+                                  ->orderBy('sort_order', 'ASC')
+                                  ->get()
+                                  ->getResult();
+
+    // ========================================================================
+    // ADDED: FETCH "WHY CHOOSE US" BENEFIT CARDS
+    // ========================================================================
+    $data['whyChooseUsList'] = $db->table('cyb_product_why_choose_us')
+                                  ->where('product_id', $productId)
+                                  ->orderBy('sort_order', 'ASC')
+                                  ->get()
+                                  ->getResult();
+
+    // Fetch Testimonials
+    $data['testimonialsList'] = $db->table('cyb_testimonials')
+                                   ->where('product_id', $productId)
+                                   ->orderBy('sort_order', 'ASC')
+                                   ->get()
+                                   ->getResult();
+    
+    $data['config_logo']    = $this->config_logo;
+    $data['caseStudyList']  = $MediaModel->asObject()->select('id,shortDescription,thumbnail,slug,title')->where(['status'=>1,'type'=>'CASE_STUDY'])->findALL();
+  
+    return view('frontend/product_detail', $data);
+}
     
 public function services(){
       
