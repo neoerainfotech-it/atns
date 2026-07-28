@@ -46,6 +46,10 @@ $transparentHeader = true
 
 <div class="apply_form">
     <p>Please use this form to apply for this position. Our HR will review your application and if shortlisted you will receive a call very soon.</p>
+    
+    <div id="career-captcha-error" style="display: none; color: #d32f2f; font-weight: 600; font-size: 0.85rem; padding: 10px; margin-bottom: 20px; background-color: rgba(211, 47, 47, 0.05); border: 1px solid rgba(211, 47, 47, 0.12); border-radius: 4px; text-align: left;">
+        <i class="fas fa-exclamation-triangle me-1"></i> Please verify you are not a robot by completing the reCAPTCHA checkbox challenge.
+    </div>
                   
     <form id="career_form" action="" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="job_id" value="<?php echo $detail->id; ?>">
@@ -80,6 +84,10 @@ $transparentHeader = true
             <input type="file" name="resume" class="form-control" id="resume"><br>
             <p class="results mt-2 mb-0"></p>
         </div>
+
+        <div class="form-group career-recaptcha-alignment" style="display: flex; justify-content: start; margin-top: 15px; margin-bottom: 5px;">
+            <div class="g-recaptcha" data-sitekey="6LfTGlEtAAAAAEscEgL9-OZ0n_phaWbpSrNtDN46"></div>
+        </div>
         
         <button type="submit" id="btn_career_submit" class="btn btn-theme btn-icon mt-4">
             Submit 
@@ -98,55 +106,49 @@ $transparentHeader = true
     </form>
 </div>
 
-<script src="https://www.google.com/recaptcha/api.js?render=6Ld7DEMtAAAAALvAMGN3banyiNeleFPIoDdtxgUx"></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var careerForm = document.getElementById('career_form');
-    var isCareerSubmitting = false; // Internal interface double-click guard flag
+    var isCareerSubmitting = false; // Internal double-click validation submission lock
 
     if (careerForm) {
         careerForm.addEventListener('submit', function (e) {
-            // Stop immediate submission to fetch the background security token safely first
-            e.preventDefault();
+            var formNode = this;
+            var submitBtn = document.getElementById('btn_career_submit');
+            var errorBox = document.getElementById('career-captcha-error');
 
-            // Discard duplicate click actions instantly if execution is running
+            // 1. Double Submission Blocker
             if (isCareerSubmitting) {
+                e.preventDefault();
                 return false;
             }
             
-            var formNode = this;
-            var submitBtn = document.getElementById('btn_career_submit');
+            // 2. FIXED: Verify checked security validation parameters state output
+            var captchaResponse = grecaptcha.getResponse();
+            if (captchaResponse.length === 0) {
+                e.preventDefault(); // Halt standard execution sequence thread immediately
+                if (errorBox) { errorBox.style.display = "block"; }
+                return false;
+            }
             
-            // Lock down the interface elements immediately
+            // Clear layout alert states if signature string exists
+            if (errorBox) { errorBox.style.display = "none"; }
+
+            // 3. Trigger structural interaction element interface locks
             isCareerSubmitting = true;
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.style.opacity = "0.7";
-                // Target the text portion safely without destroying wrapped nested icon nodes
+                
+                // Safely swap descriptive data labels without stripping nested SVG layout nodes
                 var textNode = submitBtn.firstChild;
                 if(textNode) { textNode.nodeValue = "Uploading Application... "; }
             }
 
-            grecaptcha.ready(function () {
-                grecaptcha.execute('6Ld7DEMtAAAAALvAMGN3banyiNeleFPIoDdtxgUx', { action: 'submit' })
-                .then(function (token) {
-                    // Strip out any previously appended token instances if a validation retry occurs
-                    var oldToken = formNode.querySelector('input[name="g-recaptcha-response"]');
-                    if (oldToken) { oldToken.remove(); }
-
-                    // Inject the validated token dynamically as a hidden parameter input tag
-                    var tokenInput = document.createElement('input');
-                    tokenInput.type = 'hidden';
-                    tokenInput.name = 'g-recaptcha-response';
-                    tokenInput.value = token;
-                    formNode.appendChild(tokenInput);
-
-                    // Note: If you handle application submissions via an internal jQuery AJAX engine,
-                    // replace the line below with your standard AJAX form-dispatch logic block.
-                    formNode.submit();
-                });
-            });
+            // Let the form naturally forward parameters along via regular POST delivery
+            return true;
         });
     }
 });

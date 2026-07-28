@@ -64,6 +64,10 @@ $transparentHeader = true
 </style>
 
 <div class="col-md-6">
+    <div id="enq-captcha-error" style="display: none; color: #d32f2f; font-weight: 600; font-size: 0.85rem; padding: 10px; margin-bottom: 15px; background-color: rgba(211, 47, 47, 0.05); border: 1px solid rgba(211, 47, 47, 0.12); border-radius: 4px; text-align: left;">
+        <i class="fas fa-exclamation-triangle me-1"></i> Please verify you are not a robot by checking the reCAPTCHA checkbox.
+    </div>
+
     <form id="enquiry_form" action="" method="POST">
         <div class="form-floating">
           <input type="text" class="form-control txtOnly required" id="floatingInput" placeholder="Name" name="name">
@@ -117,6 +121,10 @@ $transparentHeader = true
           <label for="floatingTextarea">Message</label>
         </div>
 
+        <div class="form-floating style-captcha-wrapper" style="display: flex; justify-content: start; margin-top: 15px; margin-bottom: 15px; height: auto;">
+            <div class="g-recaptcha" data-sitekey="6LfTGlEtAAAAAEscEgL9-OZ0n_phaWbpSrNtDN46"></div>
+        </div>
+
         <button type="submit" class="btn btn-theme btn-icon border-0" id="btn_enq">
             Submit 
             <svg width="18" height="12" viewBox="0 0 25 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -132,27 +140,37 @@ $transparentHeader = true
     </form>
 </div> 
 
-<script src="https://www.google.com/recaptcha/api.js?render=6Ld7DEMtAAAAALvAMGN3banyiNeleFPIoDdtxgUx"></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var enquiryForm = document.getElementById('enquiry_form');
-    var isFormSubmitting = false; // Double submission guard flag
+    var isFormSubmitting = false; // Double submission execution lock flag
 
     if (enquiryForm) {
         enquiryForm.addEventListener('submit', function (e) {
-            // Stop the form immediately to fetch the background security token safely first
-            e.preventDefault();
+            var formNode = this;
+            var submitBtn = document.getElementById('btn_enq');
+            var errorBox = document.getElementById('enq-captcha-error');
 
-            // Prevent multiple clicks if user clicked twice quickly
+            // 1. Double Submission Protection Breakout Check
             if (isFormSubmitting) {
+                e.preventDefault();
                 return false;
             }
             
-            var formNode = this;
-            var submitBtn = document.getElementById('btn_enq');
+            // 2. FIXED: Verify token check state from the rendered checkbox layout frame
+            var captchaResponse = grecaptcha.getResponse();
+            if (captchaResponse.length === 0) {
+                e.preventDefault(); // Halt active form post processing thread
+                if (errorBox) { errorBox.style.display = "block"; }
+                return false;
+            }
+
+            // Hide the error box container if signature field validation passes checks
+            if (errorBox) { errorBox.style.display = "none"; }
             
-            // Activate the lock flag and visually update the interface button
+            // 3. Activate visual locking mechanisms parameters safely
             isFormSubmitting = true;
             if (submitBtn) {
                 submitBtn.disabled = true;
@@ -160,25 +178,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 submitBtn.innerHTML = 'Processing Securing Link...';
             }
 
-            grecaptcha.ready(function () {
-                grecaptcha.execute('6Ld7DEMtAAAAALvAMGN3banyiNeleFPIoDdtxgUx', { action: 'submit' })
-                .then(function (token) {
-                    // Strip out any previously generated reCAPTCHA input nodes if present
-                    var oldToken = formNode.querySelector('input[name="g-recaptcha-response"]');
-                    if (oldToken) { oldToken.remove(); }
-
-                    // Inject the secure token value entry dynamically as a hidden input column
-                    var tokenInput = document.createElement('input');
-                    tokenInput.type = 'hidden';
-                    tokenInput.name = 'g-recaptcha-response';
-                    tokenInput.value = token;
-                    formNode.appendChild(tokenInput);
-
-                    // Note: If you use a custom jQuery AJAX handler elsewhere for this form, 
-                    // remove "formNode.submit();" and replace it with your AJAX submit logic trigger here.
-                    formNode.submit();
-                });
-            });
+            // Proceed cleanly with standard form route post lifecycle delivery
+            return true;
         });
     }
 });
