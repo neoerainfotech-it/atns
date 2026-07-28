@@ -29,14 +29,39 @@ class ProductModel extends Model
         'slug', 
         'image', 
         'thumbnail', 
-        'hero_banner', // Added field validation capability
+        'hero_banner',
+        
+        // Dynamic Hero Banner Fields
+        'heroBadge',
+        'heroTitleHighlight',
+        'heroCtaText',
+        'heroCtaLink',
+        'floatingBadgeTitle',
+        'floatingBadgeSubtitle',
+        
+        // Key Features, Cases & Industries
         'keyTitle', 
         'keyDescription', 
         'caseTitle', 
         'casetDescription', 
         'industryTitle', 
         'industryDescription', 
-        'industries'
+        'industries',
+
+        // Overview & Marketplace Payload
+        'overviewEyebrow',
+        'overviewTitle',
+        'overview_summary',
+        'marketplace_payload',
+
+        // Trust Strips & Benefits Section Main Titles
+        'trust_strip_title',
+        'benefitsSectionTitle', // Added to support "Why Choose Us" heading
+
+        // Partnerships Metadata
+        'partnershipSubheading',
+        'partnershipTitle',
+        'partnershipDescription'
     ];
 
     // Dates

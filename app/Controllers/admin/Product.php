@@ -116,7 +116,6 @@ class Product extends BaseController
             $data['standardList'] =array();
         }
 
-        // FIXED: Modernized to check for post request streams safely
         if($this->request->is('post')){
             $rules = [
                 'name'=>'trim'
@@ -292,6 +291,21 @@ class Product extends BaseController
             $data['hero_banner'] = isset($row->hero_banner) ? $row->hero_banner : '';
             $data['solution'] = $row->solution; 
             
+            // ========================================================================
+            // HERO BANNER DYNAMIC CONFIGURATION FIELDS
+            // ========================================================================
+            $data['heroBadge']             = isset($row->heroBadge) ? $row->heroBadge : 'SOLUTIONS PROFILE';
+            $data['heroTitleHighlight']    = isset($row->heroTitleHighlight) ? $row->heroTitleHighlight : 'Built To Scale.';
+            $data['heroCtaText']           = isset($row->heroCtaText) ? $row->heroCtaText : 'Request Demo';
+            $data['heroCtaLink']           = isset($row->heroCtaLink) ? $row->heroCtaLink : '#contact';
+            $data['floatingBadgeTitle']    = isset($row->floatingBadgeTitle) ? $row->floatingBadgeTitle : 'Accounts payable automation';
+            $data['floatingBadgeSubtitle'] = isset($row->floatingBadgeSubtitle) ? $row->floatingBadgeSubtitle : 'Active & Optimized';
+
+            // ========================================================================
+            // "WHY CHOOSE US" SECTION MAIN TITLE
+            // ========================================================================
+            $data['benefitsSectionTitle']  = isset($row->benefitsSectionTitle) ? $row->benefitsSectionTitle : 'Why Accounts payable automation?';
+
             $data['keyTitle'] = $row->keyTitle; 
             $data['keyDescription'] = $row->keyDescription; 
             $data['caseTitle'] = $row->caseTitle; 
@@ -299,42 +313,30 @@ class Product extends BaseController
             $data['industryTitle'] = $row->industryTitle; 
             $data['industryDescription'] = $row->industryDescription; 
             
-            // ========================================================
-            // FETCH RECOVERY ENGINE: Load Product Overview Context Fields
-            // ========================================================
             $data['overviewEyebrow'] = isset($row->overviewEyebrow) ? $row->overviewEyebrow : '';
             $data['overviewTitle']   = isset($row->overviewTitle) ? $row->overviewTitle : '';
-
             $data['overview_summary'] = isset($row->overview_summary) ? $row->overview_summary : '';
-            
-            // ADD THIS LINE HERE: Extracts the data from the database table row into the view
             $data['marketplace_payload'] = isset($row->marketplace_payload) ? $row->marketplace_payload : '';
             
             $data['industries'] = json_decode($row->industries); 
 
-            // ------------------------------------------------------------------------
-            // INJECTED DATA LAYER: UNPACK TRUST STRIP TITLE & CHILD BADGES DYNAMIC SETS
-            // ------------------------------------------------------------------------
             $data['trust_strip_title'] = isset($row->trust_strip_title) ? $row->trust_strip_title : 'Trusted By Finance Teams';
             $data['trustBadgesList']   = $db->table('cyb_product_trust_badges')
                                             ->where('product_id', $row->id)
                                             ->orderBy('sort_order', 'ASC')
                                             ->get()
                                             ->getResult();
-            // ------------------------------------------------------------------------
 
             $data['featureList'] = $this->AdminModel->all_fetch('cyb_product_feature',array('product_id'=>$row->id)); 
             $data['capabilitiesList'] = $this->AdminModel->all_fetch('cyb_product_capabilities',array('product_id'=>$row->id)); 
             $data['imagesList'] = $this->AdminModel->all_fetch('cyb_product_images',array('product_id'=>$row->id)); 
 
-            // FETCH OVERVIEW REPEATER MATRIX: Load current point list rows securely
             $data['overviewMatrixList'] = $db->table('cyb_product_overview_matrix')
                                              ->where('product_id', $row->id)
                                              ->orderBy('sort_order', 'ASC')
                                              ->get()
                                              ->getResult();
 
-            // FETCH EXSTING TESTIMONIALS: Load from table during edit execution cycles
             $data['testimonialsList'] = $db->table('cyb_testimonials')
                                            ->where('product_id', $row->id)
                                            ->orderBy('sort_order', 'ASC')
@@ -345,21 +347,25 @@ class Product extends BaseController
             $data['partnershipTitle']       = isset($row->partnershipTitle) ? $row->partnershipTitle : 'Why Our Partnerships Matter';
             $data['partnershipDescription'] = isset($row->partnershipDescription) ? $row->partnershipDescription : '';
 
-            // ========================================================================
-// FIXED RELATIONAL RETRIEVAL: TARGETS THE SANITIZED PARAMETER ID DIRECTLY
-// ========================================================================
-$data['partnershipCardsList'] = $db->table('cyb_product_partnership_cards')
-                                   ->where('product_id', $id) // Changed from $row->id to $id
-                                   ->orderBy('sort_order', 'ASC')
-                                   ->get()
-                                   ->getResult();
-// ========================================================================
-// FETCH RECOVERY ENGINE: Load Business Benefits Dynamic Row Sets
+            $data['partnershipCardsList'] = $db->table('product_partnership_cards')
+                                               ->where('product_id', $id)
+                                               ->orderBy('sort_order', 'ASC')
+                                               ->get()
+                                               ->getResult();
+
+            // Fetch Business Benefits (Stat Cards Matrix)
             $data['businessBenefitsList'] = $db->table('cyb_product_business_benefits')
                                                ->where('product_id', $row->id)
                                                ->orderBy('sort_order', 'ASC')
                                                ->get()
                                                ->getResult();
+
+            // Fetch Why Choose Us Cards List
+            $data['whyChooseUsList'] = $db->table('cyb_product_why_choose_us')
+                                          ->where('product_id', $row->id)
+                                          ->orderBy('sort_order', 'ASC')
+                                          ->get()
+                                          ->getResult();
         }else{
             $data['page_title'] = ' Add Product';
             $data['form_action'] ='admin/add_product';
@@ -378,6 +384,16 @@ $data['partnershipCardsList'] = $db->table('cyb_product_partnership_cards')
             $data['hero_banner'] = '';
             $data['solution'] = '';
             
+            // DEFAULT VALUES FOR NEW PRODUCT
+            $data['heroBadge']             = 'SOLUTIONS PROFILE';
+            $data['heroTitleHighlight']    = 'Built To Scale.';
+            $data['heroCtaText']           = 'Request Demo';
+            $data['heroCtaLink']           = '#contact';
+            $data['floatingBadgeTitle']    = 'Accounts payable automation';
+            $data['floatingBadgeSubtitle'] = 'Active & Optimized';
+
+            $data['benefitsSectionTitle']  = 'Why Accounts payable automation?';
+
             $data['keyTitle'] = '';
             $data['keyDescription'] = '';
             $data['caseTitle'] = '';
@@ -385,7 +401,6 @@ $data['partnershipCardsList'] = $db->table('cyb_product_partnership_cards')
             $data['industryTitle'] ='';
             $data['industryDescription'] = '';
 
-            // INITIAL BLANK ARRAYS DEFAULT CONFIGURATION
             $data['overviewEyebrow'] = 'Understanding Platform Context';
             $data['overviewTitle']   = 'Product Overview';
             $data['overview_summary'] = '';
@@ -393,8 +408,8 @@ $data['partnershipCardsList'] = $db->table('cyb_product_partnership_cards')
 
             $data['trust_strip_title'] = 'Trusted By Finance Teams';
             $data['trustBadgesList']   = array();
-
             $data['businessBenefitsList'] = array();
+            $data['whyChooseUsList'] = array();
 
             $data['featureList'] = array();
             $data['capabilitiesList'] = array();
@@ -427,6 +442,17 @@ $data['partnershipCardsList'] = $db->table('cyb_product_partnership_cards')
                 $save['info']['metaDescription'] = $this->request->getVar('metaDescription');
                 $save['info']['status'] = $this->request->getVar('status');
 
+                // HERO BANNER FIELDS
+                $save['info']['heroBadge']             = $this->request->getVar('heroBadge');
+                $save['info']['heroTitleHighlight']    = $this->request->getVar('heroTitleHighlight');
+                $save['info']['heroCtaText']           = $this->request->getVar('heroCtaText');
+                $save['info']['heroCtaLink']           = $this->request->getVar('heroCtaLink');
+                $save['info']['floatingBadgeTitle']    = $this->request->getVar('floatingBadgeTitle');
+                $save['info']['floatingBadgeSubtitle'] = $this->request->getVar('floatingBadgeSubtitle');
+
+                // "WHY CHOOSE US" SECTION MAIN TITLE
+                $save['info']['benefitsSectionTitle']  = $this->request->getVar('benefitsSectionTitle');
+
                 $save['info']['keyTitle'] = $this->request->getVar('keyTitle');
                 $save['info']['keyDescription'] = $this->request->getVar('keyDescription');
                 $save['info']['caseTitle'] = $this->request->getVar('caseTitle');
@@ -437,26 +463,19 @@ $data['partnershipCardsList'] = $db->table('cyb_product_partnership_cards')
                 $save['info']['overviewEyebrow'] = $this->request->getVar('overviewEyebrow');
                 $save['info']['overviewTitle']   = $this->request->getVar('overviewTitle');
                 $save['info']['overview_summary'] = $this->request->getVar('overview_summary');
-                
-                // ADD THIS LINE HERE: Captures the new CKEditor content payload from the POST request stream
                 $save['info']['marketplace_payload'] = $this->request->getVar('marketplace_payload');
 
                 $save['info']['trust_strip_title'] = $this->request->getVar('trust_strip_title');
-
                 $save['info']['industries'] = json_encode($this->request->getVar('industries'));
                 
                 $save['info']['partnershipSubheading']  = $this->request->getPost('partnershipSubheading');
                 $save['info']['partnershipTitle']       = $this->request->getPost('partnershipTitle');
                 $save['info']['partnershipDescription'] = $this->request->getPost('partnershipDescription');
 
-                // ========================================================================
-                // FIXED EXTRACTION SYSTEM: MATCHED EXACTLY TO VIEW SELECT ELEMENTS NAME 'partnerCardIcon'
-                // ========================================================================
                 $save['partnerCardTitle']     = $this->request->getPost('partnerCardTitle');
-$save['partnerCardDesc']      = $this->request->getPost('partnerCardDesc');
-$save['partnerCardIcon']      = $this->request->getPost('partnerCardIcon'); // Synced completely
-$save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
-                // ========================================================================
+                $save['partnerCardDesc']      = $this->request->getPost('partnerCardDesc');
+                $save['partnerCardIcon']      = $this->request->getPost('partnerCardIcon');
+                $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
 
                 if (!empty($this->request->getVar('slug'))) {
                    $save['info']['slug'] = sfu($this->request->getVar('slug'));
@@ -498,13 +517,12 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
                             $save['info']['hero_banner'] = 'uploads/product/'.$file_name;
                         }
                     } else {
-                        $uploadError = $file ? $file->getErrorString() : 'File system stream rejected';
+                        $uploadError = $file ? $file->getErrorString() : 'File stream rejected';
                         $this->session->setFlashdata('error', 'Hero Banner Error: ' . $uploadError);
                         return redirect()->to($id ? 'admin/add_product/'.$id : 'admin/add_product');
                     }
                 }
 
-                // features / use cases upload mapping logic
                 $uploadImgData = array();
                 if ($this->request->getFileMultiple('featureImages')) {
                     foreach($this->request->getFileMultiple('featureImages') as $key => $file)
@@ -525,12 +543,10 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
                 $save['featureSortOrder'] = $this->request->getVar('featureSortOrder'); 
                 $save['featureYoutube'] = $this->request->getVar('featureYoutube');
 
-                // capabilities / key features array pipeline
                 $save['capabilitiesTitle'] = $this->request->getVar('capabilitiesTitle'); 
                 $save['capabilitiesDescription'] = $this->request->getVar('capabilitiesDescription'); 
                 $save['capabilitiesSortOrder'] = $this->request->getVar('capabilitiesSortOrder'); 
 
-                // gallery additional images uploads
                 $uploadimagesData = array();
                 if ($this->request->getFileMultiple('images')) {
                     foreach($this->request->getFileMultiple('images') as $key => $file)
@@ -548,7 +564,6 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
                 $save['old_image'] = $this->request->getVar('old_image');
                 $save['imageSortOrder'] = $this->request->getVar('imageSortOrder'); 
 
-                // Execute core product table transactional storage via product Model logic
                 if ($id) {
                     $save['id'] = $id;
                     $result = $model->save_product($save);
@@ -561,9 +576,7 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
                 }
 
                 if ($result) {
-                    // ========================================================
-                    // REPEATER PROCESSING PIPELINE: Save Overview Matrix List
-                    // ========================================================
+                    // Save Overview Matrix List
                     $db->table('cyb_product_overview_matrix')->where('product_id', $id)->delete();
                     $mLabels      = $this->request->getPost('overviewMatrixLabel');
                     $mTexts       = $this->request->getPost('overviewMatrixText');
@@ -581,11 +594,8 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
                         }
                     }
 
-                    // ========================================================================
-                    // FIXED ADMIN LAYER: Removed double 'cyb_' prefix handling
-                    // ========================================================================
-                    $db->table('product_partnership_cards')->where('product_id', $id)->delete(); // <-- REMOVED "cyb_"
-
+                    // Save Partnership Cards
+                    $db->table('product_partnership_cards')->where('product_id', $id)->delete();
                     $pCardTitles     = $this->request->getPost('partnerCardTitle');
                     $pCardDescs      = $this->request->getPost('partnerCardDesc');
                     $pCardIcons      = $this->request->getPost('partnerCardIcon');
@@ -595,7 +605,7 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
                         foreach ($pCardTitles as $idx => $pCardTitle) {
                             if (empty(trim($pCardTitle))) continue;
                             
-                            $db->table('product_partnership_cards')->insert([ // <-- REMOVED "cyb_"
+                            $db->table('product_partnership_cards')->insert([
                                 'product_id'  => $id,
                                 'title'       => esc($pCardTitle),
                                 'description' => isset($pCardDescs[$idx]) ? esc($pCardDescs[$idx]) : '',
@@ -604,13 +614,9 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
                             ]);
                         }
                     }
-                    // ========================================================
 
-                    // ========================================================================
-                    // REPEATER PROCESSING PIPELINE: Save Dynamic Trust Strip Badges Matrix
-                    // ========================================================================
+                    // Save Dynamic Trust Strip Badges Matrix
                     $db->table('cyb_product_trust_badges')->where('product_id', $id)->delete();
-
                     $badgeTitles      = $this->request->getPost('trustBadgeTitle');
                     $badgeSubtitles   = $this->request->getPost('trustBadgeSubtitle');
                     $badgeSortOrders  = $this->request->getPost('trustBadgeSortOrder');
@@ -623,7 +629,6 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
 
                             $finalBadgePath = isset($badgeOldImages[$idx]) ? $badgeOldImages[$idx] : '';
                             
-                            // Multi-file request engine array check mapping parameters cleanly
                             if (isset($badgeFiles['trustBadgeFiles'][$idx])) {
                                 $tFile = $badgeFiles['trustBadgeFiles'][$idx];
                                 if ($tFile->isValid() && !$tFile->hasMoved()) {
@@ -642,13 +647,9 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
                             ]);
                         }
                     }
-                    // ========================================================================
 
-                    // ========================================================================
-                    // REPEATER PROCESSING PIPELINE: Save Business Benefits Cards Matrix
-                    // ========================================================================
+                    // Save Business Benefits Cards Matrix (Stat Cards)
                     $db->table('cyb_product_business_benefits')->where('product_id', $id)->delete();
-
                     $bTitles      = $this->request->getPost('benefitTitle');
                     $bStatValues  = $this->request->getPost('benefitStatValue');
                     $bStatSuffix  = $this->request->getPost('benefitStatSuffix');
@@ -673,13 +674,32 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
                             ]);
                         }
                     }
-                    
 
-                    // ========================================================
-                    // REPEATER PROCESSING PIPELINE: Save Client Testimonials
-                    // ========================================================
+                    // Save Why Choose Us Cards Matrix
+                    $db->table('cyb_product_why_choose_us')->where('product_id', $id)->delete();
+                    $wTitles      = $this->request->getPost('whyTitle');
+                    $wSubtitles   = $this->request->getPost('whySubtitle');
+                    $wThemes      = $this->request->getPost('whyCardTheme');
+                    $wIcons       = $this->request->getPost('whyIconClass');
+                    $wSortOrders  = $this->request->getPost('whySortOrder');
+
+                    if (!empty($wTitles)) {
+                        foreach ($wTitles as $idx => $wTitle) {
+                            if (empty(trim($wTitle))) continue;
+
+                            $db->table('cyb_product_why_choose_us')->insert([
+                                'product_id'  => $id,
+                                'title'       => esc($wTitle),
+                                'subtitle'    => esc($wSubtitles[$idx]),
+                                'card_theme'  => esc($wThemes[$idx]),
+                                'icon_class'  => !empty($wIcons[$idx]) ? esc($wIcons[$idx]) : 'fas fa-bolt',
+                                'sort_order'  => isset($wSortOrders[$idx]) ? (int)$wSortOrders[$idx] : 0
+                            ]);
+                        }
+                    }
+
+                    // Save Client Testimonials
                     $db->table('cyb_testimonials')->where('product_id', $id)->delete();
-
                     $tNames        = $this->request->getPost('testimonialName');
                     $tDesignations = $this->request->getPost('testimonialDesignation');
                     $tDescriptions = $this->request->getPost('testimonialDescription');
@@ -738,8 +758,9 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
                     $this->AdminModel->deleteData('product_capabilities',array('product_id'=>$value));
                     $this->AdminModel->deleteData('product_images',array('product_id'=>$value));
                     
-                    // CASCADE DELETION LAYER: Drops matching rows instantly
                     $db->table('cyb_testimonials')->where('product_id', $value)->delete();
+                    $db->table('cyb_product_business_benefits')->where('product_id', $value)->delete();
+                    $db->table('cyb_product_why_choose_us')->where('product_id', $value)->delete();
                 }     
                 $this->session->setFlashdata('success','Record Delete successfully'); 
             }else{
@@ -847,7 +868,6 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
             $data['feeList'] = array();
         }
 
-        // FIXED: Switched to is('post') stream layer validation
         if ($this->request->is('post')) {
             $rules = [
                 'name' =>'required'
@@ -1023,7 +1043,6 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
             $data['status'] =  ''; 
         }
 
-        // FIXED: Switched to is('post') validation layer mechanics
         if ($this->request->is('post')) {
             $rules = [
                 'name' =>'required'
@@ -1205,7 +1224,6 @@ $save['partnerCardSortOrder'] = $this->request->getPost('partnerCardSortOrder');
             $data['feeList'] = array();
         }
 
-        // FIXED: Switched to is('post') modern framework request handler
         if ($this->request->is('post')) {
             $rules = [
                 'name' =>'required'
